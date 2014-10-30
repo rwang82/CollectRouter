@@ -1,0 +1,90 @@
+thub 的功能， github 是一个代码托管的公司。 注册一个免费用户，代码是公开的。 付费用户代码是收到保护的。
+
+第一  去github 注册一个用户 https://github.com/
+
+第二 添加ssh 登录公密 （http://pseudo.hoop.blog.163.com/blog/static/13250911720112302435472/）
+2.生成密钥对,这样项目可以push到GitHub上
+          $ ssh-keygen  -C "your_mail@gmail.com" -t  rsa
+
+3.将Public Key添加到GitHub,打开GitHub->SSH Public Key->点击“Add another public key”,将public key(~/.ssh/id_rsa.pub)的内容拷贝到GitHub中
+
+4.为了方便，设置ssh不输入口令
+          $eval 'ssh-agent'
+          $ssh-add  (输入passphrase,一般默认即可)
+
+5.测试GitHub
+          $ssh -v git@github.com
+如果配置正确，显示
+          ERROR: Hi xxx! You've successfully authenticated, but GitHub does not provide shell access
+Connection to github.com closed.
+
+7设置Git全局用户配置
+          $ git config --global user.name "name"
+          $ git config --global user.email your_mail@gmail.com
+
+
+第三  创建项目  在用户名旁边有一个 create a new repo 的小图标 
+( 以下内容来源于网络， 我仅仅是添加一些 注解   )
+1、创建本地新项目工作树
+# mkdir new-project
+# cd new-project
+# git init
+# touch README
+# git add README     （上传README 文件）
+# git commit -m 'first commit'
+定义远程服务器别名origin
+#  git remote add origin git@github.com:xxx/new-project.git     （origin 在这里就是 git@github.com:xxx/new-project.git 的一个别名， 一个 url 链接）
+本地和远程合并，本地默认分支为master
+# git push origin master  （执行这一步可能会有报错）
+如果出现报错为
+ERROR: Repository not found.
+fatal: The remote end hung up unexpectedly
+则代表你的 origin  的url 链接有误，可能是创建错误，也可能是这个  git@github.com:xxx/new-project.git  url 指定不正确。
+重新创建。
+ 
+如果报错为 （）
+error: src refspec master does not match any.
+All I had to do was:
+
+$~ git commit -m 'initial commit'
+$~ git push origin master
+Success!
+
+
+
+GitHub网站上就可以看见了， http://github.com/xxx/new-project
+
+2. 更新文件
+# vi README
+自动commit更改文件
+# git commit -a     
+更新至远程
+# git push origin master
+
+3. 创建和合并分支
+#git branch 显示当前分支是master
+#git branch new-feature  创建分支
+# git checkout new-feature 切换到新分支
+# vi page_cache.inc.php
+# git add page_cache.inc.php
+Commit 到本地GIT
+# git commit -a -m "added initial version of page cache"
+合并到远程服务器
+# git push origin new-feature
+#
+Counting objects: 4, done.
+Compressing objects: 100% (2/2), done.
+Writing objects: 100% (3/3), 336 bytes, done.
+Total 3 (delta 0), reused 0 (delta 0)
+To git@github.com:acanoe/hello_world.git
+ * [new branch]      new-feature -> new-feature
+root@AC:~/hello_world#
+
+如果new-feature分支成熟了，觉得有必要合并进master
+#git checkout master
+#git merge new-feature
+#git branch
+#git push 
+则master中也合并了new-feature 的代码
+
+再登录到GitHub可以看见"Switch Branches"下的分支选项
