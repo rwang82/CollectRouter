@@ -18,8 +18,9 @@
         <processorPath useClasspath="true" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel target="1.7">
-      <module name="CRClient" target="" />
+    <bytecodeTargetLevel target="1.8">
+      <module name="app" target="1.8" />
+      <module name="CRClient" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

@@ -2,7 +2,9 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 21
-    buildToolsVersion '21.0.1'
+    compileOptions {
+    }
+    buildToolsVersion '21.0.2'
     defaultConfig {
         applicationId 'com.collectrouter.crclient'
         minSdkVersion 8
@@ -15,8 +17,6 @@ android {
             runProguard false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
-    }
-    productFlavors {
     }
 }
 

@@ -1,7 +1,7 @@
 package com.collectrouter.crclient;
 
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -47,8 +47,13 @@ public class LoginActivity extends ActionBarActivity {
         @Override
         public void onClick(View view) {
             System.out.println( "enter handle4BtnScanQRCode ------------" );
+
             IntentIntegrator integrator = new IntentIntegrator(LoginActivity.this);
             integrator.initiateScan( IntentIntegrator.QR_CODE_TYPES );
+
+
+           //Intent it = new Intent( "com.google.zxing.client.android.SCAN" );
+           //startActivity( it );
 //            IntentIntegrator integrator = new IntentIntegrator(ZXingTestActivity.this);
 //            integrator.initiateScan(IntentIntegrator.QR_CODE_TYPES);
         }
