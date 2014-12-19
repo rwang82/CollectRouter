@@ -5,22 +5,29 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 
-import com.abc.def.TestCls1;
+
+import com.collectrouter.nwe.HMNWEClient;
 import com.google.zxing.integration.android.IntentIntegrator;
 
 
 public class LoginActivity extends ActionBarActivity {
+
+    HMNWEClient mNWEClient;
+    //CRCliEventHandler mCRCliEventHandler;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        TestCls1 aaa = new TestCls1();
-        aaa.doShow();
+        //
 
+        mNWEClient = new HMNWEClient( new CRCliEventHandler() );
         //
         findViewById(R.id.btn_scan_qr_code).setOnClickListener( handle4BtnScanQRCode );
+        findViewById(R.id.btn_login).setOnClickListener( handle4BtnLogin );
     }
 
 
@@ -56,6 +63,24 @@ public class LoginActivity extends ActionBarActivity {
            //startActivity( it );
 //            IntentIntegrator integrator = new IntentIntegrator(ZXingTestActivity.this);
 //            integrator.initiateScan(IntentIntegrator.QR_CODE_TYPES);
+        }
+    };
+
+    private View.OnClickListener handle4BtnLogin = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            System.out.println( "enter handle4BtnLogin -----------" );
+
+            EditText etUserName = (EditText)findViewById(R.id.etUserName);
+            String strUserName = etUserName.getText().toString();
+            EditText etPassword = (EditText)findViewById(R.id.etPassword);
+            String strPassword = etPassword.getText().toString();
+
+            mNWEClient.connect( "192.168.31.106", 7654 );
+
+            String strData = "chilema?";
+            mNWEClient.sendData( strData.getBytes(), strData.length() );
+            int a = 0;
         }
     };
 }
