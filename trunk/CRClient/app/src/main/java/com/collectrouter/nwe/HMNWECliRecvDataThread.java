@@ -39,11 +39,15 @@ public class HMNWECliRecvDataThread extends Thread{
         mbNeedExit = false;
         while ( !mbNeedExit && mCliImpl.getConnectState() == HMNWECliDef.ENUMSTATUSTYPE.ESTATUS_CONNECTED ) {
             try {
-                mCliImpl.mSocketIS.read( mBufRecvData );
+                nCopied = mCliImpl.mSocketIS.read( mBufRecvData );
                 if (nCopied == -1) {
                     //
                     doNotifyDisConnect();
                     return; // remote server is close.
+                } else if ( nCopied == 0 ) {
+                    //
+                    doNotifyDisConnect();
+                    return;
                 } else {
                     assert( nCopied <= HMNWECliDef.BUFSIZE_RECV_NWDATA );
                     doNotifyRecvData( mBufRecvData, nCopied );
@@ -63,7 +67,7 @@ public class HMNWECliRecvDataThread extends Thread{
         bundle.putByteArray(HMNWECliDef.TITLE_RECVDATA_BUF, bufRecvData );
         bundle.putInt( HMNWECliDef.TITLE_RECVDATA_LENBUF, nLenCopied );
         msg.setData( bundle );
-        mCliImpl.mHandler.sendMessage( msg );
+        mCliImpl.mOutHandler.sendMessage( msg );
     }
 
     private void doNotifyDisConnect() {
@@ -73,7 +77,7 @@ public class HMNWECliRecvDataThread extends Thread{
         bundle.putString( HMNWECliDef.TITLE_CONNECT_IP, mstrIPAddr );
         bundle.putInt( HMNWECliDef.TITLE_CONNECT_PORT, mnPort );
         msg.setData( bundle );
-        mCliImpl.mOutHandler.sendMessage(msg);
+        mCliImpl.mHandler.sendMessage(msg);
     }
 
 

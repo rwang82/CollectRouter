@@ -3,6 +3,7 @@ package com.collectrouter.nwe;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
@@ -21,7 +22,13 @@ public class HMNWECliStateConnecting implements HMNWECliStateBase{
     public Boolean doConnect( String strIP, int nPort )
     {
         try {
-            mCliImpl.msConnect = new Socket(strIP, nPort);
+
+//            client = new Socket();
+//            isa = new InetSocketAddress(ip, port);
+//            client.connect(isa, timeout);
+            InetSocketAddress isa = new InetSocketAddress( strIP, nPort );
+            mCliImpl.msConnect = new Socket();
+            mCliImpl.msConnect.connect( isa, 5000 );
             mCliImpl.mSocketOS = mCliImpl.msConnect.getOutputStream();
             mCliImpl.mSocketIS = mCliImpl.msConnect.getInputStream();
         } catch ( UnknownHostException e ) {

@@ -115,6 +115,7 @@ public class HMNWECliImpl implements Runnable {
     }
 
     private void onMsgRegSendData(Message msg) {
+        System.out.println( ">>>enter onMsgRegSendData..." );
         byte[] rawBuf = msg.getData().getByteArray( HMNWECliDef.TITLE_SENDDATA_RAWDATA );
         int nLenRawBuf = msg.getData().getInt( HMNWECliDef.TITLE_SENDDATA_LENRAWDATA );
         //
@@ -122,6 +123,7 @@ public class HMNWECliImpl implements Runnable {
     }
 
     private void onMsgRegConnect( Message msg ) {
+        System.out.println( ">>>enter onMsgRegConnect..." );
         String strIPAddr = msg.getData().getString(HMNWECliDef.TITLE_CONNECT_IP);
         int nPort = msg.getData().getInt(HMNWECliDef.TITLE_CONNECT_PORT);
         boolean bSuccess = false;
@@ -153,6 +155,7 @@ public class HMNWECliImpl implements Runnable {
     }
 
     private void onMsgRegCloseConnect( Message msg ) {
+        System.out.println( ">>>enter onMsgRegCloseConnect..." );
         String strIPAddr = mstrIPAddr;
         int nPort = mnPort;
         boolean bSuccess = false;
@@ -163,11 +166,19 @@ public class HMNWECliImpl implements Runnable {
     }
 
     private void onMsgNotifyDisConnected( Message msg ) {
+        System.out.println( ">>>enter onMsgNotifyDisConnected..." );
         String strIPAddr = msg.getData().getString( HMNWECliDef.TITLE_CONNECT_IP );
         int nPort = msg.getData().getInt( HMNWECliDef.TITLE_CONNECT_PORT );
 
         switchState( mStateDisConnected );
         // if need new a new message to mOutHandler.
-        mOutHandler.sendMessage(msg);
+
+        Message msgNew = new Message();
+        msgNew.what = msg.what;
+        Bundle bundle = new Bundle();
+        bundle.putString( HMNWECliDef.TITLE_CONNECT_IP, strIPAddr );
+        bundle.putInt( HMNWECliDef.TITLE_CONNECT_PORT, nPort );
+        msgNew.setData( bundle );
+        mOutHandler.sendMessage(msgNew);
     }
 }

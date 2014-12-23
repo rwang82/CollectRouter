@@ -76,7 +76,9 @@ public class LoginActivity extends ActionBarActivity {
             EditText etPassword = (EditText)findViewById(R.id.etPassword);
             String strPassword = etPassword.getText().toString();
 
-            mNWEClient.connect( "192.168.31.106", 7654 );
+            if ( !mNWEClient.isConnected() ) {
+                mNWEClient.connect( "192.168.31.106", 7654 );
+            }
 
             String strData = "chilema?";
             mNWEClient.sendData( strData.getBytes(), strData.length() );
