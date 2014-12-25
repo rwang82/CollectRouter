@@ -46,6 +46,6 @@ public class HMNWECliStateConnected implements HMNWECliStateBase {
 
     @Override
     public void doStartRecvData() {
-        mCliImpl.mThreadRecvData.start();
+        mCliImpl.doStartRecvThread();
     }
 }

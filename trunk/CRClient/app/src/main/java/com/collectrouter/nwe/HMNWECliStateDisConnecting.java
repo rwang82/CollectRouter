@@ -22,7 +22,7 @@ public class HMNWECliStateDisConnecting implements HMNWECliStateBase{
     public Boolean doCloseConnect()
     {
         try {
-            mCliImpl.mThreadRecvData.wantExit();
+            mCliImpl.doStopRecvThread();
             mCliImpl.msConnect.close();
         } catch ( IOException e ) {
         }

@@ -29,7 +29,7 @@ public class HMNWECliImpl implements Runnable {
     int mnPort;
     OutputStream mSocketOS;
     InputStream mSocketIS;
-    HMNWECliRecvDataThread mThreadRecvData;
+    private HMNWECliRecvDataThread mThreadRecvData;
     {
         mStateDisConnected = new HMNWECliStateDisConnected( this );
         mStateConnecting = new HMNWECliStateConnecting( this );
@@ -42,7 +42,7 @@ public class HMNWECliImpl implements Runnable {
         mnPort = 0;
         mSocketIS = null;
         mSocketOS = null;
-        mThreadRecvData = new HMNWECliRecvDataThread( this );
+        mThreadRecvData = null;
     }
 
     HMNWECliImpl( Handler recvHandler ) {
@@ -112,6 +112,22 @@ public class HMNWECliImpl implements Runnable {
             mStateCur = stateNew;
             meStateCur = mStateCur.getState();
         }
+    }
+
+    public void doStartRecvThread() {
+        if ( mThreadRecvData != null && mThreadRecvData.isAlive() ) {
+            mThreadRecvData.wantExit();
+        }
+        mThreadRecvData = new HMNWECliRecvDataThread( this );
+        mThreadRecvData.start();
+    }
+
+    public void doStopRecvThread() {
+        if ( mThreadRecvData != null && mThreadRecvData.isAlive() ) {
+            mThreadRecvData.wantExit();
+            return;
+        }
+        assert( false );
     }
 
     private void onMsgRegSendData(Message msg) {
