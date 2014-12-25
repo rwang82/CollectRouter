@@ -2,6 +2,9 @@ package com.collectrouter.nwp;
 
 import com.collectrouter.nwe.HMNWEClient;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by rom on 12/23 0023.
  */
@@ -12,7 +15,7 @@ public class HMNWPClient {
 
     public HMNWPClient( HMNWPCliEventHandler eventHandler ) {
         mEventHandler = eventHandler;
-        mEventAdaptor = new HMNWPEventAdaptor4Client();
+        mEventAdaptor = new HMNWPEventAdaptor4Client( mEventHandler );
         mNWECli = new HMNWEClient( mEventAdaptor );
     }
 
@@ -29,7 +32,13 @@ public class HMNWPClient {
     }
 
     public boolean sendData( byte[] rawBuf, int nLenRawBuf ) {
+        ArrayList< HMNWPPackage > containerPackage = new ArrayList< HMNWPPackage >();
+        if ( !HMNWPPackImpl.createPackages( rawBuf, nLenRawBuf, containerPackage ) )
+            return false;
 
+        for ( HMNWPPackage nwpPackage : containerPackage ) {
+            mNWECli.sendData( nwpPackage.getBufData(), nwpPackage.getLenBufData() );
+        }
         return true;
     }
 

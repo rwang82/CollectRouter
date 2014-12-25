@@ -8,13 +8,19 @@ import android.view.View;
 import android.widget.EditText;
 
 
+import com.collectrouter.nwe.HMNWECliEventHandler;
 import com.collectrouter.nwe.HMNWEClient;
+import com.collectrouter.nwp.HMNWPClient;
 import com.google.zxing.integration.android.IntentIntegrator;
+
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.UnsupportedCharsetException;
 
 
 public class LoginActivity extends ActionBarActivity {
 
-    HMNWEClient mNWEClient;
+    // HMNWPClient mNWPClient;
+    HMNWEClient mNWPClient;
     //CRCliEventHandler mCRCliEventHandler;
 
     @Override
@@ -24,7 +30,28 @@ public class LoginActivity extends ActionBarActivity {
 
         //
 
-        mNWEClient = new HMNWEClient( new CRCliEventHandler() );
+        //mNWPClient = new HMNWPClient( new CRCliEventHandler() );
+        mNWPClient = new HMNWEClient( new HMNWECliEventHandler() {
+            @Override
+            public void onConnected(String strIPAddr, int nPort) {
+                int a = 0;
+            }
+
+            @Override
+            public void onConnectFailed(String strIPAddr, int nPort) {
+                int a = 0;
+            }
+
+            @Override
+            public void onDisConnected(String strIPAddr, int nPort) {
+                int a = 0;
+            }
+
+            @Override
+            public void onRecv(String strIPAddr, int nPort, byte[] rawBuf, int nLenRawBuf) {
+                int a = 0;
+            }
+        } );
         //
         findViewById(R.id.btn_scan_qr_code).setOnClickListener( handle4BtnScanQRCode );
         findViewById(R.id.btn_login).setOnClickListener( handle4BtnLogin );
@@ -76,12 +103,25 @@ public class LoginActivity extends ActionBarActivity {
             EditText etPassword = (EditText)findViewById(R.id.etPassword);
             String strPassword = etPassword.getText().toString();
 
-            if ( !mNWEClient.isConnected() ) {
-                mNWEClient.connect( "192.168.31.106", 7654 );
+            if ( !mNWPClient.isConnected() ) {
+                mNWPClient.connect( "192.168.31.106", 7654 );
             }
 
-            String strData = "chilema?";
-            mNWEClient.sendData( strData.getBytes(), strData.length() );
+            mNWPClient.sendData(strUserName.getBytes(), strUserName.length());
+
+//            byte[] rawBuf;
+//            try {
+//                rawBuf = "chilema?".getBytes("UTF-8");
+//            } catch ( UnsupportedEncodingException e) {
+//                int a = 0;
+//                return;
+//            } catch ( UnsupportedCharsetException e ) {
+//                int a = 0;
+//                return;
+//            } finally {
+//                int a = 0;
+//            }
+//            //mNWPClient.sendData( rawBuf, rawBuf.length );
             int a = 0;
         }
     };

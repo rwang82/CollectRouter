@@ -23,6 +23,17 @@ public class HMNWPHeader {
     private byte m_byteBodyProtocol;
     public short m_lenPayload;
 
+    public HMNWPHeader() {
+        m_byteBeg1 = HMNWPDef.HMNWP_PACKAGE_BEG1;
+        m_byteBeg2 = HMNWPDef.HMNWP_PACKAGE_BEG2;
+        m_byteVer = HMNWPDef.HMNWP_PACKAGE_VER;
+        m_indexBundleBuf = 0;
+        m_indexPackage = 0;
+        m_countPackage = 1;
+        m_byteBodyProtocol = 0;
+        m_lenPayload = 0;
+    }
+
     public void setBundleBufIndex( short indexBundleBuf ) {
         m_indexBundleBuf = indexBundleBuf;
     }
@@ -49,15 +60,15 @@ public class HMNWPHeader {
         bufNeedFill[ 0 ] = m_byteBeg1;
         bufNeedFill[ 1 ] = m_byteBeg2;
         bufNeedFill[ 2 ] = m_byteVer;
-        bufNeedFill[ 3 ] = (byte)(m_indexBundleBuf>>>8);
-        bufNeedFill[ 4 ] = (byte)(m_indexBundleBuf&0xFF);
-        bufNeedFill[ 5 ] = (byte)(m_indexPackage>>>8);
-        bufNeedFill[ 6 ] = (byte)(m_indexPackage&0xFF);
-        bufNeedFill[ 7 ] = (byte)(m_countPackage>>>8);
-        bufNeedFill[ 8 ] = (byte)(m_countPackage&0xFF);
+        bufNeedFill[ 3 ] = (byte)(m_indexBundleBuf&0xFF);
+        bufNeedFill[ 4 ] = (byte)(m_indexBundleBuf>>>8);
+        bufNeedFill[ 5 ] = (byte)(m_indexPackage&0xFF);
+        bufNeedFill[ 6 ] = (byte)(m_indexPackage>>>8);
+        bufNeedFill[ 7 ] = (byte)(m_countPackage&0xFF);
+        bufNeedFill[ 8 ] = (byte)(m_countPackage>>>8);
         bufNeedFill[ 9 ] = m_byteBodyProtocol;
-        bufNeedFill[ 10 ] = (byte)(m_lenPayload>>>8);
-        bufNeedFill[ 11 ] = (byte)(m_lenPayload&0xFF);
+        bufNeedFill[ 10 ] = (byte)(m_lenPayload&0xFF);
+        bufNeedFill[ 11 ] = (byte)(m_lenPayload>>>8);
         return true;
     }
 }
