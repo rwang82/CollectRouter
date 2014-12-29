@@ -63,16 +63,23 @@ public class HMNWPCRC16 {
             0x43, 0x83, 0x41, 0x81, 0x80, 0x40
     };
 
-    public static short CalcCRC16( byte[] bufRawData, int uLenRawData ) {
-
+    public static short CalcCRC16( byte[] bufRawData, int nPosBufStart, int uLenRawData ) {
+        assert( bufRawData.length >= nPosBufStart + uLenRawData );
         int uchCRCHi = 0xFF ; /* 高CRC字节初始化*/
         int uchCRCLo = 0xFF;  /* 低CRC 字节初始化*/
         short uIndex ; /* CRC循环中的索引*/
-        int indexRawBufData = 0;
+        int indexRawBufData = nPosBufStart;
 
         while ( ( uLenRawData-- ) != 0 ) /* 传输消息缓冲区*/
         {
+            int raw = bufRawData[ indexRawBufData ];
+            int a = (int)(bufRawData[ indexRawBufData ]);
+            int b = (uchCRCHi ^ a);
+            int c = 0xFF & a;
+            int d = (uchCRCHi ^ c);
+
             uIndex = (short)(uchCRCHi ^ (int)(bufRawData[ indexRawBufData ]));  /* 计算CRC */
+            uIndex &= 0xFF;
             uchCRCHi = uchCRCLo ^ (int)auchCRCHi[uIndex];
             uchCRCLo = auchCRCLo[uIndex]  ;
             ++indexRawBufData;

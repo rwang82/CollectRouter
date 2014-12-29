@@ -7,9 +7,11 @@ import com.collectrouter.nwe.HMNWECliEventHandler;
  */
 public class HMNWPEventAdaptor4Client implements HMNWECliEventHandler {
     private final HMNWPCliEventHandler mEventHandler;
+    private final HMNWPUnPackImpl mUnPackHelper;
 
     public HMNWPEventAdaptor4Client( HMNWPCliEventHandler eventHandler ) {
         mEventHandler = eventHandler;
+        mUnPackHelper = new HMNWPUnPackImpl( mEventHandler );
     }
 
     // interface of HMNWECliEventHandler.
@@ -26,7 +28,8 @@ public class HMNWPEventAdaptor4Client implements HMNWECliEventHandler {
     }
 
     public void onRecv( String strIPAddr, int nPort, byte[] rawBuf, int nLenRawBuf ) {
-        mEventHandler.onRecv( strIPAddr, nPort, rawBuf, nLenRawBuf );
+        mUnPackHelper.onRecv( rawBuf, nLenRawBuf );
+        // mEventHandler.onRecv( strIPAddr, nPort, rawBuf, nLenRawBuf );
     }
 
 }

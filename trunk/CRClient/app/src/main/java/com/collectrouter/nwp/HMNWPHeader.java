@@ -34,6 +34,29 @@ public class HMNWPHeader {
         m_lenPayload = 0;
     }
 
+    public HMNWPHeader( byte[] rawBuf ) {
+        // server is windows. X86 CPU, so use litter-endian.
+        assert( rawBuf.length == getLength() );
+        m_byteBeg1 = rawBuf[ 0 ];
+        m_byteBeg2 = rawBuf[ 1 ];
+        m_byteVer = rawBuf[ 2 ];
+        m_indexBundleBuf = rawBuf[ 4 ];
+        m_indexBundleBuf <<= 8;
+        m_indexBundleBuf |= (short)rawBuf[ 3 ];
+        m_indexPackage = rawBuf[ 6 ];
+        m_indexPackage <<= 8;
+        m_indexPackage |= (short)rawBuf[5];
+        m_countPackage = rawBuf[ 8 ];
+        m_countPackage <<= 8;
+        m_countPackage |= (short)rawBuf[ 7 ];
+        m_byteBodyProtocol = rawBuf[ 9 ];
+        m_lenPayload = (short)rawBuf[ 11 ];
+        m_lenPayload <<= 8;
+        m_lenPayload |= rawBuf[ 10 ];
+
+
+    }
+
     public void setBundleBufIndex( short indexBundleBuf ) {
         m_indexBundleBuf = indexBundleBuf;
     }

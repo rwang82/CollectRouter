@@ -43,7 +43,8 @@ public class SocketTestActivity extends Activity {
             EditText etMsg = (EditText)findViewById( R.id.etMsg );
             String strMsg = etMsg.getText().toString();
 
-            CRCliRoot.getInstance().mNWPClient.sendData( strMsg.getBytes(), strMsg.length() );
+            byte[] rawBuf = strMsg.getBytes();
+            CRCliRoot.getInstance().mNWPClient.sendData( rawBuf, rawBuf.length );
         }
     };
 }

@@ -7,6 +7,21 @@ import com.collectrouter.nwe.HMNWECliDef;
  */
 public class HMNWPDef {
 
+    public enum ENUMUNPACKSTATETYPE {
+        EUNPACKSTATUS_FINDHEADER,
+        EUNPACKSTATUS_SAVEPAYLOAD,
+        EUNPACKSTATUS_CHECKCRC,
+    }
+
+    public enum ENUMRAWBUFTYPE {
+        ERAWBUF_TYPE_UNKNOWN,
+        ERAWBUF_TYPE_NOTIN,
+        ERAWBUF_TYPE_BODYIN_ONLY,
+        ERAWBUF_TYPE_TAILIN_ONLY,
+        ERAWBUF_TYPE_ALLIN,
+        ERAWBUF_TYPE_HEADIN_ONLY
+    }
+
     public final static int HMNWP_LEN_CRC16 = 2;
     public final static int HMNWP_LEN_PAYLOAD_MAX;
     public final static byte HMNWP_PACKAGE_BEG1 = (byte)0xAF;

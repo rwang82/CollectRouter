@@ -5,6 +5,8 @@ import android.widget.TextView;
 import com.collectrouter.nwe.HMNWECliEventHandler;
 import com.collectrouter.nwp.HMNWPCliEventHandler;
 
+import java.io.UnsupportedEncodingException;
+
 /**
  * Created by rom on 12/18 0018.
  */
@@ -38,8 +40,18 @@ public class CRCliEventHandler implements HMNWPCliEventHandler {
     }
 
     @Override
-    public void onRecv(String strIPAddr, int nPort, byte[] rawBuf, int nLenRawBuf){
+    public void onRecv(byte[] rawBuf, int nLenRawBuf){
         TextView tvConnStatus = (TextView)mCRCliRoot.mSocketTestActivity.findViewById( R.id.tvConnStatus );
+        TextView tvMsgRecv = (TextView)mCRCliRoot.mSocketTestActivity.findViewById( R.id.tvMsgRecv );
+        String strMsg;
+        try {
+            strMsg = new String( rawBuf, "UTF8" );
+            tvMsgRecv.setText( strMsg );
+        } catch (UnsupportedEncodingException e) {
+            int a = 0;
+            tvMsgRecv.setText( "recv data encode format error." );
+            e.printStackTrace();
+        }
 
         tvConnStatus.setText( "Recv Data" );
     }
