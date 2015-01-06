@@ -1,8 +1,7 @@
-package com.collectrouter.crclient;
+package com.collectrouter.crclient.frame;
 
 import java.util.HashSet;
 import java.util.Hashtable;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -15,7 +14,7 @@ public class CREventDepot {
         mMapEventId2EHContainer = new Hashtable();
     }
 
-    boolean regEventHandler( int nEventId, CREventHandler eventHandler ) {
+    public boolean regEventHandler( int nEventId, CREventHandler eventHandler ) {
         Set< CREventHandler > containerEventHandler;
         containerEventHandler = (Set< CREventHandler >)mMapEventId2EHContainer.get( nEventId );
 
@@ -26,7 +25,7 @@ public class CREventDepot {
         return containerEventHandler.add( eventHandler );
     }
 
-    boolean unRegEventHandler( int nEventId, CREventHandler eventHandler ) {
+    public boolean unRegEventHandler( int nEventId, CREventHandler eventHandler ) {
         Set< CREventHandler > containerEventHandler;
         containerEventHandler = (Set<CREventHandler>)mMapEventId2EHContainer.get( nEventId );
 
@@ -36,7 +35,7 @@ public class CREventDepot {
         return containerEventHandler.remove( eventHandler );
     }
 
-    void fire( int nEventId, Object param1, Object param2 ) {
+    public void fire( int nEventId, Object param1, Object param2 ) {
         Set< CREventHandler > containerEventHandler;
 
         containerEventHandler = (Set<CREventHandler>)mMapEventId2EHContainer.get( nEventId );

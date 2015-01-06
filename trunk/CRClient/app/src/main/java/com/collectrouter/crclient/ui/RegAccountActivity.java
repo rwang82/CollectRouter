@@ -1,15 +1,13 @@
-package com.collectrouter.crclient;
+package com.collectrouter.crclient.ui;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.List;
+import com.collectrouter.crclient.frame.CRCliDef;
+import com.collectrouter.crclient.frame.CRCliRoot;
+import com.collectrouter.crclient.R;
 
 /**
  * Created by rom on 1/1 0001.

@@ -1,8 +1,17 @@
-package com.collectrouter.crclient;
+package com.collectrouter.crclient.module;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.os.Bundle;
+
+import com.collectrouter.crclient.frame.CRCliDef;
+import com.collectrouter.crclient.frame.CRCliRoot;
+import com.collectrouter.crclient.frame.CREventDepot;
+import com.collectrouter.crclient.frame.CREventHandler;
+import com.collectrouter.crclient.frame.CRRMsgHandlerDepot;
+import com.collectrouter.crclient.frame.CRRMsgJson;
+import com.collectrouter.crclient.frame.CRRMsgJsonHandlerBase;
+import com.collectrouter.crclient.frame.CRRMsgMaker;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -32,7 +41,7 @@ public class CRModuleAccountReg implements CREventHandler, CRRMsgJsonHandlerBase
             return null;
         }
 
-        return CRRMsgMaker.createRMsg( valParams, CRCliDef.CRCMDTYPE_REQ_ACCOUNT_REG );
+        return CRRMsgMaker.createRMsg(valParams, CRCliDef.CRCMDTYPE_REQ_ACCOUNT_REG);
     }
 
     private void doRegAccount( String strUserName, String strPassword, String strPhoneNum ) {

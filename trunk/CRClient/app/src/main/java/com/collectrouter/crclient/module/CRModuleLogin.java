@@ -1,14 +1,19 @@
-package com.collectrouter.crclient;
+package com.collectrouter.crclient.module;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 
-import com.google.zxing.client.android.Contents;
+import com.collectrouter.crclient.frame.CRCliDef;
+import com.collectrouter.crclient.frame.CRCliRoot;
+import com.collectrouter.crclient.frame.CREventDepot;
+import com.collectrouter.crclient.frame.CREventHandler;
+import com.collectrouter.crclient.frame.CRRMsgHandlerDepot;
+import com.collectrouter.crclient.frame.CRRMsgJson;
+import com.collectrouter.crclient.frame.CRRMsgJsonHandlerBase;
+import com.collectrouter.crclient.ui.ActivityMain;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.UnsupportedEncodingException;
 
 /**
  * Created by rom on 12/30 0030.
@@ -53,11 +58,15 @@ public class CRModuleLogin implements CREventHandler, CRRMsgJsonHandlerBase {
         }
 
         // show a notify dialog.
-        Activity loginActivity = CRCliRoot.getInstance().mUIDepot.getActivity( CRCliDef.CRCLI_ACTIVITY_LOGIN );
-        if ( loginActivity == null )
+        ActivityMain mainActivity = (ActivityMain)CRCliRoot.getInstance().mUIDepot.getActivity( CRCliDef.CRCLI_ACTIVITY_MAIN );
+        if ( mainActivity == null )
             return;
 
-        new AlertDialog.Builder( loginActivity ).setTitle( "login result" ).setMessage( bSuccess ? "succeed" : "failed, ERRCODE:" + nErrCode ).setPositiveButton( "OK", null ).show();
+        new AlertDialog.Builder( mainActivity ).setTitle( "login result" ).setMessage( bSuccess ? "succeed" : "failed, ERRCODE:" + nErrCode ).setPositiveButton( "OK", null ).show();
+
+        long lTId = Thread.currentThread().getId();
+//        if ( bSuccess )
+        mainActivity.switch2AttationUsers();
 
     }
 

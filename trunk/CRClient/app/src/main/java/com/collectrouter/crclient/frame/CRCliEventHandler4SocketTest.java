@@ -1,8 +1,8 @@
-package com.collectrouter.crclient;
+package com.collectrouter.crclient.frame;
 
 import android.widget.TextView;
 
-import com.collectrouter.nwe.HMNWECliEventHandler;
+import com.collectrouter.crclient.R;
 import com.collectrouter.nwp.HMNWPCliEventHandler;
 
 import java.io.UnsupportedEncodingException;

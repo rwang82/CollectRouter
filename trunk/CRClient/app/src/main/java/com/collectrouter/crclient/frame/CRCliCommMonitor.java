@@ -1,6 +1,5 @@
-package com.collectrouter.crclient;
+package com.collectrouter.crclient.frame;
 
-import com.collectrouter.nwe.HMNWEClient;
 import com.collectrouter.nwp.HMNWPClient;
 
 /**
@@ -10,7 +9,7 @@ public class CRCliCommMonitor implements Runnable {
     public boolean mbNeedExit;
     private HMNWPClient mNWPClient;
 
-    CRCliCommMonitor( HMNWPClient nwpClient ) {
+    public CRCliCommMonitor( HMNWPClient nwpClient ) {
         mNWPClient = nwpClient;
         mbNeedExit = false;
     }

@@ -1,6 +1,8 @@
-package com.collectrouter.crclient;
+package com.collectrouter.crclient.frame;
 
-import com.collectrouter.nwe.HMNWEClient;
+import com.collectrouter.crclient.module.CRModuleAccountReg;
+import com.collectrouter.crclient.module.CRModuleLogin;
+import com.collectrouter.crclient.ui.SocketTestActivity;
 import com.collectrouter.nwp.HMNWPClient;
 
 /**
@@ -28,11 +30,14 @@ public class CRCliRoot {
         mUIDepot = new CRCliUIDepot();
         mNWPClient = new HMNWPClient( new CRCliEventHandler() );
         mCommMonitor = new CRCliCommMonitor( mNWPClient );
-        new Thread( mCommMonitor ).start();
         //
         mRMsgParser = new CRRMsgParser( mEventDepot );
         mModuleLogin = new CRModuleLogin( mEventDepot, mRMsgHandlerDepot );
         mModuleAccountReg = new CRModuleAccountReg( mEventDepot, mRMsgHandlerDepot );
+
+
+        // do some init jobs.
+        new Thread( mCommMonitor ).start();
     }
 
 

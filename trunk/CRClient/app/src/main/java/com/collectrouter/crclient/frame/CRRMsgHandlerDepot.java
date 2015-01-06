@@ -1,4 +1,4 @@
-package com.collectrouter.crclient;
+package com.collectrouter.crclient.frame;
 
 import java.util.ArrayList;
 import java.util.List;

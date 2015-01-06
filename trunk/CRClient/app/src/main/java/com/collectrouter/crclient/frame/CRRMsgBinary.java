@@ -1,4 +1,4 @@
-package com.collectrouter.crclient;
+package com.collectrouter.crclient.frame;
 
 /**
  * Created by rom on 12/31 0031.

@@ -1,9 +1,13 @@
-package com.collectrouter.crclient;
+package com.collectrouter.crclient.ui;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+
+import com.collectrouter.crclient.frame.CRCliDef;
+import com.collectrouter.crclient.frame.CRCliRoot;
+import com.collectrouter.crclient.R;
 
 /**
  * Created by rom on 12/24 0024.

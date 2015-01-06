@@ -1,4 +1,4 @@
-package com.collectrouter.crclient;
+package com.collectrouter.crclient.frame;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -9,7 +9,7 @@ import org.json.JSONObject;
 public class CRRMsgMaker {
     static int s_idBase = 0;
 
-    static String createRMsg( JSONObject valParams, int nCmdType ) {
+    public static String createRMsg( JSONObject valParams, int nCmdType ) {
         JSONObject jsonRoot = new JSONObject();
         JSONObject valCmd = new JSONObject();
 

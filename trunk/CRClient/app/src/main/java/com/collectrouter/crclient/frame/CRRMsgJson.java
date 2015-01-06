@@ -1,4 +1,4 @@
-package com.collectrouter.crclient;
+package com.collectrouter.crclient.frame;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -8,7 +8,7 @@ import org.json.JSONObject;
  */
 public class CRRMsgJson extends CRRMsgBase {
     public JSONObject mJsonRoot;
-    int mCmdType;
+    public int mCmdType;
 
     public CRRMsgJson( JSONObject jsonRoot ) {
         mJsonRoot = jsonRoot;

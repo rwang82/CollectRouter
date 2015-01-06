@@ -1,12 +1,8 @@
-package com.collectrouter.crclient;
-
-import android.util.JsonReader;
+package com.collectrouter.crclient.frame;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
-import java.io.Reader;
 import java.io.UnsupportedEncodingException;
 
 /**

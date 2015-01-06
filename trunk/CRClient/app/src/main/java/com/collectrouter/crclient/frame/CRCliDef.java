@@ -1,4 +1,4 @@
-package com.collectrouter.crclient;
+package com.collectrouter.crclient.frame;
 
 /**
  * Created by rom on 12/30 0030.
@@ -9,8 +9,11 @@ public class CRCliDef {
     public final static int SERVER_PORT_LOGIN = 7654;
     //
     public final static int CRCLI_ACTIVITY_SOCKETTEST = 1;
-    public final static int CRCLI_ACTIVITY_LOGIN = 100;
+    public final static int CRCLI_ACTIVITY_MAIN = 100;
     public final static int CRCLI_ACTIVITY_REGACCOUNT =101;
+    //
+    public final static int CRCLI_FRAGMENT_LOGIN = 100;
+    public final static int CRCLI_FRAGMENT_ATTATION_USERS = 101;
     //
     public final static int EOS_UNKNOWN = 0;
     public final static int EOS_WINDOWS = 100;

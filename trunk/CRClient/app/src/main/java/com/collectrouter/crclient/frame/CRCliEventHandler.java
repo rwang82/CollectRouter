@@ -1,4 +1,4 @@
-package com.collectrouter.crclient;
+package com.collectrouter.crclient.frame;
 
 import com.collectrouter.nwp.HMNWPCliEventHandler;
 
