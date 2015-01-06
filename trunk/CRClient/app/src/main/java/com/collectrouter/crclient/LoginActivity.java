@@ -1,5 +1,7 @@
 package com.collectrouter.crclient;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
@@ -17,11 +19,7 @@ import java.io.UnsupportedEncodingException;
 import java.nio.charset.UnsupportedCharsetException;
 
 
-public class LoginActivity extends ActionBarActivity {
-
-    // HMNWPClient mNWPClient;
-    HMNWEClient mNWPClient;
-    //CRCliEventHandler mCRCliEventHandler;
+public class LoginActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,32 +27,17 @@ public class LoginActivity extends ActionBarActivity {
         setContentView(R.layout.activity_login);
 
         //
-
-        //mNWPClient = new HMNWPClient( new CRCliEventHandler() );
-        mNWPClient = new HMNWEClient( new HMNWECliEventHandler() {
-            @Override
-            public void onConnected(String strIPAddr, int nPort) {
-                int a = 0;
-            }
-
-            @Override
-            public void onConnectFailed(String strIPAddr, int nPort) {
-                int a = 0;
-            }
-
-            @Override
-            public void onDisConnected(String strIPAddr, int nPort) {
-                int a = 0;
-            }
-
-            @Override
-            public void onRecv(String strIPAddr, int nPort, byte[] rawBuf, int nLenRawBuf) {
-                int a = 0;
-            }
-        } );
+        CRCliRoot.getInstance().mUIDepot.regActivity( CRCliDef.CRCLI_ACTIVITY_LOGIN, this );
         //
         findViewById(R.id.btn_scan_qr_code).setOnClickListener( handle4BtnScanQRCode );
         findViewById(R.id.btn_login).setOnClickListener( handle4BtnLogin );
+        findViewById(R.id.btn_goto_reg_account).setOnClickListener( handle4BtnGotoRegAccount );
+    }
+
+    @Override
+    protected void onDestroy() {
+        CRCliRoot.getInstance().mUIDepot.unRegActivity( CRCliDef.CRCLI_ACTIVITY_LOGIN );
+        super.onDestroy();
     }
 
 
@@ -75,6 +58,13 @@ public class LoginActivity extends ActionBarActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onActivityResult( int reqCode, int resultCode, Intent data ) {
+
+        int a = 0;
+
     }
 
     private View.OnClickListener handle4BtnScanQRCode = new View.OnClickListener() {
@@ -103,26 +93,16 @@ public class LoginActivity extends ActionBarActivity {
             EditText etPassword = (EditText)findViewById(R.id.etPassword);
             String strPassword = etPassword.getText().toString();
 
-            if ( !mNWPClient.isConnected() ) {
-                mNWPClient.connect( "192.168.31.106", 7654 );
-            }
+            CRCliRoot.getInstance().mEventDepot.fire( CRCliDef.CREVT_BTNCLICK_LOGIN, strUserName, strPassword );
+    }
+    };
 
-            mNWPClient.sendData(strUserName.getBytes(), strUserName.length());
+    private View.OnClickListener handle4BtnGotoRegAccount = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
 
-//            byte[] rawBuf;
-//            try {
-//                rawBuf = "chilema?".getBytes("UTF-8");
-//            } catch ( UnsupportedEncodingException e) {
-//                int a = 0;
-//                return;
-//            } catch ( UnsupportedCharsetException e ) {
-//                int a = 0;
-//                return;
-//            } finally {
-//                int a = 0;
-//            }
-//            //mNWPClient.sendData( rawBuf, rawBuf.length );
-            int a = 0;
+            Intent intent = new Intent( LoginActivity.this, RegAccountActivity.class);
+            startActivityForResult( intent, 0 );
         }
     };
 }

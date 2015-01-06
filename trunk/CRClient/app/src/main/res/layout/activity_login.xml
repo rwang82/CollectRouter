@@ -4,7 +4,8 @@
     android:layout_height="match_parent"
     android:background="#ffeea064"
     android:orientation="vertical"
-    android:id="@+id/LoginMain">
+    android:id="@+id/LoginMain"
+    android:weightSum="1">
 
 
     <LinearLayout
@@ -77,4 +78,11 @@
         android:id="@+id/btn_login"
         android:layout_gravity="right"
         android:textStyle="bold" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="Register Account"
+        android:id="@+id/btn_goto_reg_account"
+        android:layout_gravity="center_horizontal" />
 </LinearLayout>

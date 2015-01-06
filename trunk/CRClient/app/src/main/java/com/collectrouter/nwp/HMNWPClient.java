@@ -32,6 +32,9 @@ public class HMNWPClient {
     }
 
     public boolean sendData( byte[] rawBuf, int nLenRawBuf ) {
+        if ( !mNWECli.isConnected() ) {
+            return false;
+        }
         ArrayList< HMNWPPackage > containerPackage = new ArrayList< HMNWPPackage >();
         if ( !HMNWPPackImpl.createPackages( rawBuf, nLenRawBuf, containerPackage ) )
             return false;

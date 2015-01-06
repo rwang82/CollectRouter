@@ -17,10 +17,16 @@ public class SocketTestActivity extends Activity {
         setContentView(R.layout.socket_test);
 
         //
-        CRCliRoot.getInstance().setSocketTestActivity( this );
+        CRCliRoot.getInstance().mUIDepot.regActivity( CRCliDef.CRCLI_ACTIVITY_SOCKETTEST, this );
 
         findViewById(R.id.btn_connect).setOnClickListener( onBtnConnect );
         findViewById( R.id.btn_send ).setOnClickListener( onBtnSend );
+
+    }
+
+    @Override
+    protected void onStop() {
+        CRCliRoot.getInstance().mUIDepot.unRegActivity( CRCliDef.CRCLI_ACTIVITY_SOCKETTEST );
 
     }
 
