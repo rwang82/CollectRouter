@@ -65,9 +65,9 @@ public class CRModuleLogin implements CREventHandler, CRRMsgJsonHandlerBase {
         new AlertDialog.Builder( mainActivity ).setTitle( "login result" ).setMessage( bSuccess ? "succeed" : "failed, ERRCODE:" + nErrCode ).setPositiveButton( "OK", null ).show();
 
         long lTId = Thread.currentThread().getId();
-//        if ( bSuccess )
-        mainActivity.switch2AttationUsers();
-
+        if ( bSuccess ) {
+            mainActivity.switch2AttationUsers();
+        }
     }
 
     private void onRMsgLogoffAck( CRRMsgJson rmsgJson ) {
