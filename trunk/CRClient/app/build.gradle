@@ -7,7 +7,7 @@ android {
     buildToolsVersion '21.0.2'
     defaultConfig {
         applicationId 'com.collectrouter.crclient'
-        minSdkVersion 8
+        minSdkVersion 19
         targetSdkVersion 21
         versionCode 1
         versionName '1.0'
@@ -18,9 +18,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    productFlavors {
+    }
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:appcompat-v7:21.0.0'
 }

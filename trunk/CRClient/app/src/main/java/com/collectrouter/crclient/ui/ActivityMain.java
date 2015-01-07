@@ -21,6 +21,10 @@ public class ActivityMain extends ActionBarActivity {
 
         setContentView( R.layout.activity_main );
         CRCliRoot.getInstance().mUIDepot.regActivity(CRCliDef.CRCLI_ACTIVITY_MAIN, this );
+
+
+        //
+        createNavigateHeader();
         switch2LoginFragment();
 
 
@@ -57,6 +61,13 @@ public class ActivityMain extends ActionBarActivity {
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.replace( R.id.content_frame, fragment );
         ft.addToBackStack(null);
+        ft.commit();
+    }
+
+    public void createNavigateHeader() {
+        FragmentNavigateHeader fragment = new FragmentNavigateHeader();
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.replace( R.id.main_header, fragment );
         ft.commit();
     }
 }

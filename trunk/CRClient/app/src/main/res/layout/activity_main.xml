@@ -5,17 +5,34 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <!-- The main content view -->
-    <FrameLayout
-        android:id="@+id/content_frame"
+    <RelativeLayout
+        android:id="@+id/content_root"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:id="@+id/main_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_alignParentTop="true"
+            android:background="#00ff00">
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/content_frame"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/main_header"
+            android:layout_alignParentBottom="true"
+            android:background="#ff0000">
+        </LinearLayout>
+    </RelativeLayout>
     <!-- The navigation drawer -->
     <ListView android:id="@+id/left_drawer"
-        android:layout_width="240dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:choiceMode="singleChoice"
         android:divider="@android:color/transparent"
         android:dividerHeight="0dp"
-        android:background="#ffffcc"/>
+        android:background="#ffffcc"
+        android:layout_width="wrap_content" />
 </android.support.v4.widget.DrawerLayout>
