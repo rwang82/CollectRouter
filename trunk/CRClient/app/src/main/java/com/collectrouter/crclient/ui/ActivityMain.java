@@ -1,7 +1,5 @@
 package com.collectrouter.crclient.ui;
 
-import android.app.Activity;
-import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -23,8 +21,11 @@ public class ActivityMain extends ActionBarActivity {
         CRCliRoot.getInstance().mUIDepot.regActivity(CRCliDef.CRCLI_ACTIVITY_MAIN, this );
 
 
-        //
+        // create left drawer panel.
+        createInfoPanel();
+        // create top navigagte header.
         createNavigateHeader();
+        // switch 2 login panel.
         switch2LoginFragment();
 
 
@@ -64,10 +65,17 @@ public class ActivityMain extends ActionBarActivity {
         ft.commit();
     }
 
-    public void createNavigateHeader() {
+    private void createNavigateHeader() {
         FragmentNavigateHeader fragment = new FragmentNavigateHeader();
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.replace( R.id.main_header, fragment );
+        ft.commit();
+    }
+
+    private void createInfoPanel() {
+        FragmentInfoPanel fragment = new FragmentInfoPanel();
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.replace( R.id.left_drawer, fragment );
         ft.commit();
     }
 }

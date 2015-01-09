@@ -11,13 +11,13 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#FFFF0000"
+        android:background="#FFEE88EE"
         android:orientation="horizontal">
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:background="#FF9999"
+            android:background="#FF559999"
             android:orientation="vertical">
 
             <TextView
@@ -43,7 +43,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#FF00FF00"
+        android:background="#FFEE9955"
         android:orientation="vertical">
 
         <TextView

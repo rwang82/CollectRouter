@@ -30,9 +30,12 @@ public class CRCliDef {
 
     public final static int CREVT_BTNCLICK_LOGIN = 20;
     public final static int CREVT_BTNCLICK_ACCOUNT_REG = 21;
+    public final static int CREVT_BTNCLICK_ATTATION = 22;
+    public final static int CREVT_BTNCLICK_PUBLISH = 23;
 
     public final static int CREVT_RECVRMSGJONS = 100;
     public final static int CREVT_RECVRMSGBINARY = 101;
+
 
 //
     public final static int CRCMDSN_INVALID = -1;
