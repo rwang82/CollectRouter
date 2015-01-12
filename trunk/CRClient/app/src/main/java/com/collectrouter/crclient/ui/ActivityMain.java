@@ -1,5 +1,6 @@
 package com.collectrouter.crclient.ui;
 
+import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -47,6 +48,15 @@ public class ActivityMain extends ActionBarActivity {
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.replace( R.id.content_frame, fragment );
         ft.addToBackStack(null);
+        ft.commit();
+
+    }
+
+    public void switch2RegAccount() {
+        FragmentRegAccount fragment = new FragmentRegAccount();
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.replace( R.id.content_frame, fragment );
+        ft.addToBackStack( null );
         ft.commit();
 
     }

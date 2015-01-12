@@ -40,19 +40,19 @@ public class HMNWPHeader {
         m_byteBeg1 = rawBuf[ 0 ];
         m_byteBeg2 = rawBuf[ 1 ];
         m_byteVer = rawBuf[ 2 ];
-        m_indexBundleBuf = rawBuf[ 4 ];
+        m_indexBundleBuf = (short)(rawBuf[ 4 ]&0xFF);
         m_indexBundleBuf <<= 8;
-        m_indexBundleBuf |= (short)rawBuf[ 3 ];
-        m_indexPackage = rawBuf[ 6 ];
+        m_indexBundleBuf |= (short)(rawBuf[ 3 ]&0xFF);
+        m_indexPackage = (short)(rawBuf[ 6 ]&0xFF);
         m_indexPackage <<= 8;
-        m_indexPackage |= (short)rawBuf[5];
-        m_countPackage = rawBuf[ 8 ];
+        m_indexPackage |= rawBuf[5]&0xFF;
+        m_countPackage = (short)(rawBuf[ 8 ]&0xFF);
         m_countPackage <<= 8;
-        m_countPackage |= (short)rawBuf[ 7 ];
+        m_countPackage |= (short)(rawBuf[ 7 ]&0xFF);
         m_byteBodyProtocol = rawBuf[ 9 ];
-        m_lenPayload = (short)rawBuf[ 11 ];
+        m_lenPayload = (short)(rawBuf[ 11 ]&0xFF);
         m_lenPayload <<= 8;
-        m_lenPayload |= rawBuf[ 10 ];
+        m_lenPayload |= (short)(rawBuf[ 10 ]&0xFF);
 
 
     }

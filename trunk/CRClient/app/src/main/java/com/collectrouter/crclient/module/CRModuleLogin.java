@@ -61,6 +61,28 @@ public class CRModuleLogin implements CREventHandler, CRRMsgJsonHandlerBase {
 
         //
         if ( bSuccess ) {
+            String strTmp;
+            int nSortType;
+
+            try {
+                strTmp = valParams.getString( "username" );
+                CRCliRoot.getInstance().mAccountData.mUserName = strTmp;
+                strTmp = valParams.getString( "phone" );
+                CRCliRoot.getInstance().mAccountData.mPhone = strTmp;
+                strTmp = valParams.getString( "email" );
+                CRCliRoot.getInstance().mAccountData.mEMail = strTmp;
+                strTmp = valParams.getString( "nickname" );
+                CRCliRoot.getInstance().mAccountData.mNickName = strTmp;
+                nSortType = valParams.getInt( "sort" );
+                CRCliRoot.getInstance().mAccountData.mSortType = nSortType;
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+        //
+        if ( bSuccess ) {
             CRCliRoot.getInstance().mEventDepot.fire( CRCliDef.CREVT_LOGIN_SUCCESS, 0, 0 );
         } else {
             CRCliRoot.getInstance().mEventDepot.fire( CRCliDef.CREVT_LOGIN_FAILED, 0, 0 );

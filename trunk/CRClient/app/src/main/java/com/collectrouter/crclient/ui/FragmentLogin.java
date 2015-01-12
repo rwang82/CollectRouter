@@ -85,6 +85,8 @@ public class FragmentLogin extends Fragment {
         @Override
         public void onClick(View v) {
 
+            ActivityMain mainActivity = (ActivityMain)CRCliRoot.getInstance().mUIDepot.getActivity( CRCliDef.CRCLI_ACTIVITY_MAIN );
+            mainActivity.switch2RegAccount();;
 //            Intent intent = new Intent( getActivity(), RegAccountActivity.class);
 //            startActivityForResult( intent, 0 );
         }
