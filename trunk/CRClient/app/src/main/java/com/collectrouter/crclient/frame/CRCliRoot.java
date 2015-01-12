@@ -15,6 +15,7 @@ public class CRCliRoot {
     public CRCliUIDepot mUIDepot;
     public HMNWPClient mNWPClient;
     public SocketTestActivity mSocketTestActivity;
+    public CRAccountData mAccountData;
     //
     private static CRCliRoot mInst = null;
     private CRRMsgParser mRMsgParser;
@@ -25,6 +26,7 @@ public class CRCliRoot {
 
     private CRCliRoot() {
        //mNWPClient = new HMNWPClient( new CRCliEventHandler4SocketTest() );
+        mAccountData = new CRAccountData();
         mEventDepot = new CREventDepot();
         mRMsgHandlerDepot = new CRRMsgHandlerDepot( mEventDepot );
         mUIDepot = new CRCliUIDepot();

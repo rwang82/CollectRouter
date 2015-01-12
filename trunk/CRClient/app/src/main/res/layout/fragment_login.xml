@@ -4,15 +4,15 @@
     android:layout_height="match_parent"
     android:background="#ffeea064"
     android:orientation="vertical"
-    android:id="@+id/LoginMain"
-    android:weightSum="1">
+    android:id="@+id/LoginMain">
 
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#FFEE88EE"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_weight="1">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -44,7 +44,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#FFEE9955"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_weight="1">
 
         <TextView
             android:layout_width="match_parent"
@@ -76,11 +77,13 @@
         android:text="Login"
         android:id="@+id/btn_login"
         android:layout_gravity="right"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:layout_weight="1"/>
 
     <Button
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:text="Register Account"
-        android:id="@+id/btn_goto_reg_account" />
+        android:id="@+id/btn_goto_reg_account"
+        android:layout_weight="1"/>
 </LinearLayout>

@@ -10,10 +10,10 @@ public class CRCliDef {
     //
     public final static int CRCLI_ACTIVITY_SOCKETTEST = 1;
     public final static int CRCLI_ACTIVITY_MAIN = 100;
-    public final static int CRCLI_ACTIVITY_REGACCOUNT =101;
     //
     public final static int CRCLI_FRAGMENT_LOGIN = 100;
     public final static int CRCLI_FRAGMENT_ATTATION_USERS = 101;
+    public final static int CRCLI_FRAGMENT_REGACCOUNT =102;
     //
     public final static int EOS_UNKNOWN = 0;
     public final static int EOS_WINDOWS = 100;
@@ -36,6 +36,9 @@ public class CRCliDef {
     public final static int CREVT_RECVRMSGJONS = 100;
     public final static int CREVT_RECVRMSGBINARY = 101;
 
+    public final static int CREVT_START_LOGGING = 200;
+    public final static int CREVT_LOGIN_SUCCESS = 201;
+    public final static int CREVT_LOGIN_FAILED = 202;
 
 //
     public final static int CRCMDSN_INVALID = -1;
@@ -47,4 +50,7 @@ public class CRCliDef {
     public final static int CRCMDTYPE_ACK_LOGOFF = 4;
     public final static int CRCMDTYPE_REQ_ACCOUNT_REG = 5;
     public final static int CRCMDTYPE_ACK_ACCOUNT_REG = 6;
+
+    public final static String CRSTR_NOT_LOGGED_IN = "Not Logged In";
+    public final static String CRSTR_START_LOGGING = "Logging ...";
 }

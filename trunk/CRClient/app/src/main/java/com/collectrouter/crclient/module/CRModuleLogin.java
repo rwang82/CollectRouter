@@ -28,9 +28,11 @@ public class CRModuleLogin implements CREventHandler, CRRMsgJsonHandlerBase {
     private void doLogin( String strUserName, String strPassword ) {
 
         if ( !CRCliRoot.getInstance().mNWPClient.isConnected() ) {
-            CRCliRoot.getInstance().mNWPClient.connect( CRCliDef.SERVER_IP_LOGIN, CRCliDef.SERVER_PORT_LOGIN );
+            return;
         }
-
+        //
+        CRCliRoot.getInstance().mEventDepot.fire( CRCliDef.CREVT_START_LOGGING, 0, 0 );
+        //
         String strCmd = createLoginCmd( strUserName, strPassword );
         byte[] byteCmd = strCmd.getBytes();
         CRCliRoot.getInstance().mNWPClient.sendData( byteCmd, byteCmd.length );
@@ -57,6 +59,13 @@ public class CRModuleLogin implements CREventHandler, CRRMsgJsonHandlerBase {
             return;
         }
 
+        //
+        if ( bSuccess ) {
+            CRCliRoot.getInstance().mEventDepot.fire( CRCliDef.CREVT_LOGIN_SUCCESS, 0, 0 );
+        } else {
+            CRCliRoot.getInstance().mEventDepot.fire( CRCliDef.CREVT_LOGIN_FAILED, 0, 0 );
+        }
+
         // show a notify dialog.
         ActivityMain mainActivity = (ActivityMain)CRCliRoot.getInstance().mUIDepot.getActivity( CRCliDef.CRCLI_ACTIVITY_MAIN );
         if ( mainActivity == null )
@@ -64,7 +73,7 @@ public class CRModuleLogin implements CREventHandler, CRRMsgJsonHandlerBase {
 
         new AlertDialog.Builder( mainActivity ).setTitle( "login result" ).setMessage( bSuccess ? "succeed" : "failed, ERRCODE:" + nErrCode ).setPositiveButton( "OK", null ).show();
 
-        long lTId = Thread.currentThread().getId();
+        //long lTId = Thread.currentThread().getId();
         if ( bSuccess ) {
             mainActivity.switch2AttationUsers();
         }

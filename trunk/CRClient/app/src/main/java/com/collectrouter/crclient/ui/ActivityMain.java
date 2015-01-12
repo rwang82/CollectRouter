@@ -20,14 +20,12 @@ public class ActivityMain extends ActionBarActivity {
         setContentView( R.layout.activity_main );
         CRCliRoot.getInstance().mUIDepot.regActivity(CRCliDef.CRCLI_ACTIVITY_MAIN, this );
 
-
         // create left drawer panel.
         createInfoPanel();
-        // create top navigagte header.
+        // create top navigate header.
         createNavigateHeader();
         // switch 2 login panel.
         switch2LoginFragment();
-
 
         long lTId = Thread.currentThread().getId();
 

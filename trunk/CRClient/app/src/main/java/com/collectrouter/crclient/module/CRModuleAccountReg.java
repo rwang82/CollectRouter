@@ -47,7 +47,7 @@ public class CRModuleAccountReg implements CREventHandler, CRRMsgJsonHandlerBase
     private void doRegAccount( String strUserName, String strPassword, String strPhoneNum ) {
         String strRMsg = prepareRMsg( strUserName, strPassword, strPhoneNum );
         byte[] rawBufRMsg = strRMsg.getBytes();
-        Activity activity = CRCliRoot.getInstance().mUIDepot.getActivity( CRCliDef.CRCLI_ACTIVITY_REGACCOUNT );
+        Activity activity = CRCliRoot.getInstance().mUIDepot.getActivity( CRCliDef.CRCLI_ACTIVITY_MAIN );
 
         if ( !CRCliRoot.getInstance().mNWPClient.isConnected() ) {
             new AlertDialog.Builder( activity ).setMessage("net connect failed.").show();
@@ -81,7 +81,7 @@ public class CRModuleAccountReg implements CREventHandler, CRRMsgJsonHandlerBase
         }
 
         // show a notify dialog.
-        Activity activity = CRCliRoot.getInstance().mUIDepot.getActivity( CRCliDef.CRCLI_ACTIVITY_REGACCOUNT );
+        Activity activity = CRCliRoot.getInstance().mUIDepot.getActivity( CRCliDef.CRCLI_ACTIVITY_MAIN );
         if ( activity == null )
             return;
 

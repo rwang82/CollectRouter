@@ -85,8 +85,8 @@ public class FragmentLogin extends Fragment {
         @Override
         public void onClick(View v) {
 
-            Intent intent = new Intent( getActivity(), RegAccountActivity.class);
-            startActivityForResult( intent, 0 );
+//            Intent intent = new Intent( getActivity(), RegAccountActivity.class);
+//            startActivityForResult( intent, 0 );
         }
     };
 }
