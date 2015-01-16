@@ -44,12 +44,15 @@ public class FragmentInfoPanel extends Fragment implements CREventHandler{
         viewRoot.findViewById( R.id.btn_attation ).setOnClickListener( mClickListenerBtnAttation );
         viewRoot.findViewById( R.id.btn_publish ).setOnClickListener(mClickListenerBtnPublish);
 
+        CRCliRoot.getInstance().mUIDepot.regFragment( CRCliDef.CRCLI_FRAGMENT_INFOPANEL, this );
+
         return viewRoot;
 
     }
 
     @Override
     public void onDestroyView() {
+        CRCliRoot.getInstance().mUIDepot.unRegFragment(CRCliDef.CRCLI_FRAGMENT_INFOPANEL);
         super.onDestroyView();
     }
 
@@ -64,7 +67,7 @@ public class FragmentInfoPanel extends Fragment implements CREventHandler{
     private View.OnClickListener mClickListenerBtnAttation = new View.OnClickListener(){
         @Override
         public void onClick(View v) {
-            CRCliRoot.getInstance().mEventDepot.fire(CRCliDef.CREVT_BTNCLICK_ATTATION, 0, 0);
+            CRCliRoot.getInstance().mEventDepot.fire(CRCliDef.CREVT_BTNCLICK_ENTER_ATTATION, 0, 0);
         }
     };
 
@@ -72,7 +75,7 @@ public class FragmentInfoPanel extends Fragment implements CREventHandler{
 
         @Override
         public void onClick(View v) {
-            CRCliRoot.getInstance().mEventDepot.fire( CRCliDef.CREVT_BTNCLICK_PUBLISH, 0, 0 );
+            CRCliRoot.getInstance().mEventDepot.fire( CRCliDef.CREVT_BTNCLICK_ENTER_PUBLISH, 0, 0 );
         }
     };
 

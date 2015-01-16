@@ -49,18 +49,17 @@ public class FragmentRegAccount extends Fragment {
         View viewRoot = inflater.inflate(R.layout.activity_reg_account, container, false);
 
         viewRoot.findViewById( R.id.btn_reg_account ).setOnClickListener( handler4BtnRegAccount );
+
+        //
+        CRCliRoot.getInstance().mUIDepot.regFragment( CRCliDef.CRCLI_FRAGMENT_REGACCOUNT, this );
         return viewRoot;
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate( savedInstanceState );
-        CRCliRoot.getInstance().mUIDepot.regFragment( CRCliDef.CRCLI_FRAGMENT_REGACCOUNT, this );
+    public void onDestroyView() {
+        CRCliRoot.getInstance().mUIDepot.unRegFragment( CRCliDef.CRCLI_FRAGMENT_REGACCOUNT );
+        super.onDestroyView();
+
     }
 
-    @Override
-    public void onDestroy() {
-        CRCliRoot.getInstance().mUIDepot.unRegFragment( CRCliDef.CRCLI_FRAGMENT_REGACCOUNT );
-        super.onDestroy();
-    }
 }

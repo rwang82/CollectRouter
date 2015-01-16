@@ -9,7 +9,7 @@
         android:layout_height="150dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
-        android:background="#AAeeff"
+        android:background="#666666"
         android:id="@+id/info_account">
     <ImageView
         android:layout_width="150dp"

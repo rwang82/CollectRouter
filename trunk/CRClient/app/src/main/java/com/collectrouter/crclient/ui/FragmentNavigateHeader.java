@@ -9,6 +9,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+import com.collectrouter.crclient.frame.CRCliDef;
+import com.collectrouter.crclient.frame.CRCliRoot;
+
 /**
  * Created by rom on 1/7 0007.
  */
@@ -39,7 +42,11 @@ public class FragmentNavigateHeader extends Fragment {
     private View.OnClickListener mClickListenerBtnDrawerSwitch = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-
+            ActivityMain activityMain = (ActivityMain)CRCliRoot.getInstance().mUIDepot.getActivity( CRCliDef.CRCLI_ACTIVITY_MAIN );
+            if ( activityMain == null ) {
+                return;
+            }
+            activityMain.openDrawer();
         }
     };
 
@@ -83,11 +90,17 @@ public class FragmentNavigateHeader extends Fragment {
         mBtnProductList.setOnClickListener( mClickListenerBtnProductList );
         lineRoot.addView( mBtnProductList );
 
+        //
+        CRCliRoot.getInstance().mUIDepot.regFragment( CRCliDef.CRCLI_FRAGMENT_NAVIGATEHEADER, this );
         return lineRoot;
     }
 
     @Override
     public void onDestroyView() {
+
+        CRCliRoot.getInstance().mUIDepot.unRegFragment( CRCliDef.CRCLI_FRAGMENT_NAVIGATEHEADER );
+
         super.onDestroyView();
+        //
     }
 }

@@ -20,11 +20,18 @@ import org.json.JSONObject;
  * Created by rom on 1/1 0001.
  */
 public class CRModuleAccountReg implements CREventHandler, CRRMsgJsonHandlerBase {
-
+    private String mstrUserName;
+    private String mstrPassword;
 
     public CRModuleAccountReg ( CREventDepot eventDepot, CRRMsgHandlerDepot rmsgHandlerDepot ) {
+        //
+        mstrUserName = "";
+        mstrPassword = "";
+        //
         eventDepot.regEventHandler( CRCliDef.CREVT_BTNCLICK_ACCOUNT_REG, this );
-        rmsgHandlerDepot.regRMsgHandler( this );
+        rmsgHandlerDepot.regRMsgHandler( CRCliDef.CRCMDTYPE_ACK_ACCOUNT_REG, this );
+
+
     }
 
     private String prepareRMsg( String strUserName, String strPassword, String strPhoneNum ) {
@@ -54,6 +61,10 @@ public class CRModuleAccountReg implements CREventHandler, CRRMsgJsonHandlerBase
             // maybe need show a message box.
             return;
         }
+
+        //
+        mstrUserName = strUserName;
+        mstrPassword = strPassword;
         CRCliRoot.getInstance().mNWPClient.sendData( rawBufRMsg, rawBufRMsg.length );
 
     }
@@ -86,6 +97,10 @@ public class CRModuleAccountReg implements CREventHandler, CRRMsgJsonHandlerBase
             return;
 
         new AlertDialog.Builder( activity ).setTitle( "register account result" ).setMessage( bSuccess ? "succeed" : ( "failed, ERRCODE:" + nErrCode ) ).setPositiveButton( "OK", null ).show();
+
+        if ( bSuccess ) {
+            CRCliRoot.getInstance().mEventDepot.fire( CRCliDef.CREVT_REG_ACCOUNT_SUCCESS, mstrUserName, mstrPassword );
+        }
     }
 
     @Override

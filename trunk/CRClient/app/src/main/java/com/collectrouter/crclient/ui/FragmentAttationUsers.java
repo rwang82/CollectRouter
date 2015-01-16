@@ -29,7 +29,6 @@ public class FragmentAttationUsers extends Fragment {
     @Override
     public void onCreate( Bundle savedInstanceState ) {
         super.onCreate( savedInstanceState );
-        CRCliRoot.getInstance().mUIDepot.regFragment( CRCliDef.CRCLI_FRAGMENT_ATTATION_USERS, this );
     }
 
     @Override
@@ -38,6 +37,8 @@ public class FragmentAttationUsers extends Fragment {
         View viewRoot = inflater.inflate(R.layout.fragment_attation_users, container, false);
         ListView lvUsers = (ListView) viewRoot.findViewById( R.id.list_view_attation_users );
         lvUsers.setAdapter( mLVAdapterUser );
+
+        CRCliRoot.getInstance().mUIDepot.regFragment( CRCliDef.CRCLI_FRAGMENT_ATTATION_USERS, this );
         return viewRoot;
     }
 

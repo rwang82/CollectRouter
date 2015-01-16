@@ -26,8 +26,6 @@ public class FragmentLogin extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
-        //
-        CRCliRoot.getInstance().mUIDepot.regFragment( CRCliDef.CRCLI_FRAGMENT_LOGIN, this );
     }
 
     @Override
@@ -43,6 +41,9 @@ public class FragmentLogin extends Fragment {
         viewRoot.findViewById(R.id.btn_scan_qr_code).setOnClickListener( handle4BtnScanQRCode );
         viewRoot.findViewById(R.id.btn_login).setOnClickListener( handle4BtnLogin );
         viewRoot.findViewById(R.id.btn_goto_reg_account).setOnClickListener( handle4BtnGotoRegAccount );
+
+        //
+        CRCliRoot.getInstance().mUIDepot.regFragment( CRCliDef.CRCLI_FRAGMENT_LOGIN, this );
         return viewRoot;
     }
 
