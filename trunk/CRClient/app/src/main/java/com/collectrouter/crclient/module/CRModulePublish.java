@@ -20,6 +20,7 @@ import com.collectrouter.crclient.frame.CRCliDef;
 import com.collectrouter.crclient.frame.CRCliRoot;
 import com.collectrouter.crclient.frame.CREventDepot;
 import com.collectrouter.crclient.frame.CREventHandler;
+import com.collectrouter.crclient.frame.CRRMsgHandlerDepot;
 import com.collectrouter.crclient.frame.CRRMsgJson;
 import com.collectrouter.crclient.frame.CRRMsgJsonHandlerBase;
 import com.collectrouter.crclient.frame.CRRMsgMaker;
@@ -33,6 +34,7 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
@@ -47,14 +49,14 @@ import java.util.UUID;
 public class CRModulePublish implements CREventHandler, CRRMsgJsonHandlerBase {
     private Map<UUID, Uri> mMapId2Uri;
     private Uri mUriImageCaptureCur;
-    private Map<Integer, CRProduct > mMapReqCode2ProductPending;
+    private Map<UUID, CRProduct > mMapUUID2ProductPending;
     private List< CRProduct > mContainerProduct;
     private int mReqCodeBase = 0;
 
-    public CRModulePublish( CREventDepot eventDepot ) {
+    public CRModulePublish( CREventDepot eventDepot, CRRMsgHandlerDepot rmsgHandlerDepot ) {
         //
         mMapId2Uri = new Hashtable<>();
-        mMapReqCode2ProductPending = new Hashtable<>();
+        mMapUUID2ProductPending = new Hashtable<>();
         mContainerProduct = new ArrayList<>();
         //
         eventDepot.regEventHandler( CRCliDef.CREVT_BTNCLICK_ENTER_PUBLISH, this );
@@ -63,6 +65,9 @@ public class CRModulePublish implements CREventHandler, CRRMsgJsonHandlerBase {
         eventDepot.regEventHandler( CRCliDef.CREVT_BTNCLICK_SCAN_4_PUBLISH, this );
         eventDepot.regEventHandler( CRCliDef.CREVT_BTNCLICK_COMMIT_PUBLISH, this );
         eventDepot.regEventHandler( CRCliDef.CREVT_RECV_PHOTOGRAPH_4_PUBLISH, this );
+
+        //
+        rmsgHandlerDepot.regRMsgHandler( CRCliDef.CRCMDTYPE_ACK_PRODUCT_PUBLISH, this );
     }
 
     private synchronized int allocateReqCode() {
@@ -181,7 +186,7 @@ public class CRModulePublish implements CREventHandler, CRRMsgJsonHandlerBase {
 
     }
 
-    private String prepareRMsg( CRProduct product, int reqCode ) {
+    private String prepareRMsg( CRProduct product ) {
         JSONObject valParams = new JSONObject();
         JSONObject valProduct = new JSONObject();
         JSONArray valImages = new JSONArray();
@@ -199,6 +204,8 @@ public class CRModulePublish implements CREventHandler, CRRMsgJsonHandlerBase {
             valParams.put( "username", strUserName );
             // product.
             valParams.put( "product", valProduct );
+            // uuid of product.
+            valProduct.put( "uuid", product.mUUID );
             // title.
             valProduct.put( "title", product.mTitle );
             // price.
@@ -212,10 +219,9 @@ public class CRModulePublish implements CREventHandler, CRRMsgJsonHandlerBase {
             }
             // keywords.
             valProduct.put( "keywords", valKeywords );
-            for ( String strKeyword : product.mKeywords )
-            valKeywords.put( strKeyword );
-            // request code.
-            valParams.put( "request_code", reqCode );
+            for ( String strKeyword : product.mKeywords ) {
+                valKeywords.put(strKeyword);
+            }
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -224,39 +230,86 @@ public class CRModulePublish implements CREventHandler, CRRMsgJsonHandlerBase {
         return CRRMsgMaker.createRMsg( valParams, CRCliDef.CRCMDTYPE_REQ_PRODUCT_PUBLISH );
     }
 
-    private void addProduct2Pending( int reqCode, CRProduct product ) {
-        synchronized ( mMapReqCode2ProductPending ) {
-            if ( mMapReqCode2ProductPending.get( reqCode ) != null ) {
+    public CRProduct getProductPending( int nIndex ) {
+        synchronized ( mMapUUID2ProductPending ) {
+            if ( nIndex < 0 || nIndex >= mMapUUID2ProductPending.size() ) {
+                return null;
+            }
+            Set< Map.Entry< UUID, CRProduct > > setProductPend = mMapUUID2ProductPending.entrySet();
+            Iterator< Map.Entry< UUID, CRProduct > > itME = setProductPend.iterator();
+            Map.Entry< UUID, CRProduct > meDest = null;
+            for ( int i = 0; i<=nIndex; ++i ) {
+                meDest = itME.next();
+            }
+            if ( meDest == null ) {
+                assert( false );
+                return null;
+            }
+            return meDest.getValue();
+        }
+    }
+
+    public CRProduct getProductPublished( int nIndex ) {
+        synchronized ( mContainerProduct ) {
+            if ( nIndex < 0 || nIndex >= mContainerProduct.size() ) {
+                assert( false );
+                return null;
+            }
+
+            CRProduct product = mContainerProduct.get( nIndex );
+            return product;
+        }
+    }
+
+    public int getProductPendCount() {
+        synchronized ( mMapUUID2ProductPending ) {
+            return mMapUUID2ProductPending.size();
+        }
+    }
+
+    public int getProductPublishedCount() {
+        synchronized ( mContainerProduct ) {
+            return mContainerProduct.size();
+        }
+    }
+
+    private void addProduct2Pending( CRProduct product ) {
+        synchronized ( mMapUUID2ProductPending ) {
+            if ( mMapUUID2ProductPending.get( product.mUUID ) != null ) {
                 assert( false );
             }
-            mMapReqCode2ProductPending.put(reqCode, product);
+            mMapUUID2ProductPending.put(product.mUUID, product);
         }
 
-        CRCliRoot.getInstance().mEventDepot.fire( CRCliDef.CREVT_PRODUCT_PENDQUEUE_ADD, reqCode, product );
+        CRCliRoot.getInstance().mEventDepot.fire( CRCliDef.CREVT_PRODUCT_PENDQUEUE_ADD, product.mUUID, product );
     }
 
-    private void delProductFromPending( int reqCode ) {
-        synchronized ( mMapReqCode2ProductPending ) {
-            if ( mMapReqCode2ProductPending.get( reqCode ) == null ) {
+    private void delProductFromPending( UUID uuid ) {
+        synchronized ( mMapUUID2ProductPending ) {
+            if ( mMapUUID2ProductPending.get( uuid ) == null ) {
                 return;
             }
-            mMapReqCode2ProductPending.remove(reqCode);
+            mMapUUID2ProductPending.remove(uuid);
         }
 
-        CRCliRoot.getInstance().mEventDepot.fire( CRCliDef.CREVT_PRODUCT_PENDQUEUE_REMOVE, reqCode, 0 );
+        CRCliRoot.getInstance().mEventDepot.fire( CRCliDef.CREVT_PRODUCT_PENDQUEUE_REMOVE, uuid, 0 );
     }
 
-    private void moveProductPend2Finish( int reqCode ) {
-        synchronized ( mMapReqCode2ProductPending ) {
-            CRProduct product = mMapReqCode2ProductPending.get( reqCode );
+    private void moveProductPend2Finish( UUID uuid ) {
+        CRProduct product = null;
+        synchronized ( mMapUUID2ProductPending ) {
+            product = mMapUUID2ProductPending.get( uuid );
             if ( product == null ) {
                 return;
             }
             synchronized ( mContainerProduct ) {
                 mContainerProduct.add( product );
             }
-            mMapReqCode2ProductPending.remove( reqCode );
+            mMapUUID2ProductPending.remove( uuid );
         }
+
+        CRCliRoot.getInstance().mEventDepot.fire( CRCliDef.CREVT_PRODUCT_PENDQUEUE_REMOVE, uuid, 0 );
+        CRCliRoot.getInstance().mEventDepot.fire( CRCliDef.CREVT_PRODUCT_ADD, product, 0 );
     }
 
     private void onBtnClickCommitPublish() {
@@ -270,7 +323,6 @@ public class CRModulePublish implements CREventHandler, CRRMsgJsonHandlerBase {
         }
         // maybe fill CRProduct code need move to FragmentPublish.
         CRProduct product = new CRProduct();
-        int reqCode = allocateReqCode();
         // get title.
         TextView tvTitle = (TextView)activity.findViewById( R.id.et_publish_title );
         product.mTitle = tvTitle.getText().toString();
@@ -292,12 +344,17 @@ public class CRModulePublish implements CREventHandler, CRRMsgJsonHandlerBase {
         product.mKeywords.add( tvKeywords.getText().toString() );
 
         // add to mMapReqCode2ProductPending
-        addProduct2Pending( reqCode, product );
+        addProduct2Pending( product );
 
         //
-        String strRMsg = prepareRMsg( product, reqCode );
+        String strRMsg = prepareRMsg( product );
         byte[] rawBufRMsg = strRMsg.getBytes();
         CRCliRoot.getInstance().mNWPClient.sendData( rawBufRMsg, rawBufRMsg.length );
+
+        // switch UI 2 FragmentMyPublishList.
+        ActivityMain activityMain = (ActivityMain)CRCliRoot.getInstance().mUIDepot.getActivity( CRCliDef.CRCLI_ACTIVITY_MAIN );
+        activityMain.switch2MyPublishList();
+
     }
 
     private void onBtnClickScan4Publish() {
@@ -353,23 +410,27 @@ public class CRModulePublish implements CREventHandler, CRRMsgJsonHandlerBase {
 
     private void onRMsgProductPublish( CRRMsgJson rmsg ) {
         boolean bSuccess = false;
-        int nReqCode = 0;
+        String strUUID;
+        UUID uuid;
         int nErrCode = 0;
 
         try {
             JSONObject valParams = rmsg.mJsonRoot.getJSONObject( "params" );
             bSuccess = valParams.getInt( "result" ) == 1;
-            nReqCode = valParams.getInt( "request_code" );
+            strUUID = valParams.getString( "product_uuid" );
+            uuid = java.util.UUID.fromString( strUUID );
             nErrCode = bSuccess ? 0 : valParams.getInt( "reason" );
+            //
+            if ( bSuccess ) {
+                moveProductPend2Finish( uuid );
+            } else {
+                delProductFromPending(uuid);
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        if ( bSuccess ) {
-            moveProductPend2Finish(nReqCode);
-        } else {
-            delProductFromPending( nReqCode );
-
+        if ( !bSuccess ) {
             Activity mainActivity = CRCliRoot.getInstance().mUIDepot.getActivity( CRCliDef.CRCLI_ACTIVITY_MAIN );
             // show a notify dialog.
             new AlertDialog.Builder( mainActivity ).setTitle( "publish product result" ).setMessage( bSuccess ? "succeed" : "failed, ERRCODE:" + nErrCode ).setPositiveButton( "OK", null ).show();

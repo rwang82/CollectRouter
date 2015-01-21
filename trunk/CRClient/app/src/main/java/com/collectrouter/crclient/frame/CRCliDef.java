@@ -23,6 +23,7 @@ public class CRCliDef {
     public final static int CRCLI_FRAGMENT_INFOPANEL = 103;
     public final static int CRCLI_FRAGMENT_NAVIGATEHEADER = 104;
     public final static int CRCLI_FRAGMENT_PUBLISH = 105;
+    public final static int CRCLI_FRAGMENT_MYPUBLISHLIST = 106;
 
     /////////////////////////////////////////////////////////////////////////////
     //
@@ -59,14 +60,21 @@ public class CRCliDef {
     public final static int CREVT_REG_ACCOUNT_SUCCESS = 210;
     public final static int CREVT_RECV_PHOTOGRAPH_4_PUBLISH = 220;
     ///////////////////////////////
-    // param1 - specify the request code.
+    // param1 - specify the uuid of product.
     // param2 - specify the product added to pending queue.
     public final static int CREVT_PRODUCT_PENDQUEUE_ADD = 230;
     ///////////////////////////////
-    // param1 - specify the request code.
+    // param1 - specify the uuid of product.
     // param2 - NONE.
     public final static int CREVT_PRODUCT_PENDQUEUE_REMOVE = 231;
-
+    ///////////////////////////////
+    // param1 - specify the product added.
+    // param2 - NONE.
+    public final static int CREVT_PRODUCT_ADD = 232;
+    ///////////////////////////////
+    // param1 -
+    // param2 -
+    public final static int CREVT_PRODUCT_REMOVE = 233;
 
 
     /////////////////////////////////////////////////////////////////////////////

@@ -26,7 +26,7 @@ public class CRCliRoot {
     private CRModuleLogin mModuleLogin;
     private CRModuleAccountReg mModuleAccountReg;
     private CRModuleAttation mModuleAttation;
-    private CRModulePublish mModulePublish;
+    public CRModulePublish mModulePublish;
 
     private CRCliRoot() {
        //mNWPClient = new HMNWPClient( new CRCliEventHandler4SocketTest() );
@@ -41,7 +41,7 @@ public class CRCliRoot {
         mModuleLogin = new CRModuleLogin( mEventDepot, mRMsgHandlerDepot );
         mModuleAccountReg = new CRModuleAccountReg( mEventDepot, mRMsgHandlerDepot );
         mModuleAttation = new CRModuleAttation( mEventDepot );
-        mModulePublish = new CRModulePublish( mEventDepot );
+        mModulePublish = new CRModulePublish( mEventDepot, mRMsgHandlerDepot );
 
         // do some init jobs.
         new Thread( mCommMonitor ).start();

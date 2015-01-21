@@ -100,6 +100,15 @@ public class ActivityMain extends ActionBarActivity {
 //        }
     }
 
+    public void switch2MyPublishList() {
+        FragmentMyPublishList fragment = new FragmentMyPublishList();
+
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.replace( R.id.content_frame, fragment );
+        ft.addToBackStack( null );
+        ft.commit();
+    }
+
     public void switch2LoginFragment() {
         FragmentLogin fragment = new FragmentLogin();
         Bundle args = new Bundle();
@@ -110,7 +119,6 @@ public class ActivityMain extends ActionBarActivity {
         ft.replace( R.id.content_frame, fragment );
         ft.addToBackStack(null);
         ft.commit();
-
     }
 
     public void switch2RegAccount() {
