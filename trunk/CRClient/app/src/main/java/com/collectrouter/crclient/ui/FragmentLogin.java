@@ -2,10 +2,15 @@ package com.collectrouter.crclient.ui;
 
 import android.app.Fragment;
 import android.content.Intent;
+import android.graphics.Canvas;
+import android.graphics.ColorFilter;
+import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -19,13 +24,9 @@ import com.google.zxing.integration.android.IntentIntegrator;
  * Created by rom on 1/6 0006.
  */
 public class FragmentLogin extends Fragment {
+
     public FragmentLogin() {
 
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate( savedInstanceState );
     }
 
     @Override
@@ -38,10 +39,8 @@ public class FragmentLogin extends Fragment {
             return null;
         }
         //
-        viewRoot.findViewById(R.id.btn_scan_qr_code).setOnClickListener( handle4BtnScanQRCode );
         viewRoot.findViewById(R.id.btn_login).setOnClickListener( handle4BtnLogin );
-        viewRoot.findViewById(R.id.btn_goto_reg_account).setOnClickListener( handle4BtnGotoRegAccount );
-
+        viewRoot.findViewById(R.id.tv_register_account).setOnClickListener( handle4BtnGotoRegAccount );
         //
         CRCliRoot.getInstance().mUIDepot.regFragment( CRCliDef.CRCLI_FRAGMENT_LOGIN, this );
         return viewRoot;
@@ -52,21 +51,6 @@ public class FragmentLogin extends Fragment {
         CRCliRoot.getInstance().mUIDepot.unRegFragment( CRCliDef.CRCLI_FRAGMENT_LOGIN );
         super.onDestroyView();
     }
-    private View.OnClickListener handle4BtnScanQRCode = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            System.out.println( "enter handle4BtnScanQRCode ------------" );
-
-            IntentIntegrator integrator = new IntentIntegrator( getActivity() );
-            integrator.initiateScan( IntentIntegrator.QR_CODE_TYPES );
-
-
-            //Intent it = new Intent( "com.google.zxing.client.android.SCAN" );
-            //startActivity( it );
-//            IntentIntegrator integrator = new IntentIntegrator(ZXingTestActivity.this);
-//            integrator.initiateScan(IntentIntegrator.QR_CODE_TYPES);
-        }
-    };
 
     private View.OnClickListener handle4BtnLogin = new View.OnClickListener() {
         @Override
@@ -92,4 +76,5 @@ public class FragmentLogin extends Fragment {
 //            startActivityForResult( intent, 0 );
         }
     };
+
 }

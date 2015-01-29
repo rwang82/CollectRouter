@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+    android:background="@color/prime_title_bk">
+    <com.collectrouter.crclient.ui.widget.BtnShowDrawer
+        android:layout_width="35dp"
+        android:layout_height="match_parent"
+        android:id="@+id/btn_drawer_switch"
+        color="@color/prime_title_text"/>
+    <com.collectrouter.crclient.ui.widget.BtnGoUpLevel
+        android:layout_width="30dp"
+        android:layout_height="match_parent"
+        android:id="@+id/btn_go_up_level"
+        android:layout_toRightOf="@+id/btn_drawer_switch"/>
+    <com.collectrouter.crclient.ui.widget.BtnRootMenu
+        android:layout_width="35dp"
+        android:layout_height="match_parent"
+        android:id="@+id/btn_root_menu"
+        android:layout_alignParentRight="true"/>
+    <com.collectrouter.crclient.ui.widget.BtnRootSearch
+        android:layout_width="30dp"
+        android:layout_height="match_parent"
+        android:id="@+id/btn_root_search"
+        android:layout_toLeftOf="@+id/btn_root_menu"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:text="王家大屋"
+        android:id="@+id/tv_root_title"
+        android:layout_toRightOf="@+id/btn_go_up_level"
+        android:layout_toLeftOf="@+id/btn_root_search"
+        android:textColor="@color/prime_title_text"
+        android:gravity="center"/>
+</RelativeLayout>

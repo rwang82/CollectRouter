@@ -33,11 +33,17 @@ public class FragmentRegAccount extends Fragment {
             String strPassword = etPassword.getText().toString();
             EditText etPhoneNum = (EditText)activity.findViewById( R.id.etPhoneNum );
             String strPhoneNum = etPhoneNum.getText().toString();
+            EditText etNickName = (EditText)activity.findViewById( R.id.etNickName );
+            String strNickName = etNickName.getText().toString();
+            EditText etEMail = (EditText)activity.findViewById( R.id.etEMail );
+            String strEMail = etEMail.getText().toString();
 
             Bundle bundle = new Bundle();
             bundle.putString( "username", strUserName );
             bundle.putString( "password", strPassword );
             bundle.putString( "phonenum", strPhoneNum );
+            bundle.putString( "nickname", strNickName );
+            bundle.putString( "email", strEMail );
             CRCliRoot.getInstance().mEventDepot.fire( CRCliDef.CREVT_BTNCLICK_ACCOUNT_REG, bundle, 0 );
         }
 
@@ -46,7 +52,7 @@ public class FragmentRegAccount extends Fragment {
 
     @Override
     public View onCreateView( LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState ) {
-        View viewRoot = inflater.inflate(R.layout.activity_reg_account, container, false);
+        View viewRoot = inflater.inflate(R.layout.fragment_reg_account, container, false);
 
         viewRoot.findViewById( R.id.btn_reg_account ).setOnClickListener( handler4BtnRegAccount );
 

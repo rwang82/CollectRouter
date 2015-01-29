@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent"
-    android:background="#ffeeee99">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/prime_backgroud">
 
     <RelativeLayout
         android:orientation="horizontal"
         android:layout_width="fill_parent"
-        android:layout_height="150dp"
+        android:layout_height="80dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
-        android:background="#666666"
-        android:id="@+id/info_account">
+        android:id="@+id/info_account"
+        android:layout_margin="5dp">
     <ImageView
-        android:layout_width="150dp"
+        android:layout_width="80dp"
         android:layout_height="match_parent"
         android:layout_alignParentLeft="true"
-        android:background="#88ee22"
         android:id="@+id/iv_account_logo"
         android:src="@drawable/ic_launcher"/>
 
@@ -24,6 +24,7 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
             android:layout_toEndOf="@+id/iv_account_logo">
 
             <TextView
@@ -31,51 +32,132 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text=""
-                android:id="@+id/tv_nickname" />
+                android:id="@+id/tv_nickname"
+                android:textColor="@color/prime_button_text"
+                android:layout_gravity="right"
+                android:gravity="right"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="Not Logged in"
-                android:id="@+id/tv_accountname" />
+                android:id="@+id/tv_accountname"
+                android:textColor="@color/prime_button_text"
+                android:layout_gravity="right"
+                android:gravity="right"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text=""
-                android:id="@+id/tv_phone" />
+                android:id="@+id/tv_phone"
+                android:textColor="@color/prime_button_text"
+                android:layout_gravity="right"
+                android:gravity="right" />
 
         </LinearLayout>
     </RelativeLayout>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_below="@id/info_account"
-        android:id="@+id/info_mid_panel"
-        android:background="#ff88bb">
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+        android:id="@+id/info_member"
+        android:background="@color/prime_title_bk"
+        android:layout_margin="5dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="gold member\nexpiration date 2016.1.1"
+            android:id="@+id/tv_member_expiration_data"
+            android:gravity="center_vertical"
             android:layout_weight="1"
-            android:text="attation"
-            android:id="@+id/btn_attation"/>
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="publish"
-            android:id="@+id/btn_publish"/>
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv_recharge"
+            android:text="recharge"
+            android:gravity="center"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="4"/>
     </LinearLayout>
+
+    <com.collectrouter.crclient.ui.widget.LayoutMidPanelInInfoPanel
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/info_member"
+        android:id="@+id/info_mid_panel"
+        android:orientation="vertical"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:orientation="horizontal"
+            android:id="@+id/info_attation_publish"
+            android:layout_marginLeft="1dp"
+            android:layout_marginTop="1dp"
+            android:layout_marginRight="1dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:id="@+id/tv_attationed"
+                android:text="attationed(20)"
+                android:gravity="center"
+                android:textColor="@color/prime_button_text"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:id="@+id/tv_attation"
+                android:text="attation(20)"
+                android:gravity="center"
+                android:textColor="@color/prime_button_text"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:id="@+id/tv_publish"
+                android:text="published(20)"
+                android:gravity="center"
+                android:textColor="@color/prime_button_text"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:orientation="horizontal"
+            android:id="@+id/info_function">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="attation"
+                android:gravity="center"
+                android:id="@+id/tv_do_attation"
+                android:layout_marginRight="1dp"
+                android:textAppearance="?android:attr/textAppearanceLarge"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="publish"
+                android:gravity="center"
+                android:id="@+id/tv_do_publish"
+                android:textAppearance="?android:attr/textAppearanceLarge"/>
+        </LinearLayout>
+    </com.collectrouter.crclient.ui.widget.LayoutMidPanelInInfoPanel>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="400dp"
         android:layout_alignParentBottom="true"
         android:layout_below="@id/info_mid_panel"
         android:id="@+id/info_account_qr_code"
-        android:background="#bbff88"
+        android:background="@color/prime_title_bk"
+        android:layout_margin="5dp"
         >
         <ImageView
             android:layout_width="match_parent"

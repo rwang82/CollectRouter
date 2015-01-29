@@ -8,6 +8,7 @@ public class CRCliDef {
     /////////////////////////////////////////////////////////////////////////////
     //
     public final static String SERVER_IP_LOGIN = "192.168.31.106";
+    //public final static String SERVER_IP_LOGIN = "172.27.172.213";
     public final static int SERVER_PORT_LOGIN = 7654;
 
     /////////////////////////////////////////////////////////////////////////////

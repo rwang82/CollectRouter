@@ -3,6 +3,7 @@ package com.collectrouter.crclient.module;
 import android.app.Activity;
 import android.app.AlertDialog;
 
+import com.collectrouter.crclient.frame.CRAccountData;
 import com.collectrouter.crclient.frame.CRCliDef;
 import com.collectrouter.crclient.frame.CRCliRoot;
 import com.collectrouter.crclient.frame.CREventDepot;
@@ -28,7 +29,6 @@ public class CRModuleLogin implements CREventHandler, CRRMsgJsonHandlerBase {
     }
 
     private void doLogin( String strUserName, String strPassword ) {
-
         if ( !CRCliRoot.getInstance().mNWPClient.isConnected() ) {
             return;
         }
@@ -125,10 +125,9 @@ public class CRModuleLogin implements CREventHandler, CRRMsgJsonHandlerBase {
             }
             break;
             case CRCliDef.CREVT_REG_ACCOUNT_SUCCESS: {
-                String strUserName = (String)param1;
-                String strPassword = (String)param2;
+                CRAccountData accountData = (CRAccountData)param1;
 
-                doLogin( strUserName, strPassword );
+                doLogin( accountData.mUserName, accountData.mPassword );
             }
             default: {
             }

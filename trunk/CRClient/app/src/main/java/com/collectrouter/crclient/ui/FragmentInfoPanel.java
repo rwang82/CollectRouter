@@ -1,6 +1,12 @@
 package com.collectrouter.crclient.ui;
 
+import android.app.Activity;
 import android.app.Fragment;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.ColorFilter;
+import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -41,13 +47,12 @@ public class FragmentInfoPanel extends Fragment implements CREventHandler{
         //
         viewRoot.setOnTouchListener( mTouchListenerRootView );
 
-        viewRoot.findViewById( R.id.btn_attation ).setOnClickListener( mClickListenerBtnAttation );
-        viewRoot.findViewById( R.id.btn_publish ).setOnClickListener(mClickListenerBtnPublish);
+        viewRoot.findViewById( R.id.tv_do_attation ).setOnClickListener( mClickListenerBtnAttation );
+        viewRoot.findViewById( R.id.tv_do_publish ).setOnClickListener(mClickListenerBtnPublish);
 
         CRCliRoot.getInstance().mUIDepot.regFragment( CRCliDef.CRCLI_FRAGMENT_INFOPANEL, this );
 
         return viewRoot;
-
     }
 
     @Override
@@ -142,4 +147,5 @@ public class FragmentInfoPanel extends Fragment implements CREventHandler{
         TextView tvPhone = (TextView)getActivity().findViewById( R.id.tv_phone );
         tvPhone.setText( "" );
     }
+
 }

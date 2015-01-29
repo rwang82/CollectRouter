@@ -8,6 +8,7 @@ public class CRAccountData {
     public String mPhone;
     public String mEMail;
     public String mNickName;
+    public String mPassword;
     public int mSortType;
 
     {
@@ -15,6 +16,7 @@ public class CRAccountData {
         mPhone = "";
         mEMail = "";
         mNickName = "";
+        mPassword = "";
         mSortType = 0;
     }
 }

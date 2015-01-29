@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.collectrouter.crclient.R;
 import com.collectrouter.crclient.frame.CRCliDef;
 import com.collectrouter.crclient.frame.CRCliRoot;
+import com.collectrouter.crclient.ui.widget.HMTabH;
 
 import java.util.jar.Attributes;
 
@@ -37,6 +38,8 @@ public class FragmentAttationUsers extends Fragment {
         View viewRoot = inflater.inflate(R.layout.fragment_attation_users, container, false);
         ListView lvUsers = (ListView) viewRoot.findViewById( R.id.list_view_attation_users );
         lvUsers.setAdapter( mLVAdapterUser );
+        HMTabH tabTop = (HMTabH) viewRoot.findViewById( R.id.tab_top );
+        tabTop.setAdapter( mTopTabAdaptor );
 
         CRCliRoot.getInstance().mUIDepot.regFragment( CRCliDef.CRCLI_FRAGMENT_ATTATION_USERS, this );
         return viewRoot;
@@ -100,4 +103,32 @@ public class FragmentAttationUsers extends Fragment {
     }
 
     private CRLVAdapterUser mLVAdapterUser = new CRLVAdapterUser();
+
+
+    private HMTabH.TabAdapter mTopTabAdaptor = new HMTabH.TabAdapter() {
+        @Override
+        public int getCount() {
+            return 2;
+        }
+
+        @Override
+        public String getItemText(int position) {
+            switch ( position ) {
+                case 0: {
+                    return "显示店铺";
+                }
+                case 1: {
+                    return "显示产品";
+                }
+                default:
+                    break;
+            }
+            return null;
+        }
+
+        @Override
+        public int getItemId(int positon) {
+            return positon;
+        }
+    };
 }

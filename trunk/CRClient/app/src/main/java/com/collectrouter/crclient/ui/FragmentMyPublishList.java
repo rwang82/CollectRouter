@@ -21,11 +21,13 @@ import com.collectrouter.crclient.data.CRProduct;
 import com.collectrouter.crclient.frame.CRCliDef;
 import com.collectrouter.crclient.frame.CRCliRoot;
 import com.collectrouter.crclient.module.CRModulePublish;
+import com.collectrouter.crclient.ui.widget.HMTabH;
 
 /**
  * Created by rom on 1/18 0018.
  */
 public class FragmentMyPublishList extends Fragment{
+
 
     public FragmentMyPublishList() {
         mLVAdapterUser = new CRLVAdapterMyPublishList( CRCliRoot.getInstance().mModulePublish );
@@ -34,9 +36,13 @@ public class FragmentMyPublishList extends Fragment{
     @Override
     public View onCreateView( LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState ) {
         View viewRoot = inflater.inflate(R.layout.fragment_mypublishlist, container, false);
+        //
         ListView lvUsers = (ListView) viewRoot.findViewById( R.id.lv_mypublish_list );
         lvUsers.setAdapter( mLVAdapterUser );
-
+        //
+        HMTabH tabTop = (HMTabH) viewRoot.findViewById( R.id.tab_top );
+        tabTop.setAdapter( mTopTabAdaptor );
+        //
         CRCliRoot.getInstance().mUIDepot.regFragment(CRCliDef.CRCLI_FRAGMENT_MYPUBLISHLIST, this);
         return viewRoot;
     }
@@ -127,4 +133,35 @@ public class FragmentMyPublishList extends Fragment{
     }
 
     private CRLVAdapterMyPublishList mLVAdapterUser;
+
+    private HMTabH.TabAdapter mTopTabAdaptor = new HMTabH.TabAdapter() {
+        @Override
+        public int getCount() {
+            return 2;
+        }
+
+        @Override
+        public String getItemText(int position) {
+            switch ( position ) {
+                case 0:
+                {
+                    return "time";
+                }
+                case 1:
+                {
+                    return "title";
+                }
+                default:
+                    break;
+            }
+
+            assert( false );
+            return null;
+        }
+
+        @Override
+        public int getItemId(int positon) {
+            return positon;
+        }
+    };
 }

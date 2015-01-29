@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+import com.collectrouter.crclient.R;
 import com.collectrouter.crclient.frame.CRCliDef;
 import com.collectrouter.crclient.frame.CRCliRoot;
 
@@ -16,29 +17,6 @@ import com.collectrouter.crclient.frame.CRCliRoot;
  * Created by rom on 1/7 0007.
  */
 public class FragmentNavigateHeader extends Fragment {
-    public Button mBtnDrawerSwitch;
-    public Button mBtnUserList;
-    public Button mBtnSortList;
-    public Button mBtnProductList;
-    private View.OnClickListener mClickListenerBtnUserList = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-
-        }
-    };
-    private View.OnClickListener mClickListenerBtnSortList = new View.OnClickListener() {
-
-        @Override
-        public void onClick(View v) {
-
-        }
-    };
-    private View.OnClickListener mClickListenerBtnProductList = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-
-        }
-    };
     private View.OnClickListener mClickListenerBtnDrawerSwitch = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -55,44 +33,46 @@ public class FragmentNavigateHeader extends Fragment {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate( savedInstanceState );
-
-    }
-
-
-    @Override
     public View onCreateView( LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState ) {
-        Activity activity = getActivity();
-        if ( activity == null )
+        View viewRoot = inflater.inflate(R.layout.fragment_root_head, container, false);
+        if ( null == viewRoot ) {
             return null;
-        //
-        LinearLayout lineRoot = new LinearLayout( activity );
-        lineRoot.setOrientation( LinearLayout.HORIZONTAL );
-        //
-        mBtnDrawerSwitch = new Button( activity );
-        mBtnDrawerSwitch.setText( ">>" );
-        mBtnDrawerSwitch.setOnClickListener( mClickListenerBtnDrawerSwitch );
-        lineRoot.addView( mBtnDrawerSwitch );
-        //
-        mBtnUserList = new Button( activity );
-        mBtnUserList.setText( "UserList" );
-        mBtnUserList.setOnClickListener( mClickListenerBtnUserList );
-        lineRoot.addView( mBtnUserList );
-        //
-        mBtnSortList = new Button( activity );
-        mBtnSortList.setText( "SortList" );
-        mBtnSortList.setOnClickListener( mClickListenerBtnSortList );
-        lineRoot.addView( mBtnSortList );
-        //
-        mBtnProductList = new Button( activity );
-        mBtnProductList.setText( "Product" );
-        mBtnProductList.setOnClickListener( mClickListenerBtnProductList );
-        lineRoot.addView( mBtnProductList );
-
+        }
+        viewRoot.findViewById( R.id.btn_drawer_switch ).setOnClickListener( mClickListenerBtnDrawerSwitch );
         //
         CRCliRoot.getInstance().mUIDepot.regFragment( CRCliDef.CRCLI_FRAGMENT_NAVIGATEHEADER, this );
-        return lineRoot;
+        return viewRoot;
+
+//        Activity activity = getActivity();
+//        if ( activity == null )
+//            return null;
+//        //
+//        LinearLayout lineRoot = new LinearLayout( activity );
+//        lineRoot.setOrientation( LinearLayout.HORIZONTAL );
+//        //
+//        mBtnDrawerSwitch = new Button( activity );
+//        mBtnDrawerSwitch.setText( ">>" );
+//        mBtnDrawerSwitch.setOnClickListener( mClickListenerBtnDrawerSwitch );
+//        lineRoot.addView( mBtnDrawerSwitch );
+//        //
+//        mBtnUserList = new Button( activity );
+//        mBtnUserList.setText( "UserList" );
+//        mBtnUserList.setOnClickListener( mClickListenerBtnUserList );
+//        lineRoot.addView( mBtnUserList );
+//        //
+//        mBtnSortList = new Button( activity );
+//        mBtnSortList.setText( "SortList" );
+//        mBtnSortList.setOnClickListener( mClickListenerBtnSortList );
+//        lineRoot.addView( mBtnSortList );
+//        //
+//        mBtnProductList = new Button( activity );
+//        mBtnProductList.setText( "Product" );
+//        mBtnProductList.setOnClickListener( mClickListenerBtnProductList );
+//        lineRoot.addView( mBtnProductList );
+//
+//        //
+//        CRCliRoot.getInstance().mUIDepot.regFragment( CRCliDef.CRCLI_FRAGMENT_NAVIGATEHEADER, this );
+//        return lineRoot;
     }
 
     @Override

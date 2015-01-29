@@ -2,88 +2,97 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ffeea064"
+    android:background="@color/prime_backgroud"
     android:orientation="vertical"
-    android:id="@+id/LoginMain">
+    android:id="@+id/LoginMain"
+    android:layout_margin="5dp">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Collect Router"
+        android:gravity="left"
+        android:id="@+id/textView12"
+        android:background="@color/prime_title_bk"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#FFEE88EE"
-        android:orientation="horizontal"
-        android:layout_weight="1">
+        android:orientation="horizontal">
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:background="#FF559999"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="10">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/product_name"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="#FF000000" />
+                android:text="username"
+                android:textColor="@color/level2_title_text"/>
 
-            <Button
-                android:id="@+id/btn_scan_qr_code"
-                android:layout_width="wrap_content"
+            <EditText
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:layout_weight="1"
-                android:text="@string/scanning_qr_codes" />
+                android:id="@+id/etUserName"
+                android:textColor="@color/prime_edit_text"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="password"
+                android:textColor="@color/level2_title_text"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:ems="10"
+                android:id="@+id/etPassword"
+                android:textColor="@color/prime_edit_text" />
 
         </LinearLayout>
 
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Login"
+            android:id="@+id/btn_login"
+            android:layout_gravity="center"
+            android:textStyle="bold"
+            android:gravity="center"/>
     </LinearLayout>
 
-    <LinearLayout
+    <com.collectrouter.crclient.ui.widget.LayoutOptionDistInLogin
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#FFEE9955"
-        android:orientation="vertical"
-        android:layout_weight="1">
+        android:id="@+id/dist_option">
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/cb_save_username"
+            android:text="save username"
+            android:textColor="@color/prime_button_text"/>
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/cb_save_username"
+            android:id="@+id/cb_save_password"
+            android:text="save password"
+            android:textColor="@color/prime_button_text"/>
 
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="用户名"/>
+            android:text="Register"
+            android:id="@+id/tv_register_account"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="5dp"
+            android:gravity="center"
+            android:textColor="@color/prime_text_white"/>
+    </com.collectrouter.crclient.ui.widget.LayoutOptionDistInLogin>
 
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/etUserName" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="密码"/>
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textPassword"
-            android:ems="10"
-            android:id="@+id/etPassword" />
-
-    </LinearLayout>
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Login"
-        android:id="@+id/btn_login"
-        android:layout_gravity="right"
-        android:textStyle="bold"
-        android:layout_weight="1"/>
-
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Register Account"
-        android:id="@+id/btn_goto_reg_account"
-        android:layout_weight="1"/>
 </LinearLayout>

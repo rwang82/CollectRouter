@@ -26,4 +26,18 @@
   <color name="transparent">#00000000</color>
   <color name="viewfinder_laser">#ffcc0000</color> <!-- Android standard ICS color -->
   <color name="viewfinder_mask">#60000000</color>
+  <color name="prime_backgroud">#ffeeeeee</color>
+  <color name="prime_text_white">#ffeeeeee</color>
+  <color name="prime_button_text">#ff606060</color>
+  <color name="prime_button_frame">#ff666666</color>
+  <color name="prime_frame_1">#ff363636</color>
+  <color name="prime_title_bk">#ff888888</color>
+  <color name="prime_text_button">#ff202020</color>
+  <color name="prime_title_text">#ff202020</color>
+  <color name="prime_edit_text">#ff202020</color>
+  <color name="level2_title_text">#ff606060</color>
+  <color name="tab_underline">#ff282828</color>
+  <color name="tab_text_selected">#ff282828</color>
+  <color name="tab_text_unselected">#ff353535</color>
+
 </resources>

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.os.Bundle;
 
+import com.collectrouter.crclient.frame.CRAccountData;
 import com.collectrouter.crclient.frame.CRCliDef;
 import com.collectrouter.crclient.frame.CRCliRoot;
 import com.collectrouter.crclient.frame.CREventDepot;
@@ -20,13 +21,11 @@ import org.json.JSONObject;
  * Created by rom on 1/1 0001.
  */
 public class CRModuleAccountReg implements CREventHandler, CRRMsgJsonHandlerBase {
-    private String mstrUserName;
-    private String mstrPassword;
+    private CRAccountData mAccountData;
 
     public CRModuleAccountReg ( CREventDepot eventDepot, CRRMsgHandlerDepot rmsgHandlerDepot ) {
         //
-        mstrUserName = "";
-        mstrPassword = "";
+        mAccountData = new CRAccountData();
         //
         eventDepot.regEventHandler( CRCliDef.CREVT_BTNCLICK_ACCOUNT_REG, this );
         rmsgHandlerDepot.regRMsgHandler( CRCliDef.CRCMDTYPE_ACK_ACCOUNT_REG, this );
@@ -34,15 +33,15 @@ public class CRModuleAccountReg implements CREventHandler, CRRMsgJsonHandlerBase
 
     }
 
-    private String prepareRMsg( String strUserName, String strPassword, String strPhoneNum ) {
+    private String prepareRMsg( CRAccountData regAccountParam ) {
         JSONObject valParams = new JSONObject();
 
         try {
-            valParams.put("username", strUserName);
-            valParams.put("password", strPassword);
-            valParams.put("phone", strPhoneNum);
-            valParams.put("email", "");
-            valParams.put("nickname", "");
+            valParams.put("username", regAccountParam.mUserName );
+            valParams.put("password", regAccountParam.mPassword );
+            valParams.put("phone", regAccountParam.mPhone);
+            valParams.put("email", regAccountParam.mEMail);
+            valParams.put("nickname", regAccountParam.mNickName);
             valParams.put("sort", 100);
         } catch (JSONException e) {
             return null;
@@ -51,8 +50,8 @@ public class CRModuleAccountReg implements CREventHandler, CRRMsgJsonHandlerBase
         return CRRMsgMaker.createRMsg(valParams, CRCliDef.CRCMDTYPE_REQ_ACCOUNT_REG);
     }
 
-    private void doRegAccount( String strUserName, String strPassword, String strPhoneNum ) {
-        String strRMsg = prepareRMsg( strUserName, strPassword, strPhoneNum );
+    private void doRegAccount( CRAccountData regAccountParam ) {
+        String strRMsg = prepareRMsg( regAccountParam );
         byte[] rawBufRMsg = strRMsg.getBytes();
         Activity activity = CRCliRoot.getInstance().mUIDepot.getActivity( CRCliDef.CRCLI_ACTIVITY_MAIN );
 
@@ -63,8 +62,7 @@ public class CRModuleAccountReg implements CREventHandler, CRRMsgJsonHandlerBase
         }
 
         //
-        mstrUserName = strUserName;
-        mstrPassword = strPassword;
+        mAccountData = regAccountParam;
         CRCliRoot.getInstance().mNWPClient.sendData( rawBufRMsg, rawBufRMsg.length );
 
     }
@@ -99,7 +97,7 @@ public class CRModuleAccountReg implements CREventHandler, CRRMsgJsonHandlerBase
         new AlertDialog.Builder( activity ).setTitle( "register account result" ).setMessage( bSuccess ? "succeed" : ( "failed, ERRCODE:" + nErrCode ) ).setPositiveButton( "OK", null ).show();
 
         if ( bSuccess ) {
-            CRCliRoot.getInstance().mEventDepot.fire( CRCliDef.CREVT_REG_ACCOUNT_SUCCESS, mstrUserName, mstrPassword );
+            CRCliRoot.getInstance().mEventDepot.fire( CRCliDef.CREVT_REG_ACCOUNT_SUCCESS, mAccountData, 0 );
         }
     }
 
@@ -109,11 +107,15 @@ public class CRModuleAccountReg implements CREventHandler, CRRMsgJsonHandlerBase
             case CRCliDef.CREVT_BTNCLICK_ACCOUNT_REG:
             {
                 Bundle bundle = (Bundle)param1;
-                String strUserName = bundle.getString( "username" );
-                String strPassword = bundle.getString( "password" );
-                String strPhoneNum = bundle.getString("phonenum");
+                CRAccountData regAccountParam = new CRAccountData();
+                regAccountParam.mUserName = bundle.getString( "username" );
+                regAccountParam.mPassword = bundle.getString( "password" );
+                regAccountParam.mPhone = bundle.getString("phonenum");
+                regAccountParam.mNickName = bundle.getString("nickname");
+                regAccountParam.mEMail = bundle.getString("email");
+                //String
                 //
-                doRegAccount( strUserName, strPassword, strPhoneNum );
+                doRegAccount( regAccountParam );
             }
             break;
             default:

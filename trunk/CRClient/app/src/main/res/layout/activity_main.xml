@@ -15,7 +15,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_alignParentTop="true"
-            android:background="#00ff00">
+            android:background="@color/prime_backgroud">
         </LinearLayout>
         <LinearLayout
             android:id="@+id/content_frame"
@@ -23,7 +23,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/main_header"
             android:layout_alignParentBottom="true"
-            android:background="#ff0000">
+            android:background="@color/prime_backgroud">
         </LinearLayout>
     </RelativeLayout>
     <!-- The navigation drawer -->
@@ -32,5 +32,5 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:choiceMode="singleChoice"
-        android:background="#ffffcc" />
+        android:background="@color/prime_backgroud" />
 </android.support.v4.widget.DrawerLayout>
