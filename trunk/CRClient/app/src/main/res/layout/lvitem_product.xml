@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="wrap_content">
+
+    <ImageView
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:id="@+id/iv_product_preview"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:src="@drawable/ic_launcher"/>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_alignParentRight="true"
+        android:id="@+id/district_right">
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="80dp"
+        android:layout_toRightOf="@+id/iv_product_preview"
+        android:layout_toLeftOf="@+id/district_right"
+        android:id="@+id/district_mid">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:text="Title"
+            android:id="@+id/tv_product_title"
+            android:textColor="@color/level2_title_text"
+            android:textAppearance="?android:attr/textAppearanceLarge"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:text="describe"
+            android:id="@+id/tv_product_describe"
+            android:textColor="@color/level2_title_text"
+            android:textAppearance="?android:attr/textAppearanceSmall"/>
+    </LinearLayout>
+
+</RelativeLayout>

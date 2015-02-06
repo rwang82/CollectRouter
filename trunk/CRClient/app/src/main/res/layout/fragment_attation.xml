@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Attetion to:"
+            android:gravity="center"
+            android:textColor="@color/level2_title_text"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:id="@+id/tv_hint"
+            android:textAppearance="?android:attr/textAppearanceMedium"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="OK"
+            android:id="@+id/btn_attetion"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/et_dest_username"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/btn_attetion"
+            android:layout_toRightOf="@+id/tv_hint"
+            android:textColor="@color/prime_edit_text"
+            android:textCursorDrawable="@null"/>
+
+    </RelativeLayout>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="ScanQRCode"
+        android:id="@+id/btn_scan_qr_code"
+        android:layout_gravity="center_horizontal" />
+</LinearLayout>

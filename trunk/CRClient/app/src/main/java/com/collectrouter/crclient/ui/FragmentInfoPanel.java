@@ -25,11 +25,13 @@ import com.collectrouter.crclient.frame.CREventHandler;
  * Created by apple on 15/1/8.
  */
 public class FragmentInfoPanel extends Fragment implements CREventHandler{
+
     public FragmentInfoPanel() {
         CREventDepot eventDepot = CRCliRoot.getInstance().mEventDepot;
         eventDepot.regEventHandler( CRCliDef.CREVT_START_LOGGING, this );
         eventDepot.regEventHandler( CRCliDef.CREVT_LOGIN_SUCCESS, this );
         eventDepot.regEventHandler( CRCliDef.CREVT_LOGIN_FAILED, this );
+        eventDepot.regEventHandler( CRCliDef.CREVT_CUR_LOGIN_ACCOUNT_INFO_UPDATE, this );
     }
 
 
@@ -47,6 +49,9 @@ public class FragmentInfoPanel extends Fragment implements CREventHandler{
         //
         viewRoot.setOnTouchListener( mTouchListenerRootView );
 
+        //
+        viewRoot.findViewById( R.id.tv_attation ).setOnClickListener( mClickShowAttationList );
+        //
         viewRoot.findViewById( R.id.tv_do_attation ).setOnClickListener( mClickListenerBtnAttation );
         viewRoot.findViewById( R.id.tv_do_publish ).setOnClickListener(mClickListenerBtnPublish);
 
@@ -100,6 +105,10 @@ public class FragmentInfoPanel extends Fragment implements CREventHandler{
                 onEvtLoginFailed();
             }
             break;
+            case CRCliDef.CREVT_CUR_LOGIN_ACCOUNT_INFO_UPDATE: {
+                onEvtCurLoginAccountInfoUpdate();
+            }
+            break;
             default:
                 break;
         }
@@ -122,18 +131,36 @@ public class FragmentInfoPanel extends Fragment implements CREventHandler{
     }
 
     private void onEvtLoginSuccess() {
-        CRAccountData accountData = CRCliRoot.getInstance().mAccountData;
+        // maybe need not, becase will receive event to onEvtCurLoginAccountInfoUpdate.
+        // updateCurLoginAccountInfo();
+    }
+
+    private void onEvtCurLoginAccountInfoUpdate() {
+        updateCurLoginAccountInfo();
+    }
+
+    private void updateCurLoginAccountInfo() {
+        CRAccountData curAccount = CRCliRoot.getInstance().mData.getCurAccountData();
+        if ( curAccount == null )
+            return;
         // account name
         TextView tvAccountName = (TextView)getActivity().findViewById( R.id.tv_accountname );
-        tvAccountName.setText( accountData.mUserName );
+        tvAccountName.setText( curAccount.mUserName );
         // nick name
         TextView tvNickName = (TextView)getActivity().findViewById( R.id.tv_nickname );
-        tvNickName.setText( accountData.mNickName );
+        tvNickName.setText( curAccount.mNickName );
         // phone
         TextView tvPhone = (TextView)getActivity().findViewById( R.id.tv_phone );
-        tvPhone.setText( accountData.mPhone );
-
-
+        tvPhone.setText( curAccount.mPhone );
+        // attetioned.
+        TextView tvAttetioned = (TextView)getActivity().findViewById( R.id.tv_attationed );
+        tvAttetioned.setText( "attetioned("+curAccount.mCountAttetioned+")" );
+        // attetion.
+        TextView tvAttetion = (TextView)getActivity().findViewById( R.id.tv_attation );
+        tvAttetion.setText( "attetion("+curAccount.mCountAttetion+")" );
+        // published.
+        TextView tvPublished = (TextView)getActivity().findViewById( R.id.tv_publish );
+        tvPublished.setText( "published("+curAccount.mCountPublished+")" );
     }
 
     private void onEvtStartLoggin() {
@@ -148,4 +175,15 @@ public class FragmentInfoPanel extends Fragment implements CREventHandler{
         tvPhone.setText( "" );
     }
 
+    private View.OnClickListener mClickShowAttationList = new View.OnClickListener() {
+
+        @Override
+        public void onClick(View v) {
+            ActivityMain activeMain = (ActivityMain)CRCliRoot.getInstance().mUIDepot.getActivity(CRCliDef.CRCLI_ACTIVITY_MAIN );
+
+            activeMain.closeDrawer();
+            //
+            activeMain.switch2AttationUsers();
+        }
+    };
 }

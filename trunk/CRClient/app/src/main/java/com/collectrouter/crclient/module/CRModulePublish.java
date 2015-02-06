@@ -192,16 +192,14 @@ public class CRModulePublish implements CREventHandler, CRRMsgJsonHandlerBase {
         JSONArray valImages = new JSONArray();
         JSONArray valKeywords = new JSONArray();
 
-        String strUserName = CRCliRoot.getInstance().mAccountData.mUserName;
-
-        if ( strUserName.length() == 0 ) {
+        if ( !CRCliRoot.getInstance().mModuleLogin.islogined() ) {
             assert( false );
             return "";
         }
 
         try {
             // username.
-            valParams.put( "username", strUserName );
+            valParams.put( "username", CRCliRoot.getInstance().mData.mCurLoginAccountName );
             // product.
             valParams.put( "product", valProduct );
             // uuid of product.
@@ -423,6 +421,7 @@ public class CRModulePublish implements CREventHandler, CRRMsgJsonHandlerBase {
             //
             if ( bSuccess ) {
                 moveProductPend2Finish( uuid );
+                CRCliRoot.getInstance().mData.refetchCurAccountData();
             } else {
                 delProductFromPending(uuid);
             }

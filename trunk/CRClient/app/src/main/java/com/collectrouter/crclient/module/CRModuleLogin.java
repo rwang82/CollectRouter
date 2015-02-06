@@ -22,10 +22,15 @@ import org.json.JSONObject;
 public class CRModuleLogin implements CREventHandler, CRRMsgJsonHandlerBase {
 
     public CRModuleLogin ( CREventDepot eventDepot, CRRMsgHandlerDepot rmsgHandlerDepot ) {
+        //
         eventDepot.regEventHandler( CRCliDef.CREVT_BTNCLICK_LOGIN, this );
         eventDepot.regEventHandler( CRCliDef.CREVT_REG_ACCOUNT_SUCCESS, this );
         rmsgHandlerDepot.regRMsgHandler( CRCliDef.CRCMDTYPE_ACK_LOGIN, this );
         rmsgHandlerDepot.regRMsgHandler( CRCliDef.CRCMDTYPE_ACK_LOGOFF, this );
+    }
+
+    public boolean islogined() {
+        return CRCliRoot.getInstance().mData.getCurAccountData() != null;
     }
 
     private void doLogin( String strUserName, String strPassword ) {
@@ -44,18 +49,24 @@ public class CRModuleLogin implements CREventHandler, CRRMsgJsonHandlerBase {
     private void fillCRAccountData( JSONObject valParams ) {
         String strTmp;
         int nSortType;
+        CRAccountData newLoginAccount = new CRAccountData();
 
         try {
             strTmp = valParams.getString( "username" );
-            CRCliRoot.getInstance().mAccountData.mUserName = strTmp;
+            newLoginAccount.mUserName = strTmp;
             strTmp = valParams.getString( "phone" );
-            CRCliRoot.getInstance().mAccountData.mPhone = strTmp;
+            newLoginAccount.mPhone = strTmp;
             strTmp = valParams.getString( "email" );
-            CRCliRoot.getInstance().mAccountData.mEMail = strTmp;
+            newLoginAccount.mEMail = strTmp;
             strTmp = valParams.getString( "nickname" );
-            CRCliRoot.getInstance().mAccountData.mNickName = strTmp;
+            newLoginAccount.mNickName = strTmp;
             nSortType = valParams.getInt( "sort" );
-            CRCliRoot.getInstance().mAccountData.mSortType = nSortType;
+            newLoginAccount.mSortType = nSortType;
+            newLoginAccount.mCountAttetioned = valParams.getInt("attetioned");
+            newLoginAccount.mCountAttetion = valParams.getInt("attetion");
+            newLoginAccount.mCountPublished = valParams.getInt("published");
+            //
+            CRCliRoot.getInstance().mData.setCurAccountData( newLoginAccount );
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -129,6 +140,7 @@ public class CRModuleLogin implements CREventHandler, CRRMsgJsonHandlerBase {
 
                 doLogin( accountData.mUserName, accountData.mPassword );
             }
+            break;
             default: {
             }
         }

@@ -1,5 +1,6 @@
 package com.collectrouter.crclient.ui;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -17,7 +18,7 @@ import com.collectrouter.crclient.frame.CRCliRoot;
 /**
  * Created by rom on 1/6 0006.
  */
-public class ActivityMain extends ActionBarActivity {
+public class ActivityMain extends Activity {
 
     @Override
     public void onCreate( Bundle savedInstanceState ) {
@@ -131,7 +132,7 @@ public class ActivityMain extends ActionBarActivity {
     }
 
     public void switch2AttationUsers() {
-        FragmentAttationUsers fragment = new FragmentAttationUsers();
+        FragmentShowAttetion fragment = new FragmentShowAttetion();
         Bundle args = new Bundle();
         args.putString( "username", "wyf" );
         fragment.setArguments( args );
@@ -139,6 +140,17 @@ public class ActivityMain extends ActionBarActivity {
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.replace( R.id.content_frame, fragment );
         ft.addToBackStack(null);
+        ft.commit();
+    }
+
+    public void switch2Attetion() {
+        //
+        closeDrawer();
+        //
+        FragmentAttetion fragment = new FragmentAttetion();
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.replace( R.id.content_frame, fragment );
+        ft.addToBackStack( null );
         ft.commit();
     }
 

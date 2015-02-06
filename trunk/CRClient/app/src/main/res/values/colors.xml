@@ -36,8 +36,11 @@
   <color name="prime_title_text">#ff202020</color>
   <color name="prime_edit_text">#ff202020</color>
   <color name="level2_title_text">#ff606060</color>
+  <color name="level2_title_bk">#ffaaaaaa</color>
+  <color name="level2_lv_divider">#ffcccccc</color>
   <color name="tab_underline">#ff282828</color>
   <color name="tab_text_selected">#ff282828</color>
   <color name="tab_text_unselected">#ff353535</color>
+  <color name="lv_divider">#ffbbbbbb</color>
 
 </resources>

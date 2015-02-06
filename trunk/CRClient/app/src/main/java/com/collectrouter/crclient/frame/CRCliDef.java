@@ -19,7 +19,7 @@ public class CRCliDef {
     /////////////////////////////////////////////////////////////////////////////
     //
     public final static int CRCLI_FRAGMENT_LOGIN = 100;
-    public final static int CRCLI_FRAGMENT_ATTATION_USERS = 101;
+    public final static int CRCLI_FRAGMENT_SHOW_ATTETION = 101;
     public final static int CRCLI_FRAGMENT_REGACCOUNT = 102;
     public final static int CRCLI_FRAGMENT_INFOPANEL = 103;
     public final static int CRCLI_FRAGMENT_NAVIGATEHEADER = 104;
@@ -76,7 +76,10 @@ public class CRCliDef {
     // param1 -
     // param2 -
     public final static int CREVT_PRODUCT_REMOVE = 233;
-
+    ///////////////////////////////
+    // param1 -
+    // param2 -
+    public final static int CREVT_CUR_LOGIN_ACCOUNT_INFO_UPDATE = 234;
 
     /////////////////////////////////////////////////////////////////////////////
     //
@@ -91,6 +94,12 @@ public class CRCliDef {
     public final static int CRCMDTYPE_ACK_ACCOUNT_REG = 6;
     public final static int CRCMDTYPE_REQ_PRODUCT_PUBLISH = 11;
     public final static int CRCMDTYPE_ACK_PRODUCT_PUBLISH = 12;
+    public final static int CRCMDTYPE_REQ_ADD_ATTETION = 13;
+    public final static int CRCMDTYPE_ACK_ADD_ATTETION = 14;
+    public final static int CRCMDTYPE_REQ_FETCH_ATTETION_LIST = 15;
+    public final static int CRCMDTYPE_ACK_FETCH_ATTETION_LIST = 16;
+    public final static int CRCMDTYPE_REQ_FETCH_ACCOUNTINFO = 17;
+    public final static int CRCMDTYPE_ACK_FETCH_ACCOUNTINFO = 18;
 
     //
     public final static int CRREQUESTCODE_PHTOGRAPH4PUBLISH = 1000;

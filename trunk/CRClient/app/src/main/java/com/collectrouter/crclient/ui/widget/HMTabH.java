@@ -24,11 +24,11 @@ public class HMTabH extends View {
         public int getItemId( int positon );
     }
 
-    public interface SelectChangeListener {
+    public interface OnSelectChangeListener {
         public void onSelectChange( int position );
     }
 
-    SelectChangeListener mSelectChangeListener = null;
+    OnSelectChangeListener mOnSelectChangeListener = null;
     TabAdapter mAdapter = null;
     Drawable mbkDrawObj = null;
     Drawable mftDrawObj = null;
@@ -47,8 +47,8 @@ public class HMTabH extends View {
         super(context, attrs, defStyleAttr);
     }
 
-    public void setSelectChangeListener( SelectChangeListener selectChangeListener ) {
-        mSelectChangeListener = selectChangeListener;
+    public void setOnSelectChangeListener( OnSelectChangeListener onSelectChangeListener ) {
+        mOnSelectChangeListener = onSelectChangeListener;
     }
 
     public void setAdapter( TabAdapter adapter ) {
@@ -158,8 +158,8 @@ public class HMTabH extends View {
                     //
                     mIndexSel = indexTouchUp;
                     //
-                    if ( mSelectChangeListener != null ) {
-                        mSelectChangeListener.onSelectChange( mIndexSel );
+                    if ( mOnSelectChangeListener != null ) {
+                        mOnSelectChangeListener.onSelectChange( mIndexSel );
                     }
                     //
                     invalidate();
