@@ -2,6 +2,7 @@ package com.collectrouter.crclient.ui;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.DialogInterface;
@@ -12,6 +13,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 
 import com.collectrouter.crclient.R;
+import com.collectrouter.crclient.frame.CRAccountData;
 import com.collectrouter.crclient.frame.CRCliDef;
 import com.collectrouter.crclient.frame.CRCliRoot;
 
@@ -101,66 +103,74 @@ public class ActivityMain extends Activity {
 //        }
     }
 
-    public void switch2MyPublishList() {
-        FragmentMyPublishList fragment = new FragmentMyPublishList();
-
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
+    private void switchContentFragment( Fragment fragment, String tag ) {
+        FragmentManager fragmentMgr = getFragmentManager();
+        FragmentTransaction ft = fragmentMgr.beginTransaction();
+        Fragment dest = fragmentMgr.findFragmentByTag( tag );
+        if ( dest != null ) {
+            ft.remove( dest );
+        }
         ft.replace( R.id.content_frame, fragment );
         ft.addToBackStack( null );
         ft.commit();
     }
 
+    public void switch2MyPublishList() {
+        FragmentInfoPanel fragmentInfoPanel = new FragmentInfoPanel();
+
+        switchContentFragment(fragmentInfoPanel, FragmentInfoPanel.TAG);
+    }
+
     public void switch2LoginFragment() {
-        FragmentLogin fragment = new FragmentLogin();
-        Bundle args = new Bundle();
-        args.putString( "username", "wyf" );
-        fragment.setArguments( args );
-        //
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.replace( R.id.content_frame, fragment );
-        ft.addToBackStack(null);
-        ft.commit();
+        FragmentLogin fragmentLogin = new FragmentLogin();
+
+        switchContentFragment(fragmentLogin, FragmentLogin.TAG);
     }
 
     public void switch2RegAccount() {
         FragmentRegAccount fragment = new FragmentRegAccount();
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.replace( R.id.content_frame, fragment );
-        ft.addToBackStack( null );
-        ft.commit();
 
+        switchContentFragment( fragment, FragmentRegAccount.TAG );
     }
 
-    public void switch2AttationUsers() {
+    public void switch2ShowAttetions() {
         FragmentShowAttetion fragment = new FragmentShowAttetion();
+
+        switchContentFragment( fragment, FragmentShowAttetion.TAG );
+    }
+    
+    public void switch2ShowAttetioneds() {
+        FragmentShowAttetioned fragment = new FragmentShowAttetioned();
+
+        switchContentFragment( fragment, FragmentShowAttetioned.TAG );
+    }
+
+    public void switch2AccountProducts( String strUserName ) {
+        FragmentShowAccountProduct fragment = new FragmentShowAccountProduct();
+
         Bundle args = new Bundle();
-        args.putString( "username", "wyf" );
+        args.putString("username", strUserName );
         fragment.setArguments( args );
 
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.replace( R.id.content_frame, fragment );
-        ft.addToBackStack(null);
-        ft.commit();
+        switchContentFragment(fragment, FragmentShowAccountProduct.TAG);
     }
 
-    public void switch2Attetion() {
+    public void switch2DoAttetion() {
         //
         closeDrawer();
         //
-        FragmentAttetion fragment = new FragmentAttetion();
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.replace( R.id.content_frame, fragment );
-        ft.addToBackStack( null );
-        ft.commit();
+        FragmentDoAttetion fragment = new FragmentDoAttetion();
+        //
+        switchContentFragment( fragment, FragmentDoAttetion.TAG );
     }
 
-    public void switch2Publish() {
-        FragmentPublish fragment = new FragmentPublish();
+    public void switch2DoPublish() {
+        //
+        closeDrawer();
+        //
+        FragmentDoPublish fragment = new FragmentDoPublish();
 
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.replace( R.id.content_frame, fragment );
-        ft.addToBackStack(null);
-        ft.commit();
+        switchContentFragment(fragment, FragmentDoPublish.TAG);
     }
 
     private void createNavigateHeader() {
@@ -172,6 +182,8 @@ public class ActivityMain extends Activity {
 
     private void createInfoPanel() {
         FragmentInfoPanel fragment = new FragmentInfoPanel();
+        if ( fragment == null )
+            return;
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.replace( R.id.left_drawer, fragment );
         ft.commit();

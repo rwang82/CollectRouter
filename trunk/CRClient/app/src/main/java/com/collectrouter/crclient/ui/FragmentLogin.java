@@ -24,6 +24,7 @@ import com.google.zxing.integration.android.IntentIntegrator;
  * Created by rom on 1/6 0006.
  */
 public class FragmentLogin extends Fragment {
+    public final static String TAG = CRCliDef.CRCLI_FRAGMENT_LOGIN;
 
     public FragmentLogin() {
 
@@ -42,13 +43,12 @@ public class FragmentLogin extends Fragment {
         viewRoot.findViewById(R.id.btn_login).setOnClickListener( handle4BtnLogin );
         viewRoot.findViewById(R.id.tv_register_account).setOnClickListener( handle4BtnGotoRegAccount );
         //
-        CRCliRoot.getInstance().mUIDepot.regFragment( CRCliDef.CRCLI_FRAGMENT_LOGIN, this );
         return viewRoot;
     }
 
     @Override
     public void onDestroyView() {
-        CRCliRoot.getInstance().mUIDepot.unRegFragment( CRCliDef.CRCLI_FRAGMENT_LOGIN );
+
         super.onDestroyView();
     }
 

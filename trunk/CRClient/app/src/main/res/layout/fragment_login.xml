@@ -38,7 +38,9 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/etUserName"
                 android:textColor="@color/prime_edit_text"
-                android:textCursorDrawable="@null"/>
+                android:textCursorDrawable="@null">
+                <requestFocus/>
+            </EditText>
 
             <TextView
                 android:layout_width="match_parent"

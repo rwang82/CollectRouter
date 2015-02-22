@@ -25,22 +25,9 @@ import com.collectrouter.crclient.frame.CREventHandler;
  * Created by apple on 15/1/8.
  */
 public class FragmentInfoPanel extends Fragment implements CREventHandler{
+    public final static String TAG = CRCliDef.CRCLI_FRAGMENT_INFOPANEL;
 
     public FragmentInfoPanel() {
-        CREventDepot eventDepot = CRCliRoot.getInstance().mEventDepot;
-        eventDepot.regEventHandler( CRCliDef.CREVT_START_LOGGING, this );
-        eventDepot.regEventHandler( CRCliDef.CREVT_LOGIN_SUCCESS, this );
-        eventDepot.regEventHandler( CRCliDef.CREVT_LOGIN_FAILED, this );
-        eventDepot.regEventHandler( CRCliDef.CREVT_CUR_LOGIN_ACCOUNT_INFO_UPDATE, this );
-    }
-
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-
-
     }
 
     @Override
@@ -50,19 +37,33 @@ public class FragmentInfoPanel extends Fragment implements CREventHandler{
         viewRoot.setOnTouchListener( mTouchListenerRootView );
 
         //
-        viewRoot.findViewById( R.id.tv_attation ).setOnClickListener( mClickShowAttationList );
+        viewRoot.findViewById( R.id.tv_attetion ).setOnClickListener( mClickShowAttetionList );
+        viewRoot.findViewById( R.id.tv_attetioned ).setOnClickListener( mClickShowAttetionedList );
         //
         viewRoot.findViewById( R.id.tv_do_attation ).setOnClickListener( mClickListenerBtnAttation );
         viewRoot.findViewById( R.id.tv_do_publish ).setOnClickListener(mClickListenerBtnPublish);
 
-        CRCliRoot.getInstance().mUIDepot.regFragment( CRCliDef.CRCLI_FRAGMENT_INFOPANEL, this );
+        //
+        CREventDepot eventDepot = CRCliRoot.getInstance().mEventDepot;
+        eventDepot.regEventHandler( CRCliDef.CREVT_START_LOGGING, this );
+        eventDepot.regEventHandler( CRCliDef.CREVT_LOGIN_SUCCESS, this );
+        eventDepot.regEventHandler( CRCliDef.CREVT_LOGIN_FAILED, this );
+        eventDepot.regEventHandler( CRCliDef.CREVT_CUR_LOGIN_ACCOUNT_INFO_UPDATE, this );
 
         return viewRoot;
     }
 
     @Override
     public void onDestroyView() {
-        CRCliRoot.getInstance().mUIDepot.unRegFragment(CRCliDef.CRCLI_FRAGMENT_INFOPANEL);
+
+        //
+        CREventDepot eventDepot = CRCliRoot.getInstance().mEventDepot;
+        eventDepot.unRegEventHandler( CRCliDef.CREVT_START_LOGGING, this );
+        eventDepot.unRegEventHandler( CRCliDef.CREVT_LOGIN_SUCCESS, this );
+        eventDepot.unRegEventHandler( CRCliDef.CREVT_LOGIN_FAILED, this );
+        eventDepot.unRegEventHandler( CRCliDef.CREVT_CUR_LOGIN_ACCOUNT_INFO_UPDATE, this );
+
+
         super.onDestroyView();
     }
 
@@ -153,10 +154,10 @@ public class FragmentInfoPanel extends Fragment implements CREventHandler{
         TextView tvPhone = (TextView)getActivity().findViewById( R.id.tv_phone );
         tvPhone.setText( curAccount.mPhone );
         // attetioned.
-        TextView tvAttetioned = (TextView)getActivity().findViewById( R.id.tv_attationed );
+        TextView tvAttetioned = (TextView)getActivity().findViewById( R.id.tv_attetioned );
         tvAttetioned.setText( "attetioned("+curAccount.mCountAttetioned+")" );
         // attetion.
-        TextView tvAttetion = (TextView)getActivity().findViewById( R.id.tv_attation );
+        TextView tvAttetion = (TextView)getActivity().findViewById( R.id.tv_attetion );
         tvAttetion.setText( "attetion("+curAccount.mCountAttetion+")" );
         // published.
         TextView tvPublished = (TextView)getActivity().findViewById( R.id.tv_publish );
@@ -175,7 +176,7 @@ public class FragmentInfoPanel extends Fragment implements CREventHandler{
         tvPhone.setText( "" );
     }
 
-    private View.OnClickListener mClickShowAttationList = new View.OnClickListener() {
+    private View.OnClickListener mClickShowAttetionList = new View.OnClickListener() {
 
         @Override
         public void onClick(View v) {
@@ -183,7 +184,19 @@ public class FragmentInfoPanel extends Fragment implements CREventHandler{
 
             activeMain.closeDrawer();
             //
-            activeMain.switch2AttationUsers();
+            activeMain.switch2ShowAttetions();
+        }
+    };
+
+    private View.OnClickListener mClickShowAttetionedList = new View.OnClickListener() {
+
+        @Override
+        public void onClick(View v) {
+            ActivityMain activeMain = (ActivityMain)CRCliRoot.getInstance().mUIDepot.getActivity(CRCliDef.CRCLI_ACTIVITY_MAIN );
+
+            activeMain.closeDrawer();
+            //
+            activeMain.switch2ShowAttetioneds();
         }
     };
 }

@@ -27,9 +27,10 @@ import com.collectrouter.crclient.ui.widget.HMTabH;
  * Created by rom on 1/18 0018.
  */
 public class FragmentMyPublishList extends Fragment{
-
+    public final static String TAG = CRCliDef.CRCLI_FRAGMENT_MYPUBLISHLIST;
 
     public FragmentMyPublishList() {
+        //
         mLVAdapterUser = new CRLVAdapterMyPublishList( CRCliRoot.getInstance().mModulePublish );
     }
 
@@ -43,13 +44,12 @@ public class FragmentMyPublishList extends Fragment{
         HMTabH tabTop = (HMTabH) viewRoot.findViewById( R.id.tab_top );
         tabTop.setAdapter( mTopTabAdaptor );
         //
-        CRCliRoot.getInstance().mUIDepot.regFragment(CRCliDef.CRCLI_FRAGMENT_MYPUBLISHLIST, this);
+
         return viewRoot;
     }
 
     @Override
     public void onDestroyView() {
-        CRCliRoot.getInstance().mUIDepot.unRegFragment( CRCliDef.CRCLI_FRAGMENT_MYPUBLISHLIST );
         super.onDestroyView();
     }
 

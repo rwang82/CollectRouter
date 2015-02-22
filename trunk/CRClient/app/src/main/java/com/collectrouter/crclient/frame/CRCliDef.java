@@ -7,8 +7,9 @@ public class CRCliDef {
 
     /////////////////////////////////////////////////////////////////////////////
     //
-    public final static String SERVER_IP_LOGIN = "192.168.31.106";
-    //public final static String SERVER_IP_LOGIN = "172.27.172.213";
+    //public final static String SERVER_IP_LOGIN = "192.168.31.106";
+    //public final static String SERVER_IP_LOGIN = "192.168.123.1";
+    public final static String SERVER_IP_LOGIN = "10.0.2.10";
     public final static int SERVER_PORT_LOGIN = 7654;
 
     /////////////////////////////////////////////////////////////////////////////
@@ -18,13 +19,17 @@ public class CRCliDef {
 
     /////////////////////////////////////////////////////////////////////////////
     //
-    public final static int CRCLI_FRAGMENT_LOGIN = 100;
-    public final static int CRCLI_FRAGMENT_SHOW_ATTETION = 101;
-    public final static int CRCLI_FRAGMENT_REGACCOUNT = 102;
-    public final static int CRCLI_FRAGMENT_INFOPANEL = 103;
-    public final static int CRCLI_FRAGMENT_NAVIGATEHEADER = 104;
-    public final static int CRCLI_FRAGMENT_PUBLISH = 105;
-    public final static int CRCLI_FRAGMENT_MYPUBLISHLIST = 106;
+    public final static String CRCLI_FRAGMENT_LOGIN = "login";
+    public final static String CRCLI_FRAGMENT_SHOW_ATTETION = "show_attetion";
+    public final static String CRCLI_FRAGMENT_SHOW_ATTETIONED = "show_attetioned";
+    public final static String CRCLI_FRAGMENT_SHOW_ACCOUNT_PRODUCT_LIST = "show_account_product_list";
+    public final static String CRCLI_FRAGMENT_REGACCOUNT = "register_account";
+    public final static String CRCLI_FRAGMENT_INFOPANEL = "info_panel";
+    public final static String CRCLI_FRAGMENT_NAVIGATEHEADER = "navigate_header";
+    public final static String CRCLI_FRAGMENT_DO_PUBLISH = "do_publish";
+    public final static String CRCLI_FRAGMENT_DO_ATTETION = "do_attetion";
+    public final static String CRCLI_FRAGMENT_MYPUBLISHLIST = "mypublish_list";
+
 
     /////////////////////////////////////////////////////////////////////////////
     //

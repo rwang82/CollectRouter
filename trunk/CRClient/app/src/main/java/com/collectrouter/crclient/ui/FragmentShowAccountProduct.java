@@ -13,13 +13,15 @@ import com.collectrouter.crclient.frame.CRCliRoot;
 /**
  * Created by rom on 1/29 0029.
  */
-public class FragmentShowProduct extends Fragment {
+public class FragmentShowAccountProduct extends Fragment {
+    public final static String TAG = CRCliDef.CRCLI_FRAGMENT_SHOW_ACCOUNT_PRODUCT_LIST;
 
     @Override
     public View onCreateView( LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState ) {
         View viewRoot = inflater.inflate(R.layout.fragment_show_product, null );
 
         //
+        String strUserName = getArguments().getString( "username" );
 
         return viewRoot;
     }

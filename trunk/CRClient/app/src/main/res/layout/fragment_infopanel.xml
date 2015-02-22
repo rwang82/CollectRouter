@@ -105,16 +105,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:id="@+id/tv_attationed"
-                android:text="attationed(0)"
+                android:id="@+id/tv_attetioned"
+                android:text="attetioned(0)"
                 android:gravity="center"
                 android:textColor="@color/prime_button_text"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:id="@+id/tv_attation"
-                android:text="attation(0)"
+                android:id="@+id/tv_attetion"
+                android:text="attetion(0)"
                 android:gravity="center"
                 android:textColor="@color/prime_button_text"/>
             <TextView

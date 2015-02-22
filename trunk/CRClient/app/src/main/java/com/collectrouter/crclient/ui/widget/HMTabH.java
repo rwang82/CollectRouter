@@ -21,7 +21,7 @@ public class HMTabH extends View {
     public interface TabAdapter {
         public int getCount();
         public String getItemText( int position );
-        public int getItemId( int positon );
+        public int getItemId( int position );
     }
 
     public interface OnSelectChangeListener {

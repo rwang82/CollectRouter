@@ -14,7 +14,8 @@ import com.collectrouter.crclient.frame.CRCliRoot;
 /**
  * Created by rom on 2/1 0001.
  */
-public class FragmentAttetion extends Fragment {
+public class FragmentDoAttetion extends Fragment {
+    public final static String TAG = CRCliDef.CRCLI_FRAGMENT_DO_ATTETION;
 
     @Override
     public View onCreateView( LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState ) {
@@ -22,12 +23,15 @@ public class FragmentAttetion extends Fragment {
         View viewRoot = inflater.inflate(R.layout.fragment_attation, null );
 
         viewRoot.findViewById( R.id.btn_attetion ).setOnClickListener( mClickListener4BtnAttetion );
+
+        //
+        CRCliRoot.getInstance().mUIDepot.regFragment( TAG, this );
         return viewRoot;
     }
 
     @Override
     public void onDestroyView() {
-        CRCliRoot.getInstance().mUIDepot.unRegFragment(CRCliDef.CRCLI_FRAGMENT_SHOW_ATTETION);
+
         super.onDestroyView();
     }
 
@@ -35,7 +39,7 @@ public class FragmentAttetion extends Fragment {
 
         @Override
         public void onClick(View v) {
-            TextView tvDestUserName = (TextView)FragmentAttetion.this.getActivity().findViewById( R.id.et_dest_username );
+            TextView tvDestUserName = (TextView)FragmentDoAttetion.this.getActivity().findViewById( R.id.et_dest_username );
             String strDestUserName = tvDestUserName.getText().toString();
 
             CRCliRoot.getInstance().mModuleAttetion.addAttetion( strDestUserName );

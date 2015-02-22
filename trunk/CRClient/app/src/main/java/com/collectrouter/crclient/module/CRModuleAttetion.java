@@ -64,7 +64,7 @@ public class CRModuleAttetion implements CREventHandler, CRRMsgJsonHandlerBase {
     private void onBtnClickAttation() {
         ActivityMain activityMain = (ActivityMain)CRCliRoot.getInstance().mUIDepot.getActivity( CRCliDef.CRCLI_ACTIVITY_MAIN );
 
-        activityMain.switch2Attetion();
+        activityMain.switch2DoAttetion();
 //        IntentIntegrator integrator = new IntentIntegrator( activityMain );
 //        integrator.initiateScan( IntentIntegrator.QR_CODE_TYPES );
     }

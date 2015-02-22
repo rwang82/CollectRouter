@@ -12,6 +12,9 @@ public class CRProduct {
     public String mTitle;
     public String mPrice;
     public String mDescribe;
+    public String mUserName;
+    public int mType; //mType = -1, means mUserDefineType is useful.
+    public String mUserDefineType;
     public List< String > mImages;
     public List< String > mKeywords;
 
@@ -20,7 +23,11 @@ public class CRProduct {
         mTitle = "";
         mPrice = "";
         mDescribe = "";
+        mUserName = "";
+        mType = -1;
+        mUserDefineType = "UnDefine";
         mImages = new ArrayList<>();
         mKeywords = new ArrayList<>();
+
     }
 }

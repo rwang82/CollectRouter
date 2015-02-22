@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/tab_top"
         android:layout_alignParentBottom="true"
-        android:id="@+id/list_view_attation_users"
+        android:id="@+id/list_view_users"
         android:divider="@color/lv_divider"
         android:dividerHeight="2dp">
     </ListView>

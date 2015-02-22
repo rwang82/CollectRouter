@@ -17,6 +17,8 @@ import com.collectrouter.crclient.frame.CRCliRoot;
  * Created by rom on 1/7 0007.
  */
 public class FragmentNavigateHeader extends Fragment {
+    public final static String TAG = CRCliDef.CRCLI_FRAGMENT_NAVIGATEHEADER;
+
     private View.OnClickListener mClickListenerBtnDrawerSwitch = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -39,8 +41,6 @@ public class FragmentNavigateHeader extends Fragment {
             return null;
         }
         viewRoot.findViewById( R.id.btn_drawer_switch ).setOnClickListener( mClickListenerBtnDrawerSwitch );
-        //
-        CRCliRoot.getInstance().mUIDepot.regFragment( CRCliDef.CRCLI_FRAGMENT_NAVIGATEHEADER, this );
         return viewRoot;
 
 //        Activity activity = getActivity();
@@ -70,15 +70,11 @@ public class FragmentNavigateHeader extends Fragment {
 //        mBtnProductList.setOnClickListener( mClickListenerBtnProductList );
 //        lineRoot.addView( mBtnProductList );
 //
-//        //
-//        CRCliRoot.getInstance().mUIDepot.regFragment( CRCliDef.CRCLI_FRAGMENT_NAVIGATEHEADER, this );
 //        return lineRoot;
     }
 
     @Override
     public void onDestroyView() {
-
-        CRCliRoot.getInstance().mUIDepot.unRegFragment( CRCliDef.CRCLI_FRAGMENT_NAVIGATEHEADER );
 
         super.onDestroyView();
         //

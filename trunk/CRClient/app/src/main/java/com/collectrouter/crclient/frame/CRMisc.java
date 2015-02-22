@@ -1,7 +1,10 @@
 package com.collectrouter.crclient.frame;
 
+import android.app.Activity;
 import android.graphics.Bitmap;
 import android.os.Environment;
+
+import com.collectrouter.crclient.R;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -11,7 +14,7 @@ import java.io.IOException;
 /**
  * Created by rom on 1/15 0015.
  */
-public class CRUtil {
+public class CRMisc {
     public static boolean saveBitmap2SDCard( Bitmap bitmap, String destDir, String destFileName ) {
         if ( !android.os.Environment.getExternalStorageState().equals( Environment.MEDIA_MOUNTED ) )
             return false;
@@ -45,5 +48,15 @@ public class CRUtil {
         }
 
         return bResult;
+    }
+
+    public static String getProductSort( int nSortType ) {
+        if ( nSortType < 0 )
+            return "";
+        Activity activityMain = CRCliRoot.getInstance().mUIDepot.getActivity( CRCliDef.CRCLI_ACTIVITY_MAIN );
+        int nId = R.string.ps_name_1;
+        String strDest =activityMain.getResources().getString(R.string.ps_name_1 + nSortType );
+        String strTest = activityMain.getResources().getString( R.string.ps_name_1 );
+        return strDest;
     }
 }

@@ -3,6 +3,18 @@ package com.collectrouter.crclient.frame;
 import android.app.Activity;
 import android.app.Fragment;
 
+import com.collectrouter.crclient.ui.FragmentDoAttetion;
+import com.collectrouter.crclient.ui.FragmentInfoPanel;
+import com.collectrouter.crclient.ui.FragmentLogin;
+import com.collectrouter.crclient.ui.FragmentMyPublishList;
+import com.collectrouter.crclient.ui.FragmentNavigateHeader;
+import com.collectrouter.crclient.ui.FragmentDoPublish;
+import com.collectrouter.crclient.ui.FragmentRegAccount;
+import com.collectrouter.crclient.ui.FragmentShowAccountProduct;
+import com.collectrouter.crclient.ui.FragmentShowAttetion;
+import com.collectrouter.crclient.ui.FragmentShowAttetioned;
+
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Hashtable;
 import java.util.Iterator;
@@ -13,34 +25,34 @@ import java.util.Map;
  */
 public class CRCliUIDepot {
     Map mId2Activity;
-    Map mId2Fragment;
+    Map mTag2Fragment;
 
     {
         mId2Activity = new Hashtable();
-        mId2Fragment = new Hashtable();
+        mTag2Fragment = new Hashtable();
     }
 
-    public boolean regFragment( int nId, Fragment fragment ) {
-        if ( mId2Fragment.containsKey( nId ) ) {
+    public boolean regFragment( String tag, Fragment fragment ) {
+        if ( mTag2Fragment.containsKey( tag ) ) {
             assert( false );
             return false;
         }
-        return mId2Fragment.put( nId, fragment ) == fragment;
+        return mTag2Fragment.put( tag, fragment ) == fragment;
     }
 
-    public void unRegFragment( int nId ) {
-        if ( !mId2Fragment.containsKey( nId ) ) {
+    public void unRegFragment( String tag ) {
+        if ( !mTag2Fragment.containsKey( tag ) ) {
             return;
         }
-        mId2Fragment.remove( nId );
+        mTag2Fragment.remove( tag );
     }
 
-    public Fragment getFragment( int nId ) {
-        return (Fragment)mId2Fragment.get( nId );
+    public Fragment getFragment( String tag ) {
+        return (Fragment)mTag2Fragment.get( tag );
     }
 
-    public boolean hasFragment( int nId ) {
-        return mId2Fragment.containsKey( nId );
+    public boolean hasFragment( String tag ) {
+        return mTag2Fragment.containsKey( tag );
     }
 
     public boolean regActivity( int nId, Activity activity ) {

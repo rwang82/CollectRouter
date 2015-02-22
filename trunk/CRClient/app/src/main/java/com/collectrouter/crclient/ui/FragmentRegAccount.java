@@ -16,6 +16,8 @@ import com.collectrouter.crclient.R;
  * Created by rom on 1/1 0001.
  */
 public class FragmentRegAccount extends Fragment {
+    public final static String TAG = CRCliDef.CRCLI_FRAGMENT_REGACCOUNT;
+
 
     private View.OnClickListener handler4BtnRegAccount = new View.OnClickListener(){
 
@@ -57,13 +59,11 @@ public class FragmentRegAccount extends Fragment {
         viewRoot.findViewById( R.id.btn_reg_account ).setOnClickListener( handler4BtnRegAccount );
 
         //
-        CRCliRoot.getInstance().mUIDepot.regFragment( CRCliDef.CRCLI_FRAGMENT_REGACCOUNT, this );
         return viewRoot;
     }
 
     @Override
     public void onDestroyView() {
-        CRCliRoot.getInstance().mUIDepot.unRegFragment( CRCliDef.CRCLI_FRAGMENT_REGACCOUNT );
         super.onDestroyView();
 
     }

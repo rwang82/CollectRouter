@@ -25,7 +25,7 @@ import com.collectrouter.crclient.frame.CRRMsgJson;
 import com.collectrouter.crclient.frame.CRRMsgJsonHandlerBase;
 import com.collectrouter.crclient.frame.CRRMsgMaker;
 import com.collectrouter.crclient.ui.ActivityMain;
-import com.collectrouter.crclient.ui.FragmentPublish;
+import com.collectrouter.crclient.ui.FragmentDoPublish;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -47,24 +47,17 @@ import java.util.UUID;
  * Created by apple on 15/1/8.
  */
 public class CRModulePublish implements CREventHandler, CRRMsgJsonHandlerBase {
-    private Map<UUID, Uri> mMapId2Uri;
-    private Uri mUriImageCaptureCur;
     private Map<UUID, CRProduct > mMapUUID2ProductPending;
     private List< CRProduct > mContainerProduct;
     private int mReqCodeBase = 0;
 
     public CRModulePublish( CREventDepot eventDepot, CRRMsgHandlerDepot rmsgHandlerDepot ) {
         //
-        mMapId2Uri = new Hashtable<>();
         mMapUUID2ProductPending = new Hashtable<>();
         mContainerProduct = new ArrayList<>();
         //
         eventDepot.regEventHandler( CRCliDef.CREVT_BTNCLICK_ENTER_PUBLISH, this );
-        eventDepot.regEventHandler( CRCliDef.CREVT_BTNCLICK_PHOTOGRAPH_4_PUBLISH, this );
-        eventDepot.regEventHandler( CRCliDef.CREVT_BTNCLICK_SELECTPICTURE_4_PUBLISH, this );
-        eventDepot.regEventHandler( CRCliDef.CREVT_BTNCLICK_SCAN_4_PUBLISH, this );
         eventDepot.regEventHandler( CRCliDef.CREVT_BTNCLICK_COMMIT_PUBLISH, this );
-        eventDepot.regEventHandler( CRCliDef.CREVT_RECV_PHOTOGRAPH_4_PUBLISH, this );
 
         //
         rmsgHandlerDepot.regRMsgHandler( CRCliDef.CRCMDTYPE_ACK_PRODUCT_PUBLISH, this );
@@ -74,7 +67,7 @@ public class CRModulePublish implements CREventHandler, CRRMsgJsonHandlerBase {
         return mReqCodeBase++;
     }
 
-    private void onBtnClickPublish() {
+    private void onBtnClickEnterPublish() {
         ActivityMain activityMain = (ActivityMain)CRCliRoot.getInstance().mUIDepot.getActivity( CRCliDef.CRCLI_ACTIVITY_MAIN );
 
         if ( activityMain == null ) {
@@ -82,15 +75,8 @@ public class CRModulePublish implements CREventHandler, CRRMsgJsonHandlerBase {
         }
 
         //
-        reset();
-        //
-        activityMain.switch2Publish();
+        activityMain.switch2DoPublish();
         activityMain.closeDrawer();
-
-    }
-
-    private void reset() {
-        mMapId2Uri.clear();
 
     }
 
@@ -98,92 +84,16 @@ public class CRModulePublish implements CREventHandler, CRRMsgJsonHandlerBase {
     public void onEvent(int nEventID, Object param1, Object param2) {
         switch ( nEventID ) {
             case CRCliDef.CREVT_BTNCLICK_ENTER_PUBLISH:{
-                onBtnClickPublish();
-            }
-            break;
-            case CRCliDef.CREVT_BTNCLICK_PHOTOGRAPH_4_PUBLISH:{
-                onBtnClickPhotoGraph4Publish();
-            }
-            break;
-            case CRCliDef.CREVT_BTNCLICK_SELECTPICTURE_4_PUBLISH: {
-                onBtnClickSelectPicture4Publish();
-            }
-            break;
-            case CRCliDef.CREVT_BTNCLICK_SCAN_4_PUBLISH: {
-                onBtnClickScan4Publish();
+                onBtnClickEnterPublish();
             }
             break;
             case CRCliDef.CREVT_BTNCLICK_COMMIT_PUBLISH: {
-                onBtnClickCommitPublish();
-            }
-            break;
-            case CRCliDef.CREVT_RECV_PHOTOGRAPH_4_PUBLISH: {
-                onRecvPhotograph4Publish( param1, param2 );
+                onBtnClickCommitPublish( (CRProduct)param1 );
             }
             break;
             default:
             break;
         }
-    }
-
-    private void onRecvPhotograph4Publish(Object param1, Object param2) {
-        int resultCode = (int)param1;
-        Intent data = (Intent)param2;
-        FragmentPublish fragment = (FragmentPublish)CRCliRoot.getInstance().mUIDepot.getFragment( CRCliDef.CRCLI_FRAGMENT_PUBLISH );
-        Activity activityMain = fragment.getActivity();
-
-        if ( resultCode == 0 ) {
-            // means cancel photograph. so need do nothing.
-            return;
-        }
-
-        if ( data != null ) {
-            // maybe you don't do intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
-            // so, have thumbnail.
-        } else {
-            //
-        }
-
-        if ( activityMain == null ) {
-            return;
-        }
-
-        // get dest imageview size.
-        ImageView ivPreview = (ImageView)activityMain.findViewById( R.id.iv_product_preview );
-        int nDestWidth = ivPreview.getWidth();
-        int nDestHeight = ivPreview.getHeight();
-        Bitmap picCapture;
-
-        // get raw picture size
-        BitmapFactory.Options op = new BitmapFactory.Options();
-        op.inJustDecodeBounds = true;
-        try {
-            picCapture = BitmapFactory.decodeStream( activityMain.getContentResolver().openInputStream(mUriImageCaptureCur), null, op);
-            op.inJustDecodeBounds = false; // set it back.
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            return;
-        }
-
-        //
-        int wRatio = op.outWidth/nDestWidth;
-        int hRatio = op.outHeight/nDestHeight;
-        if ( wRatio > 1 && hRatio > 1 ) {
-            op.inSampleSize = ( wRatio > hRatio ) ? wRatio : hRatio;
-        }
-
-        //
-        try {
-            picCapture = BitmapFactory.decodeStream( activityMain.getContentResolver().openInputStream(mUriImageCaptureCur), null, op);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            return;
-        }
-        ivPreview.setImageBitmap( picCapture );
-        //
-        mMapId2Uri.put( java.util.UUID.randomUUID(), mUriImageCaptureCur );
-
-
     }
 
     private String prepareRMsg( CRProduct product ) {
@@ -210,6 +120,12 @@ public class CRModulePublish implements CREventHandler, CRRMsgJsonHandlerBase {
             valProduct.put( "price", product.mPrice );
             // describe.
             valProduct.put( "describe", product.mDescribe );
+            // default type.
+            valProduct.put( "sort", product.mType );
+            // user define type.
+            if ( product.mType == -1 ) {
+                valProduct.put( "udsort", product.mUserDefineType );
+            }
             // images.
             valProduct.put( "images", valImages );
             for ( String strImageUUID : product.mImages ) {
@@ -310,36 +226,7 @@ public class CRModulePublish implements CREventHandler, CRRMsgJsonHandlerBase {
         CRCliRoot.getInstance().mEventDepot.fire( CRCliDef.CREVT_PRODUCT_ADD, product, 0 );
     }
 
-    private void onBtnClickCommitPublish() {
-        FragmentPublish fragment = (FragmentPublish)CRCliRoot.getInstance().mUIDepot.getFragment( CRCliDef.CRCLI_FRAGMENT_PUBLISH );
-        if ( fragment == null ) {
-            return;
-        }
-        Activity activity = fragment.getActivity();
-        if ( activity == null ) {
-            return;
-        }
-        // maybe fill CRProduct code need move to FragmentPublish.
-        CRProduct product = new CRProduct();
-        // get title.
-        TextView tvTitle = (TextView)activity.findViewById( R.id.et_publish_title );
-        product.mTitle = tvTitle.getText().toString();
-        // get price.
-        TextView tvPrice = (TextView)activity.findViewById( R.id.et_publish_price );
-        product.mPrice = tvPrice.getText().toString();
-        // get describe.
-        TextView tvDescribe = (TextView)activity.findViewById( R.id.et_publish_product_describe );
-        product.mDescribe = tvDescribe.getText().toString();
-        // get images.
-        Set<UUID> key = mMapId2Uri.keySet();
-        for ( Iterator it = key.iterator(); it.hasNext(); ) {
-            UUID imageUUID = (UUID) it.next();
-            String strImageUUID = imageUUID.toString();
-            product.mImages.add( strImageUUID );
-        }
-        // get keywords.
-        TextView tvKeywords = (TextView)activity.findViewById( R.id.et_publish_product_keyword );
-        product.mKeywords.add( tvKeywords.getText().toString() );
+    private void onBtnClickCommitPublish( CRProduct product ) {
 
         // add to mMapReqCode2ProductPending
         addProduct2Pending( product );
@@ -355,44 +242,6 @@ public class CRModulePublish implements CREventHandler, CRRMsgJsonHandlerBase {
 
     }
 
-    private void onBtnClickScan4Publish() {
-
-    }
-
-    private void onBtnClickSelectPicture4Publish() {
-
-    }
-
-    private void onBtnClickPhotoGraph4Publish() {
-        ActivityMain activityMain = (ActivityMain)CRCliRoot.getInstance().mUIDepot.getActivity( CRCliDef.CRCLI_ACTIVITY_MAIN );
-        if ( activityMain == null ) {
-            return;
-        }
-
-        Intent intent;
-        String state = Environment.getExternalStorageState();
-        if (state.equals(Environment.MEDIA_MOUNTED)) {
-            intent = new Intent("android.media.action.IMAGE_CAPTURE");
-            ContentValues values = new ContentValues(3);
-            values.put(MediaStore.Images.Media.DISPLAY_NAME, "testing");
-            values.put(MediaStore.Images.Media.DESCRIPTION, "this is description");
-            values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
-            ContentResolver resolver = activityMain.getContentResolver();
-            if ( resolver == null ) {
-                assert( false );
-                return;
-            }
-//  it let me get into trouble, i can't find it in phone file explore.
-//            String tmpFilePath = Environment.getExternalStorageDirectory().getAbsolutePath()+"123.jpg";
-//            File file = new File(tmpFilePath); //创建一个文件
-//            mImageFilePathCapture = Uri.fromFile(file);
-            mUriImageCaptureCur = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, mUriImageCaptureCur); // now specify the method of saving file and uri to app.
-            activityMain.startActivityForResult(intent, CRCliDef.CRREQUESTCODE_PHTOGRAPH4PUBLISH );
-        } else {
-            Toast.makeText(activityMain, "SD card not ready.", Toast.LENGTH_LONG).show();
-        }
-    }
 
     @Override
     public void accept(CRRMsgJson rmsg) {
