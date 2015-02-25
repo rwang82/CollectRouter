@@ -87,17 +87,11 @@ public class CRModuleLogin implements CREventHandler, CRRMsgJsonHandlerBase {
             bSuccess = (valParams.getInt("result") == 1);
             if ( !bSuccess ) {
                 nErrCode = valParams.getInt("reason");
+            } else {
+                fillCRAccountData( valParams );
             }
         } catch (JSONException e) {
             return;
-        }
-
-        //
-        if ( bSuccess ) {
-            fillCRAccountData( valParams );
-            CRCliRoot.getInstance().mEventDepot.fire( CRCliDef.CREVT_LOGIN_SUCCESS, 0, 0 );
-        } else {
-            CRCliRoot.getInstance().mEventDepot.fire( CRCliDef.CREVT_LOGIN_FAILED, 0, 0 );
         }
 
         ActivityMain mainActivity = (ActivityMain)CRCliRoot.getInstance().mUIDepot.getActivity( CRCliDef.CRCLI_ACTIVITY_MAIN );
@@ -105,10 +99,14 @@ public class CRModuleLogin implements CREventHandler, CRRMsgJsonHandlerBase {
             return;
         //long lTId = Thread.currentThread().getId();
         if ( bSuccess ) {
+            //
             mainActivity.switch2ShowAttetions();
+            //
+            CRCliRoot.getInstance().mEventDepot.fire( CRCliDef.CREVT_LOGIN_SUCCESS, 0, 0 );
         } else {
             // show a notify dialog.
             new AlertDialog.Builder( mainActivity ).setTitle( "login result" ).setMessage( bSuccess ? "succeed" : "failed, ERRCODE:" + nErrCode ).setPositiveButton( "OK", null ).show();
+            CRCliRoot.getInstance().mEventDepot.fire( CRCliDef.CREVT_LOGIN_FAILED, 0, 0 );
         }
     }
 

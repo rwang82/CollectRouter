@@ -106,7 +106,7 @@ public class CRModuleAttetion implements CREventHandler, CRRMsgJsonHandlerBase {
             if (bSuccess) {
                 String strDestUserName = valParams.getString( "attetion" );
                 //
-                CRCliRoot.getInstance().mData.refetchCurAccountData();
+                CRCliRoot.getInstance().mData.doFetchAccountData( strDestUserName );
             } else {
                 // show a notify dialog.
                 new AlertDialog.Builder( mainActivity ).setTitle( "add attetion result" ).setMessage( bSuccess ? "succeed" : "failed, ERRCODE:" + nErrCode ).setPositiveButton( "OK", null ).show();

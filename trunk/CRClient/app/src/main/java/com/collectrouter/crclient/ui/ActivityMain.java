@@ -116,9 +116,9 @@ public class ActivityMain extends Activity {
     }
 
     public void switch2MyPublishList() {
-        FragmentInfoPanel fragmentInfoPanel = new FragmentInfoPanel();
+        FragmentMyPublishList fragmentInfoPanel = new FragmentMyPublishList();
 
-        switchContentFragment(fragmentInfoPanel, FragmentInfoPanel.TAG);
+        switchContentFragment(fragmentInfoPanel, FragmentMyPublishList.TAG);
     }
 
     public void switch2LoginFragment() {

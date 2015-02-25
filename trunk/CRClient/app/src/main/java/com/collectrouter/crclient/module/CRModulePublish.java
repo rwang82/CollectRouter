@@ -121,10 +121,10 @@ public class CRModulePublish implements CREventHandler, CRRMsgJsonHandlerBase {
             // describe.
             valProduct.put( "describe", product.mDescribe );
             // default type.
-            valProduct.put( "sort", product.mType );
+            valProduct.put( "sort", product.mSort );
             // user define type.
-            if ( product.mType == -1 ) {
-                valProduct.put( "udsort", product.mUserDefineType );
+            if ( product.mSort == -1 ) {
+                valProduct.put( "udsort", product.mUDSort );
             }
             // images.
             valProduct.put( "images", valImages );
@@ -258,6 +258,7 @@ public class CRModulePublish implements CREventHandler, CRRMsgJsonHandlerBase {
     private void onRMsgProductPublish( CRRMsgJson rmsg ) {
         boolean bSuccess = false;
         String strUUID;
+        String strAccountName;
         UUID uuid;
         int nErrCode = 0;
 
@@ -265,12 +266,17 @@ public class CRModulePublish implements CREventHandler, CRRMsgJsonHandlerBase {
             JSONObject valParams = rmsg.mJsonRoot.getJSONObject( "params" );
             bSuccess = valParams.getInt( "result" ) == 1;
             strUUID = valParams.getString( "product_uuid" );
+            strAccountName = valParams.getString( "username" );
             uuid = java.util.UUID.fromString( strUUID );
             nErrCode = bSuccess ? 0 : valParams.getInt( "reason" );
             //
             if ( bSuccess ) {
+                //
+                CRCliRoot.getInstance().mData.doFetchAccountData( strAccountName );
+                //
+                if ( !strAccountName.equals( CRCliRoot.getInstance().mData.mCurLoginAccountName ) )
+                    return;
                 moveProductPend2Finish( uuid );
-                CRCliRoot.getInstance().mData.refetchCurAccountData();
             } else {
                 delProductFromPending(uuid);
             }

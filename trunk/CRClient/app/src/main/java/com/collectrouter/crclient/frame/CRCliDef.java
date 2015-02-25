@@ -9,7 +9,7 @@ public class CRCliDef {
     //
     //public final static String SERVER_IP_LOGIN = "192.168.31.106";
     //public final static String SERVER_IP_LOGIN = "192.168.123.1";
-    public final static String SERVER_IP_LOGIN = "10.0.2.10";
+    public final static String SERVER_IP_LOGIN = "10.0.2.11";
     public final static int SERVER_PORT_LOGIN = 7654;
 
     /////////////////////////////////////////////////////////////////////////////
@@ -85,6 +85,18 @@ public class CRCliDef {
     // param1 -
     // param2 -
     public final static int CREVT_CUR_LOGIN_ACCOUNT_INFO_UPDATE = 234;
+    ///////////////////////////////
+    // param1 - specify the account name .
+    // param2 - specify the list of attetion account name.
+    public final static int CREVT_FETCH_ATTETION_LIST_SUCCESS = 235;
+    ///////////////////////////////
+    // param1 - specify the list of CRAccountData.
+    // param2 - NONE.
+    public final static int CREVT_FETCH_ACCOUNT_DATA_SUCCESS = 236;
+    ///////////////////////////////
+    // param1 - specify the list of Account Name.
+    // param2 - None.
+    public final static int CREVT_FETCH_ACCOUNT_PRODUCTS_SUCCESS = 237;
 
     /////////////////////////////////////////////////////////////////////////////
     //
@@ -105,6 +117,8 @@ public class CRCliDef {
     public final static int CRCMDTYPE_ACK_FETCH_ATTETION_LIST = 16;
     public final static int CRCMDTYPE_REQ_FETCH_ACCOUNTINFO = 17;
     public final static int CRCMDTYPE_ACK_FETCH_ACCOUNTINFO = 18;
+    public final static int CRCMDTYPE_REQ_FETCH_ACCOUNTPRODUCTS = 19;
+    public final static int CRCMDTYPE_ACK_FETCH_ACCOUNTPRODUCTS = 20;
 
     //
     public final static int CRREQUESTCODE_PHTOGRAPH4PUBLISH = 1000;

@@ -14,87 +14,88 @@ import java.util.Map;
 /**
  * Created by rom on 2/12 0012.
  */
-public class FSAccountsAdapterDummy implements CRShowProductsAdapterBase, CRShowAccountsAdapterBase {
+public class FSAccountsAdapterDefault implements CRShowProductsAdapterBase, CRShowAccountsAdapterBase {
     private List< CRAccountData > mListAccounts;
     private List< CRProduct > mListProducts;
     //
     private Map< Integer, List< CRProduct > > mMapPS2PL;
     private Map< String, List< CRProduct > > mMapPSUD2PL;
 
-    public FSAccountsAdapterDummy() {
-
-        mListAccounts = new ArrayList<>();
-        mListProducts = new ArrayList<>();
+    public FSAccountsAdapterDefault( List< CRAccountData > listAccounts, List< CRProduct > listProducts ) {
+        mListAccounts = listAccounts;
+        mListProducts = listProducts;
         mMapPS2PL = new Hashtable<>();
         mMapPSUD2PL = new Hashtable<>();
-        CRAccountData newAccountData;
-        CRProduct newProduct;
-        //
-        newAccountData = new CRAccountData();
-        newAccountData.mNickName = "NickNameA";
-        newAccountData.mUserName = "UserNameA";
-        mListAccounts.add( newAccountData );
-        //
-        newAccountData = new CRAccountData();
-        newAccountData.mNickName = "NickNameB";
-        newAccountData.mUserName = "UserNameB";
-        mListAccounts.add( newAccountData );
-        //
-        newAccountData = new CRAccountData();
-        newAccountData.mNickName = "NickNameC";
-        newAccountData.mUserName = "UserNameC";
-        mListAccounts.add( newAccountData );
-        //
-        newProduct = new CRProduct();
-        newProduct.mTitle = "Product1";
-        newProduct.mDescribe = "Describe1";
-        newProduct.mPrice = "Price1";
-        newProduct.mUserName = "UserNameA";
-        mListProducts.add( newProduct );
-        //
-        newProduct = new CRProduct();
-        newProduct.mTitle = "Product2";
-        newProduct.mDescribe = "Describe2";
-        newProduct.mPrice = "Price2";
-        newProduct.mUserName = "UserNameB";
-        mListProducts.add( newProduct );
-        //
-        newProduct = new CRProduct();
-        newProduct.mTitle = "Product3";
-        newProduct.mDescribe = "Describe3";
-        newProduct.mPrice = "Price3";
-        newProduct.mUserName = "UserNameC";
-        newProduct.mType = -1;
-        newProduct.mUserDefineType = "P3Type";
-        mListProducts.add( newProduct );
-        //
-        newProduct = new CRProduct();
-        newProduct.mTitle = "Product4";
-        newProduct.mDescribe = "Describe4";
-        newProduct.mPrice = "Price4";
-        newProduct.mUserName = "UserNameD";
-        newProduct.mType = 0;
-        mListProducts.add( newProduct );
+//        CRAccountData newAccountData;
+//        CRProduct newProduct;
+//        //
+//        newAccountData = new CRAccountData();
+//        newAccountData.mNickName = "NickNameA";
+//        newAccountData.mUserName = "UserNameA";
+//        mListAccounts.add( newAccountData );
+//        //
+//        newAccountData = new CRAccountData();
+//        newAccountData.mNickName = "NickNameB";
+//        newAccountData.mUserName = "UserNameB";
+//        mListAccounts.add( newAccountData );
+//        //
+//        newAccountData = new CRAccountData();
+//        newAccountData.mNickName = "NickNameC";
+//        newAccountData.mUserName = "UserNameC";
+//        mListAccounts.add( newAccountData );
+//        //
+//        newProduct = new CRProduct();
+//        newProduct.mTitle = "Product1";
+//        newProduct.mDescribe = "Describe1";
+//        newProduct.mPrice = "Price1";
+//        newProduct.mUserName = "UserNameA";
+//        mListProducts.add( newProduct );
+//        //
+//        newProduct = new CRProduct();
+//        newProduct.mTitle = "Product2";
+//        newProduct.mDescribe = "Describe2";
+//        newProduct.mPrice = "Price2";
+//        newProduct.mUserName = "UserNameB";
+//        mListProducts.add( newProduct );
+//        //
+//        newProduct = new CRProduct();
+//        newProduct.mTitle = "Product3";
+//        newProduct.mDescribe = "Describe3";
+//        newProduct.mPrice = "Price3";
+//        newProduct.mUserName = "UserNameC";
+//        newProduct.mSort = -1;
+//        newProduct.mUDSort = "P3Type";
+//        mListProducts.add( newProduct );
+//        //
+//        newProduct = new CRProduct();
+//        newProduct.mTitle = "Product4";
+//        newProduct.mDescribe = "Describe4";
+//        newProduct.mPrice = "Price4";
+//        newProduct.mUserName = "UserNameD";
+//        newProduct.mSort = 0;
+//        mListProducts.add( newProduct );
 
 
         //
         parseRawData();
     }
 
+
+
     private void parseRawData() {
         for ( CRProduct product : mListProducts ) {
-            if ( product.mType == -1 ) {
-                List<CRProduct> listProduct = getProductList( product.mUserDefineType );
+            if ( product.mSort == -1 ) {
+                List<CRProduct> listProduct = getProductList( product.mUDSort );
                 if ( listProduct == null ) {
                     listProduct = new ArrayList< CRProduct>();
-                    mMapPSUD2PL.put( product.mUserDefineType, listProduct );
+                    mMapPSUD2PL.put( product.mUDSort, listProduct );
                 }
                 listProduct.add( product );
             } else {
-                List<CRProduct> listProduct = getProductList( product.mType );
+                List<CRProduct> listProduct = getProductList( product.mSort );
                 if ( listProduct == null ) {
                     listProduct = new ArrayList< CRProduct >();
-                    mMapPS2PL.put( product.mType, listProduct );
+                    mMapPS2PL.put( product.mSort, listProduct );
                 }
                 listProduct.add( product );
             }

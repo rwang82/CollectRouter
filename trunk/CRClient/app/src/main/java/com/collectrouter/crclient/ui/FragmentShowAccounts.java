@@ -51,6 +51,9 @@ public class FragmentShowAccounts extends Fragment {
         //
         if ( mEShowMode == ENUMSHOWMODE.ESM_BY_ACCOUNTS ) {
 
+            getActivity().findViewById( R.id.list_view_users ).invalidate();
+
+            //Invalid
         }
     }
 
@@ -93,7 +96,12 @@ public class FragmentShowAccounts extends Fragment {
         }
         lvProductSort.setAdapter(new ListAdapter4ProductSort());
         lvProductSort.setOnItemClickListener( mLVProductSortClickListener );
-        lvProduct.setAdapter( new ListAdapter4ShowProduct( mShowProductsAdapter.getProducts( 20 ) ) );
+
+        if ( mShowProductsAdapter != null ) {
+            lvProduct.setAdapter( new ListAdapter4ShowProduct( mShowProductsAdapter.getProducts( 20 ) ) );
+        } else {
+            lvProduct.setAdapter( new ListAdapter4ShowProduct( new ArrayList<CRProduct>() ) );
+        }
 
     }
 
@@ -183,9 +191,11 @@ public class FragmentShowAccounts extends Fragment {
             lvProducts = (ListView)getActivity().findViewById(R.id.lv_product_list);
         }
         //
-        lvProducts.setAdapter( new ListAdapter4ShowProduct( mShowProductsAdapter.getProducts() ) );
-        lvProductSort.requestFocusFromTouch();
-        lvProductSort.setSelection(0);
+        if ( mShowProductsAdapter != null ) {
+            lvProducts.setAdapter( new ListAdapter4ShowProduct( mShowProductsAdapter.getProducts() ) );
+            lvProductSort.requestFocusFromTouch();
+            lvProductSort.setSelection(0);
+        }
     }
 
     private void switch2UserShow( View viewRoot ) {
@@ -214,16 +224,18 @@ public class FragmentShowAccounts extends Fragment {
             LayoutInflater lif = activityMain.getLayoutInflater();
             //
             mListViewItems = new ArrayList<>();
-            List<CRAccountData> listAccountData = mShowAccountsAdapter.getAccountsData();
-            for ( CRAccountData accountData : listAccountData ) {
-                View viewItemRoot = lif.inflate( R.layout.lvitem_user, null );
-                mListViewItems.add( viewItemRoot );
+            if ( mShowAccountsAdapter != null ) {
+                List<CRAccountData> listAccountData = mShowAccountsAdapter.getAccountsData();
+                for ( CRAccountData accountData : listAccountData ) {
+                    View viewItemRoot = lif.inflate( R.layout.lvitem_user, null );
+                    mListViewItems.add( viewItemRoot );
+                }
             }
         }
 
         @Override
         public int getCount() {
-            return mShowAccountsAdapter.getAccountCount();
+            return mShowAccountsAdapter == null ? 0 : mShowAccountsAdapter.getAccountCount();
         }
 
         @Override
@@ -240,13 +252,15 @@ public class FragmentShowAccounts extends Fragment {
         public View getView(int position, View convertView, ViewGroup parent) {
             View viewItemRoot = mListViewItems.get( position );
             //
-            CRAccountData accountData = mShowAccountsAdapter.getAccountData( position );
-            if ( accountData != null ) {
-                TextView tvNickName = (TextView)viewItemRoot.findViewById( R.id.tv_user_nickname );
-                tvNickName.setText( accountData.mNickName );
-                //
-                TextView tvUserInfo = (TextView)viewItemRoot.findViewById( R.id.tv_user_info );
-                tvUserInfo.setText( accountData.mUserName );
+            if ( mShowAccountsAdapter != null ) {
+                CRAccountData accountData = mShowAccountsAdapter.getAccountData( position );
+                if ( accountData != null ) {
+                    TextView tvNickName = (TextView)viewItemRoot.findViewById( R.id.tv_user_nickname );
+                    tvNickName.setText( accountData.mNickName );
+                    //
+                    TextView tvUserInfo = (TextView)viewItemRoot.findViewById( R.id.tv_user_info );
+                    tvUserInfo.setText( accountData.mUserName );
+                }
             }
 
             return viewItemRoot;
@@ -264,10 +278,12 @@ public class FragmentShowAccounts extends Fragment {
             LayoutInflater lif = activityMain.getLayoutInflater();
             //
             mListViewItems = new ArrayList<>();
-            int nSortCount = mShowProductsAdapter.getProductSortCount();
-            for ( int nSortIndex = 0; nSortIndex<nSortCount + 1; ++nSortIndex ) {
-                View viewItemRoot = lif.inflate( R.layout.lvitem_product_sort, null );
-                mListViewItems.add( viewItemRoot );
+            if ( mShowProductsAdapter != null ) {
+                int nSortCount = mShowProductsAdapter.getProductSortCount();
+                for ( int nSortIndex = 0; nSortIndex<nSortCount + 1; ++nSortIndex ) {
+                    View viewItemRoot = lif.inflate( R.layout.lvitem_product_sort, null );
+                    mListViewItems.add( viewItemRoot );
+                }
             }
         }
 
@@ -291,14 +307,16 @@ public class FragmentShowAccounts extends Fragment {
             View viewItem = mListViewItems.get( position );
             String strItemText = null;
             //
-            TextView tvSortName = (TextView)viewItem.findViewById( R.id.tv_sort_name );
-            if ( position == 0 ) {
-                strItemText = "显示全部(" +mShowProductsAdapter.getProducts().size() +")";
+            if ( mShowProductsAdapter != null ) {
+                TextView tvSortName = (TextView)viewItem.findViewById( R.id.tv_sort_name );
+                if ( position == 0 ) {
+                    strItemText = "显示全部(" +mShowProductsAdapter.getProducts().size() +")";
 
-            } else {
-                strItemText = mShowProductsAdapter.getProductSortName(position-1) + "("+mShowProductsAdapter.getProductsBySort(position - 1).size()+")";
+                } else {
+                    strItemText = mShowProductsAdapter.getProductSortName(position-1) + "("+mShowProductsAdapter.getProductsBySort(position - 1).size()+")";
+                }
+                tvSortName.setText( strItemText );
             }
-            tvSortName.setText( strItemText );
 
             return viewItem;
         }
@@ -359,6 +377,8 @@ public class FragmentShowAccounts extends Fragment {
             ListView lvProducts = (ListView)getActivity().findViewById( R.id.lv_product_list );
             if ( lvProducts == null || position < 0 )
                 return;
+            if ( mShowProductsAdapter == null )
+                return;
             if ( position == 0 ) {
                 List< CRProduct > listProducts = mShowProductsAdapter.getProductsBySort( position - 1 );
                 lvProducts.setAdapter( new ListAdapter4ShowProduct( mShowProductsAdapter.getProducts() ) );
@@ -390,9 +410,11 @@ public class FragmentShowAccounts extends Fragment {
     private AdapterView.OnItemClickListener mLVUserItemClickListener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            CRAccountData accountDataSel = mShowAccountsAdapter.getAccountData( position );
-            ActivityMain activityMain = (ActivityMain)CRCliRoot.getInstance().mUIDepot.getActivity( CRCliDef.CRCLI_ACTIVITY_MAIN );
-            activityMain.switch2AccountProducts( accountDataSel.mUserName );
+            if ( mShowAccountsAdapter != null ) {
+                CRAccountData accountDataSel = mShowAccountsAdapter.getAccountData( position );
+                ActivityMain activityMain = (ActivityMain)CRCliRoot.getInstance().mUIDepot.getActivity( CRCliDef.CRCLI_ACTIVITY_MAIN );
+                activityMain.switch2AccountProducts( accountDataSel.mUserName );
+            }
         }
     };
 }

@@ -1,6 +1,6 @@
 package com.collectrouter.crclient.ui;
 
-import com.collectrouter.crclient.adapter.FSAccountsAdapterDummy;
+import com.collectrouter.crclient.adapter.FSAccountsAdapterDefault;
 import com.collectrouter.crclient.frame.CRCliDef;
 
 /**
@@ -10,10 +10,10 @@ public class FragmentShowAttetioned extends FragmentShowAccounts {
     public final static String TAG = CRCliDef.CRCLI_FRAGMENT_SHOW_ATTETIONED;
 
     public FragmentShowAttetioned() {
-        FSAccountsAdapterDummy adapterDummy = new FSAccountsAdapterDummy();
+        // FSAccountsAdapterDefault adapterDummy = new FSAccountsAdapterDefault();
 
-        setShowAccountsAdapter( adapterDummy );
-        setShowProductsAdapter( adapterDummy );
+        // setShowAccountsAdapter( adapterDummy );
+        // setShowProductsAdapter( adapterDummy );
 
     }
 }
