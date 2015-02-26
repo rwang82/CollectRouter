@@ -12,7 +12,7 @@ public class CRProduct {
     public String mTitle;
     public String mPrice;
     public String mDescribe;
-    public String mUserName;
+    public String mPublisher;
     public int mSort; //mSort = -1, means mUDSort is useful.
     public String mUDSort;
     public List< String > mImages;
@@ -23,7 +23,7 @@ public class CRProduct {
         mTitle = "";
         mPrice = "";
         mDescribe = "";
-        mUserName = "";
+        mPublisher = "";
         mSort = -1;
         mUDSort = "UnDefine";
         mImages = new ArrayList<>();

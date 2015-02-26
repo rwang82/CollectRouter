@@ -235,7 +235,7 @@ public class FragmentShowAccounts extends Fragment {
 
         @Override
         public int getCount() {
-            return mShowAccountsAdapter == null ? 0 : mShowAccountsAdapter.getAccountCount();
+            return mListViewItems.size();
         }
 
         @Override
@@ -278,12 +278,10 @@ public class FragmentShowAccounts extends Fragment {
             LayoutInflater lif = activityMain.getLayoutInflater();
             //
             mListViewItems = new ArrayList<>();
-            if ( mShowProductsAdapter != null ) {
-                int nSortCount = mShowProductsAdapter.getProductSortCount();
-                for ( int nSortIndex = 0; nSortIndex<nSortCount + 1; ++nSortIndex ) {
-                    View viewItemRoot = lif.inflate( R.layout.lvitem_product_sort, null );
-                    mListViewItems.add( viewItemRoot );
-                }
+            int nSortCount = mShowProductsAdapter == null ? 0 : mShowProductsAdapter.getProductSortCount();
+            for ( int nSortIndex = 0; nSortIndex<nSortCount + 1; ++nSortIndex ) {
+                View viewItemRoot = lif.inflate( R.layout.lvitem_product_sort, null );
+                mListViewItems.add( viewItemRoot );
             }
         }
 

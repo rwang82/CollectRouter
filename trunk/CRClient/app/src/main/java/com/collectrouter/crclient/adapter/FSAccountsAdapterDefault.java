@@ -80,7 +80,22 @@ public class FSAccountsAdapterDefault implements CRShowProductsAdapterBase, CRSh
         parseRawData();
     }
 
+    public void setAccountDatas( List< CRAccountData > listAccountData ) {
+        mListAccounts = listAccountData;
 
+    }
+
+    public void setProducts( List< CRProduct > listProducts ) {
+        mListProducts = listProducts;
+
+        //
+        mMapPS2PL.clear();
+        mMapPSUD2PL.clear();
+        //
+        if ( mListProducts != null ) {
+            parseRawData();
+        }
+    }
 
     private void parseRawData() {
         for ( CRProduct product : mListProducts ) {

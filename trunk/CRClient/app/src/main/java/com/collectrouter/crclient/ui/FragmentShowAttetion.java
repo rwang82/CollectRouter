@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import com.collectrouter.crclient.R;
 import com.collectrouter.crclient.adapter.FSAccountsAdapterDefault;
+import com.collectrouter.crclient.data.CRProduct;
 import com.collectrouter.crclient.frame.CRAccountData;
 import com.collectrouter.crclient.frame.CRCliData;
 import com.collectrouter.crclient.frame.CRCliDef;
@@ -115,9 +116,16 @@ public class FragmentShowAttetion extends FragmentShowAccounts implements CREven
             case CRCliDef.CREVT_FETCH_ACCOUNT_PRODUCTS_SUCCESS:
             {
                 List< String > listAccountName = ( List< String > )param1;
+                List< CRAccountData > listAccountData = CRCliRoot.getInstance().mData.getAccountDataList( listAccountName );
+                List<CRProduct> listProducts = CRCliRoot.getInstance().mData.getAccountProducts( listAccountName );
 
-                int a = 0;
-                need more code here.
+                FSAccountsAdapterDefault adapterFSA = new FSAccountsAdapterDefault( listAccountData, listProducts );
+                setShowAccountsAdapter( adapterFSA );
+                setShowProductsAdapter( adapterFSA );
+                //
+                getActivity().findViewById( R.id.list_view_users ).invalidate();
+                getActivity().findViewById( R.id.lv_product_sort ).invalidate();
+                getActivity().findViewById( R.id.lv_product_list ).invalidate();
             }
             break;
             default:
