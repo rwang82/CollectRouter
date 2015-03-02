@@ -50,10 +50,16 @@ public class HMNWECliRecvDataThread extends Thread{
                     return;
                 } else {
                     assert( nCopied <= HMNWECliDef.BUFSIZE_RECV_NWDATA );
-                    doNotifyRecvData( mBufRecvData, nCopied );
+                    byte[] rawData = new byte[ nCopied ];
+                    System.arraycopy( mBufRecvData, 0, rawData, 0, nCopied );
+
+                    doNotifyRecvData( rawData, nCopied );
                 }
             } catch ( IOException e ) {
                 // maybe need do something.
+
+                //
+                doNotifyDisConnect();
             }
         }
     }

@@ -45,13 +45,9 @@ public class FragmentShowAttetion extends FragmentShowAccounts implements CREven
 
     public final static String TAG = CRCliDef.CRCLI_FRAGMENT_SHOW_ATTETION;
     private ENUMSTATE mEState = ENUMSTATE.ES_INIT;
+    private int mReqSN = CRCliDef.CRCMDSN_INVALID;
 
     public FragmentShowAttetion() {
-        // FSAccountsAdapterDefault adapterDummy = new FSAccountsAdapterDefault();
-
-        // setShowAccountsAdapter( adapterDummy );
-        // setShowProductsAdapter( adapterDummy );
-        //
     }
 
 
@@ -67,7 +63,7 @@ public class FragmentShowAttetion extends FragmentShowAccounts implements CREven
             mEState = ENUMSTATE.ES_FETCHING_ATTETION_LIST;
             CRAccountData curAccountData = CRCliRoot.getInstance().mData.getCurAccountData();
             if ( curAccountData != null ) {
-                CRCliRoot.getInstance().mData.doFetchAttetionRecord( curAccountData.mUserName, 0, curAccountData.mCountAttetion );
+                mReqSN = CRCliRoot.getInstance().mData.doFetchAttetionRecord( curAccountData.mUserName, 0, curAccountData.mCountAttetion );
             }
         }
         //
@@ -88,19 +84,25 @@ public class FragmentShowAttetion extends FragmentShowAccounts implements CREven
         switch ( nEventID ) {
             case CRCliDef.CREVT_FETCH_ATTETION_LIST_SUCCESS:
             {
-                String strAccountName = (String)param1;
-                List<String> attetionList = (List<String>)param2;
 
+                int nSN = (int)param1;
+                CRCliData.CRAttetionListResult result = (CRCliData.CRAttetionListResult)param2;
+
+                if ( nSN != mReqSN )
+                    return;
                 if ( mEState != ENUMSTATE.ES_FETCHING_ATTETION_LIST )
                     return;
                 mEState = ENUMSTATE.ES_FETCHING_ACCOUNT_DATA;
-                CRCliRoot.getInstance().mData.doFetchAccountData( attetionList );
+                mReqSN = CRCliRoot.getInstance().mData.doFetchAccountData( result.mListAttetionName );
             }
             break;
             case CRCliDef.CREVT_FETCH_ACCOUNT_DATA_SUCCESS:
             {
-                List<CRAccountData> listAccountData = ( List<CRAccountData> )param1;
+                int nSN = (int)param1;
+                List<CRAccountData> listAccountData = ( List<CRAccountData> )param2;
 
+                if ( nSN != mReqSN )
+                    return;
                 if ( mEState != ENUMSTATE.ES_FETCHING_ACCOUNT_DATA )
                     return;
                 mEState = ENUMSTATE.ES_FETCHING_PRODUCTS;
@@ -110,22 +112,23 @@ public class FragmentShowAttetion extends FragmentShowAccounts implements CREven
                     CRCliData.FAPItem fapItem = new CRCliData.FAPItem( accountData.mUserName, 0, accountData.mCountAttetion );
                     listFAP.add( fapItem );
                 }
-                CRCliRoot.getInstance().mData.doFetchAccountProducts( listFAP );
+                mReqSN = CRCliRoot.getInstance().mData.doFetchAccountProducts( listFAP );
             }
             break;
             case CRCliDef.CREVT_FETCH_ACCOUNT_PRODUCTS_SUCCESS:
             {
-                List< String > listAccountName = ( List< String > )param1;
+                int nSN = (int)param1;
+                List< String > listAccountName = ( List< String > )param2;
+
+                if ( nSN != mReqSN )
+                    return;
+
                 List< CRAccountData > listAccountData = CRCliRoot.getInstance().mData.getAccountDataList( listAccountName );
                 List<CRProduct> listProducts = CRCliRoot.getInstance().mData.getAccountProducts( listAccountName );
 
                 FSAccountsAdapterDefault adapterFSA = new FSAccountsAdapterDefault( listAccountData, listProducts );
                 setShowAccountsAdapter( adapterFSA );
                 setShowProductsAdapter( adapterFSA );
-                //
-                getActivity().findViewById( R.id.list_view_users ).invalidate();
-                getActivity().findViewById( R.id.lv_product_sort ).invalidate();
-                getActivity().findViewById( R.id.lv_product_list ).invalidate();
             }
             break;
             default:

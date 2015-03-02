@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.collectrouter.crclient.R;
 import com.collectrouter.crclient.data.CRProduct;
+import com.collectrouter.crclient.frame.CRAccountData;
 import com.collectrouter.crclient.frame.CRCliDef;
 import com.collectrouter.crclient.frame.CRCliRoot;
 import com.collectrouter.crclient.frame.CREventDepot;
@@ -96,7 +97,7 @@ public class CRModulePublish implements CREventHandler, CRRMsgJsonHandlerBase {
         }
     }
 
-    private String prepareRMsg( CRProduct product ) {
+    private CRRMsgMaker.CRRMsgReq prepareRMsg( CRProduct product ) {
         JSONObject valParams = new JSONObject();
         JSONObject valProduct = new JSONObject();
         JSONArray valImages = new JSONArray();
@@ -104,7 +105,7 @@ public class CRModulePublish implements CREventHandler, CRRMsgJsonHandlerBase {
 
         if ( !CRCliRoot.getInstance().mModuleLogin.islogined() ) {
             assert( false );
-            return "";
+            return null;
         }
 
         try {
@@ -232,13 +233,20 @@ public class CRModulePublish implements CREventHandler, CRRMsgJsonHandlerBase {
         addProduct2Pending( product );
 
         //
-        String strRMsg = prepareRMsg( product );
-        byte[] rawBufRMsg = strRMsg.getBytes();
+        CRRMsgMaker.CRRMsgReq rmsgReq = prepareRMsg( product );
+        if ( rmsgReq == null )
+            return;
+        byte[] rawBufRMsg = rmsgReq.mRMsg.getBytes();
         CRCliRoot.getInstance().mNWPClient.sendData( rawBufRMsg, rawBufRMsg.length );
 
         // switch UI 2 FragmentMyPublishList.
         ActivityMain activityMain = (ActivityMain)CRCliRoot.getInstance().mUIDepot.getActivity( CRCliDef.CRCLI_ACTIVITY_MAIN );
-        activityMain.switch2MyPublishList();
+        CRAccountData accountData = CRCliRoot.getInstance().mData.getCurAccountData();
+        if ( accountData == null || accountData.mUserName.length() == 0)
+            return;
+        activityMain.switch2AccountProducts( accountData.mUserName );
+
+        // activityMain.switch2MyPublishList();
 
     }
 

@@ -86,17 +86,27 @@ public class CRCliDef {
     // param2 -
     public final static int CREVT_CUR_LOGIN_ACCOUNT_INFO_UPDATE = 234;
     ///////////////////////////////
-    // param1 - specify the account name .
-    // param2 - specify the list of attetion account name.
+    // param1 - specify the nSN .
+    // param2 - specify the CRAttetionListResult.
     public final static int CREVT_FETCH_ATTETION_LIST_SUCCESS = 235;
     ///////////////////////////////
-    // param1 - specify the list of CRAccountData.
-    // param2 - NONE.
+    // param1 - specify the nSN.
+    // param2 - specify the list of CRAccountData.
     public final static int CREVT_FETCH_ACCOUNT_DATA_SUCCESS = 236;
     ///////////////////////////////
-    // param1 - specify the list of Account Name.
-    // param2 - None.
+    // param1 - specify the nSN.
+    // param2 - specify the list of Account Name.
     public final static int CREVT_FETCH_ACCOUNT_PRODUCTS_SUCCESS = 237;
+    ///////////////////////////////
+    // param1 - specify the nSN.
+    // param2 - specify the CRAttetionedListResult.
+    public final static int CREVT_FETCH_ATTETIONED_LIST_SUCCESS = 238;
+
+
+
+
+
+
 
     /////////////////////////////////////////////////////////////////////////////
     //
@@ -119,6 +129,8 @@ public class CRCliDef {
     public final static int CRCMDTYPE_ACK_FETCH_ACCOUNTINFO = 18;
     public final static int CRCMDTYPE_REQ_FETCH_ACCOUNTPRODUCTS = 19;
     public final static int CRCMDTYPE_ACK_FETCH_ACCOUNTPRODUCTS = 20;
+    public final static int CRCMDTYPE_REQ_FETCH_ATTETIONED_LIST = 21;
+    public final static int CRCMDTYPE_ACK_FETCH_ATTETIONED_LIST = 22;
 
     //
     public final static int CRREQUESTCODE_PHTOGRAPH4PUBLISH = 1000;

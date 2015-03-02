@@ -145,6 +145,19 @@ public class ActivityMain extends Activity {
         switchContentFragment( fragment, FragmentShowAttetioned.TAG );
     }
 
+    public void switch2ShowPublish() {
+        String strCurAccountName = CRCliRoot.getInstance().mData.mCurLoginAccountName;
+        if ( strCurAccountName == null || strCurAccountName.length() == 0 )
+            return;
+        FragmentShowAccountProduct fragment = new FragmentShowAccountProduct();
+
+        Bundle args = new Bundle();
+        args.putString("username", strCurAccountName );
+        fragment.setArguments( args );
+
+        switchContentFragment(fragment, FragmentShowAccountProduct.TAG);
+    }
+
     public void switch2AccountProducts( String strUserName ) {
         FragmentShowAccountProduct fragment = new FragmentShowAccountProduct();
 

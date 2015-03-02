@@ -41,6 +41,7 @@ public class CRCliData implements CRRMsgJsonHandlerBase{
         rmsgHandlerDepot.regRMsgHandler( CRCliDef.CRCMDTYPE_ACK_FETCH_ACCOUNTINFO, this );
         rmsgHandlerDepot.regRMsgHandler( CRCliDef.CRCMDTYPE_ACK_FETCH_ATTETION_LIST, this );
         rmsgHandlerDepot.regRMsgHandler( CRCliDef.CRCMDTYPE_ACK_FETCH_ACCOUNTPRODUCTS, this );
+        rmsgHandlerDepot.regRMsgHandler( CRCliDef.CRCMDTYPE_ACK_FETCH_ATTETIONED_LIST, this );
     }
 
     public void setCurAccountData( CRAccountData accountData ) {
@@ -127,6 +128,10 @@ public class CRCliData implements CRRMsgJsonHandlerBase{
         return listProducts;
     }
 
+    public CRAccountData getAccountData( String accountName ) {
+        return mMapUserName2AccountData.get( accountName );
+    }
+
     public List< CRAccountData > getAccountDataList( List< String > listAccountName ) {
         List< CRAccountData > listAccountData = new ArrayList<>();
 
@@ -138,41 +143,65 @@ public class CRCliData implements CRRMsgJsonHandlerBase{
         return listAccountData;
     }
 
+    public int doFetchAccountProducts( FAPItem fapParam ) {
+        List< FAPItem > listFAP = new ArrayList< FAPItem >();
+        listFAP.add( fapParam );
+
+        return doFetchAccountProducts( listFAP );
+    }
+
 //
-    public void doFetchAccountProducts( List< FAPItem > listFAP ) {
+    public int doFetchAccountProducts( List< FAPItem > listFAP ) {
         if ( listFAP.size() == 0 )
-            return;
-        String strRMsg = prepareFetchAccountProducts( listFAP );
-        if ( strRMsg.length() == 0 )
-            return;
-        byte[] rawBufRMsg = strRMsg.getBytes();
+            return CRCliDef.CRCMDSN_INVALID;
+        CRRMsgMaker.CRRMsgReq rmsgReq = prepareFetchAccountProducts( listFAP );
+        if ( rmsgReq == null )
+            return CRCliDef.CRCMDSN_INVALID;
+        byte[] rawBufRMsg = rmsgReq.mRMsg.getBytes();
         CRCliRoot.getInstance().mNWPClient.sendData( rawBufRMsg, rawBufRMsg.length );
+        return rmsgReq.mSN;
     }
 
-    public void doFetchAttetionRecord( String strAccountName, int nIndexStart, int nCount ) {
+    public int doFetchAttetionRecord( String strAccountName, int nIndexStart, int nCount ) {
         if ( strAccountName.length() == 0 )
-            return;
-        String strRMsg = prepareFetchAttetionRecord( strAccountName, nIndexStart, nCount );
-        byte[] rawBufRMsg = strRMsg.getBytes();
+            return CRCliDef.CRCMDSN_INVALID;
+        CRRMsgMaker.CRRMsgReq rmsgReq = prepareFetchAttetionRecord( strAccountName, nIndexStart, nCount );
+        if ( rmsgReq == null )
+            return CRCliDef.CRCMDSN_INVALID;
+        byte[] rawBufRMsg = rmsgReq.mRMsg.getBytes();
         CRCliRoot.getInstance().mNWPClient.sendData( rawBufRMsg, rawBufRMsg.length );
+        return rmsgReq.mSN;
+    }
+    public int doFetchAttetionedRecord( String strAccountName, int nIndexStart, int nCount ) {
+        if ( strAccountName.length() == 0 )
+            return CRCliDef.CRCMDSN_INVALID;
+        CRRMsgMaker.CRRMsgReq rmsgReq = prepareFetchAttetionedRecord( strAccountName, nIndexStart, nCount );
+        if ( rmsgReq == null )
+            return CRCliDef.CRCMDSN_INVALID;
+        byte[] rawBufRMsg = rmsgReq.mRMsg.getBytes();
+        CRCliRoot.getInstance().mNWPClient.sendData( rawBufRMsg, rawBufRMsg.length );
+        return rmsgReq.mSN;
     }
 
-    public void doFetchAccountData( String strAccountName ) {
+    public int doFetchAccountData( String strAccountName ) {
         if ( strAccountName.length() == 0 )
-            return;
+            return CRCliDef.CRCMDSN_INVALID;
         List<String> listUserName = new ArrayList<>();
         listUserName.add( strAccountName );
-        doFetchAccountData(listUserName);
+        return doFetchAccountData( listUserName );
     }
 
-    public void doFetchAccountData( List<String> listUserName ) {
-        String strRMsg = prepareFetchAccountInfoRMsg( listUserName );
-        byte[] rawBufRMsg = strRMsg.getBytes();
+    public int doFetchAccountData( List<String> listUserName ) {
+        CRRMsgMaker.CRRMsgReq rmsgReq = prepareFetchAccountInfoRMsg( listUserName );
+        if ( rmsgReq == null )
+            return CRCliDef.CRCMDSN_INVALID;
+        byte[] rawBufRMsg = rmsgReq.mRMsg.getBytes();
         CRCliRoot.getInstance().mNWPClient.sendData( rawBufRMsg, rawBufRMsg.length );
+        return rmsgReq.mSN;
     }
 
 //
-    private String prepareFetchAccountProducts( List< FAPItem > listFAP ) {
+    private CRRMsgMaker.CRRMsgReq prepareFetchAccountProducts( List< FAPItem > listFAP ) {
         JSONObject valParams = new JSONObject();
         JSONArray valUserList = new JSONArray();
 
@@ -183,15 +212,15 @@ public class CRCliData implements CRRMsgJsonHandlerBase{
             valParams.put("username_list", valUserList);
         } catch (JSONException e) {
             e.printStackTrace();
-            return new String("");
+            return null;
         }
 
         return CRRMsgMaker.createRMsg( valParams, CRCliDef.CRCMDTYPE_REQ_FETCH_ACCOUNTPRODUCTS );
     }
 
-    private String prepareFetchAttetionRecord( String strAccountName, int nIndexStart, int nCount ) {
+    private CRRMsgMaker.CRRMsgReq prepareFetchAttetionedRecord( String strAccountName, int nIndexStart, int nCount ) {
         if ( nIndexStart < 0 || nCount <= 0 )
-            return new String("");
+            return null;
         JSONObject valParams = new JSONObject();
 
         try {
@@ -200,13 +229,30 @@ public class CRCliData implements CRRMsgJsonHandlerBase{
             valParams.put( "count", nCount );
         } catch (JSONException e) {
             e.printStackTrace();
-            return new String("");
+            return null;
+        }
+
+        return CRRMsgMaker.createRMsg( valParams, CRCliDef.CRCMDTYPE_REQ_FETCH_ATTETIONED_LIST );
+    }
+
+    private CRRMsgMaker.CRRMsgReq prepareFetchAttetionRecord( String strAccountName, int nIndexStart, int nCount ) {
+        if ( nIndexStart < 0 || nCount <= 0 )
+            return null;
+        JSONObject valParams = new JSONObject();
+
+        try {
+            valParams.put( "username", strAccountName );
+            valParams.put( "index_start", nIndexStart );
+            valParams.put( "count", nCount );
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return null;
         }
 
         return CRRMsgMaker.createRMsg( valParams, CRCliDef.CRCMDTYPE_REQ_FETCH_ATTETION_LIST );
     }
 
-    private String prepareFetchAccountInfoRMsg( List<String> listUserName ) {
+    private CRRMsgMaker.CRRMsgReq prepareFetchAccountInfoRMsg( List<String> listUserName ) {
         JSONObject valParams = new JSONObject();
         JSONArray valUserNames = new JSONArray();
 
@@ -238,6 +284,11 @@ public class CRCliData implements CRRMsgJsonHandlerBase{
             case CRCliDef.CRCMDTYPE_ACK_FETCH_ACCOUNTPRODUCTS:
             {
                 onRMsgAckFetchAccountProducts( rmsg );
+            }
+            break;
+            case CRCliDef.CRCMDTYPE_ACK_FETCH_ATTETIONED_LIST:
+            {
+                onRMsgAckFetchAttetionedList(rmsg);
             }
             break;
             default:
@@ -274,13 +325,58 @@ public class CRCliData implements CRRMsgJsonHandlerBase{
                 }
 
                 //
-                CRCliRoot.getInstance().mEventDepot.fire(CRCliDef.CREVT_FETCH_ACCOUNT_PRODUCTS_SUCCESS, listAccountName, 0);
+                CRCliRoot.getInstance().mEventDepot.fire(CRCliDef.CREVT_FETCH_ACCOUNT_PRODUCTS_SUCCESS, rmsg.mSN, listAccountName );
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
 
+    public static class CRAttetionListResult {
+        CRAttetionListResult( String accountName, List<String> listAttetionName ) {
+            mAccountName = accountName;
+            mListAttetionName = listAttetionName;
+        }
+        public String mAccountName;
+        public List< String > mListAttetionName;
+    }
 
+    public static class CRAttetionedListResult {
+        CRAttetionedListResult( String accountName, List<String> listAttetionedName ) {
+            mAccountName = accountName;
+            mListAttetionedName = listAttetionedName;
+        }
+        public String mAccountName;
+        public List< String > mListAttetionedName;
+    }
+
+    private void onRMsgAckFetchAttetionedList(CRRMsgJson rmsg) {
+        try {
+            JSONObject valParams = rmsg.mJsonRoot.getJSONObject( "params" );
+            boolean bSuccess = valParams.getInt( "result" ) == 1;
+            if ( !bSuccess ) {
+                int nErrCode = valParams.getInt( "reason" );
+                Activity mainActivity = CRCliRoot.getInstance().mUIDepot.getActivity(CRCliDef.CRCLI_ACTIVITY_MAIN);
+                // show a notify dialog.
+                new AlertDialog.Builder( mainActivity ).setTitle( "fetch attetioned list" ).setMessage( bSuccess ? "succeed" : "failed, ERRCODE:" + nErrCode ).setPositiveButton( "OK", null ).show();
+            } else {
+                String strAccountName = valParams.getString("username");
+                JSONArray valAttetionedList = valParams.getJSONArray( "attetioneds" );
+                List<String> listAccountedName = new ArrayList<>();
+                int nSize = valAttetionedList.length();
+                for ( int nIndex = 0; nIndex<nSize; ++nIndex ) {
+                    String item = valAttetionedList.getString( nIndex );
+                    listAccountedName.add(item);
+                }
+                //
+                setAttetionedList( strAccountName, listAccountedName );
+                //
+                CRAttetionedListResult result = new CRAttetionedListResult( strAccountName, listAccountedName );
+                CRCliRoot.getInstance().mEventDepot.fire( CRCliDef.CREVT_FETCH_ATTETIONED_LIST_SUCCESS, rmsg.mSN, result );
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     private void onRMsgAckFetchAttetionList(CRRMsgJson rmsg) {
@@ -303,6 +399,9 @@ public class CRCliData implements CRRMsgJsonHandlerBase{
                 }
                 //
                 setAttetionList( strAccountName, listAccountName );
+                //
+                CRAttetionListResult result = new CRAttetionListResult( strAccountName, listAccountName );
+                CRCliRoot.getInstance().mEventDepot.fire( CRCliDef.CREVT_FETCH_ATTETION_LIST_SUCCESS, rmsg.mSN, result );
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -326,7 +425,7 @@ public class CRCliData implements CRRMsgJsonHandlerBase{
                     }
                 }
                 //
-                CRCliRoot.getInstance().mEventDepot.fire( CRCliDef.CREVT_FETCH_ACCOUNT_DATA_SUCCESS, listAccountData, 0 );
+                CRCliRoot.getInstance().mEventDepot.fire( CRCliDef.CREVT_FETCH_ACCOUNT_DATA_SUCCESS, rmsg.mSN, listAccountData );
             } else {
                 int nRes = valParams.getInt("reason");
             }
@@ -413,7 +512,12 @@ public class CRCliData implements CRRMsgJsonHandlerBase{
         synchronized ( mMapUserName2Attetion ) {
             mMapUserName2Attetion.put( strAccountName, listAccountName );
         }
-        CRCliRoot.getInstance().mEventDepot.fire( CRCliDef.CREVT_FETCH_ATTETION_LIST_SUCCESS, strAccountName, listAccountName );
+    }
+
+    private void setAttetionedList( String strAccountName, List<String> listAccountName ) {
+        synchronized ( mMapUserName2Attetioned ) {
+            mMapUserName2Attetioned.put( strAccountName, listAccountName );
+        }
     }
 
     private CRAccountData parseAccountData( JSONObject valAccountData ) {

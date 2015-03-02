@@ -39,6 +39,7 @@ public class FragmentInfoPanel extends Fragment implements CREventHandler{
         //
         viewRoot.findViewById( R.id.tv_attetion ).setOnClickListener( mClickShowAttetionList );
         viewRoot.findViewById( R.id.tv_attetioned ).setOnClickListener( mClickShowAttetionedList );
+        viewRoot.findViewById( R.id.tv_publish ).setOnClickListener( mClickShowPublishList );
         //
         viewRoot.findViewById( R.id.tv_do_attation ).setOnClickListener( mClickListenerBtnAttation );
         viewRoot.findViewById( R.id.tv_do_publish ).setOnClickListener(mClickListenerBtnPublish);
@@ -197,6 +198,17 @@ public class FragmentInfoPanel extends Fragment implements CREventHandler{
             activeMain.closeDrawer();
             //
             activeMain.switch2ShowAttetioneds();
+        }
+    };
+
+    private View.OnClickListener mClickShowPublishList = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            ActivityMain activityMain = (ActivityMain)CRCliRoot.getInstance().mUIDepot.getActivity( CRCliDef.CRCLI_ACTIVITY_MAIN );
+
+            activityMain.closeDrawer();
+            //
+            activityMain.switch2ShowPublish();
         }
     };
 }

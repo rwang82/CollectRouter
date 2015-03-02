@@ -10,9 +10,11 @@ public class HMNWPUnPackImpl {
     HMNWPUnPackStateBase mUnPackStateCur;
     HMNWPHeader mNWPHeader;
     byte[] mBufPayload;
+    HMNWPPayloadCacheDepot mPayloadCacheDepot;
 
     public HMNWPUnPackImpl( HMNWPCliEventHandler eventHandler )
     {
+        mPayloadCacheDepot = new HMNWPPayloadCacheDepot();
         mEventHandler = eventHandler;
         resetState();
     }
@@ -63,7 +65,30 @@ public class HMNWPUnPackImpl {
             break;
             case EUNPACKSTATUS_CHECKCRC:
             {
-                mEventHandler.onRecv( mBufPayload, mBufPayload.length );
+                if ( mNWPHeader.m_indexPackage == 0 ) {
+                    mPayloadCacheDepot.clearAll();
+                }
+                if ( mNWPHeader.m_indexPackage != mPayloadCacheDepot.getCount() ) {
+                    // maybe lose package, so needn't save.
+                    mPayloadCacheDepot.clearAll();
+                } else {
+                    // mNWPHeader.m_indexPackage and mPayloadCacheDepot in order.
+                    if ( mNWPHeader.m_indexPackage + 1 < mNWPHeader.m_countPackage ) {
+                        byte [] item = new byte[ mBufPayload.length ];
+                        System.arraycopy( mBufPayload, 0, item, 0, mBufPayload.length );
+                        mPayloadCacheDepot.addItem( item );
+                    } else {
+                        if ( mNWPHeader.m_countPackage == 1 ) {
+                            mEventHandler.onRecv( mBufPayload, mBufPayload.length );
+                        } else {
+                            mPayloadCacheDepot.addItem( mBufPayload );
+                            byte[] rawPayload = mPayloadCacheDepot.restoreRawPayload();
+                            mPayloadCacheDepot.clearAll();
+                            mEventHandler.onRecv( rawPayload, rawPayload.length );
+                        }
+                    }
+                }
+
                 resetState();
             }
             break;

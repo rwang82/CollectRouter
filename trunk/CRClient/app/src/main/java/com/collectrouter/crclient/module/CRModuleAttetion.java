@@ -36,12 +36,14 @@ public class CRModuleAttetion implements CREventHandler, CRRMsgJsonHandlerBase {
         if ( !prepareAddAttetionParam( valParams, strDestUserName ) ) {
             return false;
         }
-        String strRMsg = CRRMsgMaker.createRMsg( valParams, CRCliDef.CRCMDTYPE_REQ_ADD_ATTETION );
+        CRRMsgMaker.CRRMsgReq rmsgReq = CRRMsgMaker.createRMsg( valParams, CRCliDef.CRCMDTYPE_REQ_ADD_ATTETION );
+        if ( rmsgReq == null )
+            return false;
         if ( !CRCliRoot.getInstance().mNWPClient.isConnected() ) {
             new AlertDialog.Builder( activityMain ).setMessage("net connect failed.").show();
             return false;
         }
-        byte[] rawBufRMsg = strRMsg.getBytes();
+        byte[] rawBufRMsg = rmsgReq.mRMsg.getBytes();
         CRCliRoot.getInstance().mNWPClient.sendData( rawBufRMsg, rawBufRMsg.length );
 
         return true;

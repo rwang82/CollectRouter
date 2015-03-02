@@ -33,7 +33,7 @@ public class CRModuleAccountReg implements CREventHandler, CRRMsgJsonHandlerBase
 
     }
 
-    private String prepareRMsg( CRAccountData regAccountParam ) {
+    private CRRMsgMaker.CRRMsgReq prepareRMsg( CRAccountData regAccountParam ) {
         JSONObject valParams = new JSONObject();
 
         try {
@@ -50,21 +50,23 @@ public class CRModuleAccountReg implements CREventHandler, CRRMsgJsonHandlerBase
         return CRRMsgMaker.createRMsg(valParams, CRCliDef.CRCMDTYPE_REQ_ACCOUNT_REG);
     }
 
-    private void doRegAccount( CRAccountData regAccountParam ) {
-        String strRMsg = prepareRMsg( regAccountParam );
-        byte[] rawBufRMsg = strRMsg.getBytes();
+    private int doRegAccount( CRAccountData regAccountParam ) {
+        CRRMsgMaker.CRRMsgReq rmsgReq = prepareRMsg( regAccountParam );
+        if ( rmsgReq == null )
+            return CRCliDef.CRCMDSN_INVALID;
+        byte[] rawBufRMsg = rmsgReq.mRMsg.getBytes();
         Activity activity = CRCliRoot.getInstance().mUIDepot.getActivity( CRCliDef.CRCLI_ACTIVITY_MAIN );
 
         if ( !CRCliRoot.getInstance().mNWPClient.isConnected() ) {
             new AlertDialog.Builder( activity ).setMessage("net connect failed.").show();
             // maybe need show a message box.
-            return;
+            return CRCliDef.CRCMDSN_INVALID;
         }
 
         //
         mAccountData = regAccountParam;
         CRCliRoot.getInstance().mNWPClient.sendData( rawBufRMsg, rawBufRMsg.length );
-
+        return rmsgReq.mSN;
     }
 
     private void onRMsgAccountRegAck( CRRMsgJson rmsgJson ) {

@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import com.collectrouter.crclient.R;
 import com.collectrouter.crclient.data.CRProduct;
+import com.collectrouter.crclient.frame.CRAccountData;
 import com.collectrouter.crclient.frame.CRCliDef;
 import com.collectrouter.crclient.frame.CRCliRoot;
 import com.collectrouter.crclient.frame.CREventHandler;
@@ -123,6 +124,12 @@ public class FragmentDoPublish extends Fragment implements CREventHandler {
             // get describe.
             TextView tvDescribe = (TextView)getActivity().findViewById(R.id.et_publish_product_describe);
             product.mDescribe = tvDescribe.getText().toString();
+            // get publisher.
+            product.mPublisher = CRCliRoot.getInstance().mData.mCurLoginAccountName;
+            // get sort.
+            AutoCompleteTextView tvSort = (AutoCompleteTextView)getActivity().findViewById( R.id.actv_sort );
+            product.mSort = -1;
+            product.mUDSort = tvSort.getText().toString();
             // get images.
             Set<UUID> key = mMapId2Uri.keySet();
             for ( Iterator it = key.iterator(); it.hasNext(); ) {

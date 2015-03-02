@@ -51,7 +51,7 @@ public class FragmentShowAccounts extends Fragment {
         //
         if ( mEShowMode == ENUMSHOWMODE.ESM_BY_ACCOUNTS ) {
 
-            getActivity().findViewById( R.id.list_view_users ).invalidate();
+            getActivity().findViewById( R.id.list_view_users ).requestLayout();
 
             //Invalid
         }
@@ -63,9 +63,16 @@ public class FragmentShowAccounts extends Fragment {
         if ( !mbCallCreateView ) {
             return;
         }
+
+        if ( mShowProductsAdapter != null ) {
+            getActivity().findViewById( R.id.lv_product_sort ).requestLayout();
+            //
+            ListView lvProducts = (ListView)getActivity().findViewById( R.id.lv_product_list );
+            lvProducts.setAdapter( new ListAdapter4ShowProduct( mShowProductsAdapter.getProducts() ) );
+        }
+
         //
         if ( mEShowMode == ENUMSHOWMODE.ESM_BY_PRODUCTS ) {
-
         }
     }
 
@@ -192,55 +199,73 @@ public class FragmentShowAccounts extends Fragment {
         }
         //
         if ( mShowProductsAdapter != null ) {
-            lvProducts.setAdapter( new ListAdapter4ShowProduct( mShowProductsAdapter.getProducts() ) );
             lvProductSort.requestFocusFromTouch();
             lvProductSort.setSelection(0);
         }
     }
 
     private void switch2UserShow( View viewRoot ) {
+        ListView listAccounts = null;
         //
         mEShowMode = ENUMSHOWMODE.ESM_BY_ACCOUNTS;
         //
         if ( viewRoot != null ) {
             //
-            viewRoot.findViewById(R.id.list_view_users).setVisibility( View.VISIBLE );
+            listAccounts = (ListView)viewRoot.findViewById(R.id.list_view_users);
+            listAccounts.setVisibility(View.VISIBLE);
             viewRoot.findViewById(R.id.district_showproduct).setVisibility( View.INVISIBLE );
         } else {
             //
-            getActivity().findViewById( R.id.list_view_users ).setVisibility( View.VISIBLE );
+            listAccounts = (ListView)getActivity().findViewById( R.id.list_view_users );
+            listAccounts.setVisibility(View.VISIBLE);
             getActivity().findViewById( R.id.district_showproduct ).setVisibility( View.INVISIBLE );
         }
+
     }
 
     protected class ListAdapter4ShowAccounts extends BaseAdapter {
         List< View > mListViewItems;
 
         public ListAdapter4ShowAccounts() {
-            Activity activityMain = CRCliRoot.getInstance().mUIDepot.getActivity( CRCliDef.CRCLI_ACTIVITY_MAIN );
-            if ( activityMain == null ) {
-                return;
-            }
-            LayoutInflater lif = activityMain.getLayoutInflater();
             //
             mListViewItems = new ArrayList<>();
             if ( mShowAccountsAdapter != null ) {
                 List<CRAccountData> listAccountData = mShowAccountsAdapter.getAccountsData();
-                for ( CRAccountData accountData : listAccountData ) {
-                    View viewItemRoot = lif.inflate( R.layout.lvitem_user, null );
-                    mListViewItems.add( viewItemRoot );
-                }
+                addViewItems( listAccountData.size() );
             }
         }
 
         @Override
         public int getCount() {
-            return mListViewItems.size();
+            int nCountNeed = mShowAccountsAdapter!=null ? mShowAccountsAdapter.getAccountCount() : 0 ;
+            if ( nCountNeed <= mListViewItems.size() )
+                return nCountNeed;
+            int nCountNeedAdd = nCountNeed - mListViewItems.size();
+            addViewItems( nCountNeedAdd );
+            return nCountNeed;
         }
 
         @Override
         public Object getItem(int position) {
             return null;
+        }
+
+        private void addViewItems( int nCountAdd ) {
+            if ( nCountAdd <= 0 )
+                return;
+            Activity activity = getActivity();
+            if ( activity == null ) {
+                activity = CRCliRoot.getInstance().mUIDepot.getActivity( CRCliDef.CRCLI_ACTIVITY_MAIN );
+                if ( activity == null ) {
+                    return;
+                }
+            }
+            //
+            LayoutInflater lif = getActivity().getLayoutInflater();
+            for ( int nIndex = 0; nIndex < nCountAdd; ++nIndex ) {
+                View viewItemRoot = lif.inflate( R.layout.lvitem_user, null );
+                mListViewItems.add( viewItemRoot );
+            }
         }
 
         @Override
@@ -271,15 +296,24 @@ public class FragmentShowAccounts extends Fragment {
         List<View> mListViewItems;
 
         public ListAdapter4ProductSort() {
-            Activity activityMain = CRCliRoot.getInstance().mUIDepot.getActivity( CRCliDef.CRCLI_ACTIVITY_MAIN );
-            if ( activityMain == null ) {
-                return;
-            }
-            LayoutInflater lif = activityMain.getLayoutInflater();
             //
             mListViewItems = new ArrayList<>();
             int nSortCount = mShowProductsAdapter == null ? 0 : mShowProductsAdapter.getProductSortCount();
-            for ( int nSortIndex = 0; nSortIndex<nSortCount + 1; ++nSortIndex ) {
+            addViewItems( nSortCount + 1 );
+        }
+
+        private void addViewItems( int nCountAdd ) {
+            if ( nCountAdd <= 0 )
+                return;
+
+            Activity activity = getActivity();
+            if ( activity == null )
+                activity = CRCliRoot.getInstance().mUIDepot.getActivity( CRCliDef.CRCLI_ACTIVITY_MAIN );
+            if ( activity == null ) {
+                return;
+            }
+            LayoutInflater lif = activity.getLayoutInflater();
+            for ( int nIndex = 0; nIndex<nCountAdd; ++nIndex ) {
                 View viewItemRoot = lif.inflate( R.layout.lvitem_product_sort, null );
                 mListViewItems.add( viewItemRoot );
             }
@@ -287,7 +321,12 @@ public class FragmentShowAccounts extends Fragment {
 
         @Override
         public int getCount() {
-            return mListViewItems.size();
+            int nSortCount = mShowProductsAdapter == null ? 0 : mShowProductsAdapter.getProductSortCount();
+            if ( nSortCount + 1 <= mListViewItems.size() )
+                return nSortCount + 1;
+            int nItemAdd = nSortCount + 1 - mListViewItems.size();
+            addViewItems( nItemAdd );
+            return nSortCount + 1;
         }
 
         @Override
@@ -327,17 +366,34 @@ public class FragmentShowAccounts extends Fragment {
         public ListAdapter4ShowProduct( List< CRProduct > listProducts ) {
             mListViewItems = new ArrayList<>();
             mListProducts = listProducts;
-            Activity activityMain = CRCliRoot.getInstance().mUIDepot.getActivity( CRCliDef.CRCLI_ACTIVITY_MAIN );
-            LayoutInflater lif = activityMain.getLayoutInflater();
-            int nCount = mListProducts.size();
-            for ( int nIndex = 0; nIndex<nCount; ++nIndex ) {
+
+            int nCount = mListProducts != null ? mListProducts.size() : 0;
+            requestViewItem( nCount );
+        }
+
+        private void requestViewItem( int nCount ) {
+            if ( nCount <= mListViewItems.size() )
+                return;
+            Activity activity = getActivity();
+            if ( activity == null ) {
+                activity = CRCliRoot.getInstance().mUIDepot.getActivity( CRCliDef.CRCLI_ACTIVITY_MAIN );
+            }
+            if ( activity == null )
+                return;
+            LayoutInflater lif = activity.getLayoutInflater();
+
+            int nNeedAdd = nCount - mListViewItems.size();
+            for ( int nIndex = 0; nIndex<nNeedAdd; ++nIndex ) {
                 mListViewItems.add( lif.inflate( R.layout.lvitem_product, null ) );
             }
+
         }
 
         @Override
         public int getCount() {
-            return mListProducts.size();
+            int nCount = mListProducts != null ? mListProducts.size() : 0;
+            requestViewItem( nCount );
+            return nCount;
         }
 
         @Override
