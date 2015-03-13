@@ -3,6 +3,7 @@ package com.collectrouter.crclient.module;
 import android.app.Activity;
 import android.app.AlertDialog;
 
+import com.collectrouter.crclient.data.CRProduct;
 import com.collectrouter.crclient.frame.CRAccountData;
 import com.collectrouter.crclient.frame.CRCliDef;
 import com.collectrouter.crclient.frame.CRCliRoot;
@@ -11,6 +12,7 @@ import com.collectrouter.crclient.frame.CREventHandler;
 import com.collectrouter.crclient.frame.CRRMsgHandlerDepot;
 import com.collectrouter.crclient.frame.CRRMsgJson;
 import com.collectrouter.crclient.frame.CRRMsgJsonHandlerBase;
+import com.collectrouter.crclient.frame.CRRMsgMaker;
 import com.collectrouter.crclient.ui.ActivityMain;
 
 import org.json.JSONException;
@@ -40,10 +42,9 @@ public class CRModuleLogin implements CREventHandler, CRRMsgJsonHandlerBase {
         //
         CRCliRoot.getInstance().mEventDepot.fire( CRCliDef.CREVT_START_LOGGING, 0, 0 );
         //
-        String strCmd = createLoginCmd( strUserName, strPassword );
-        byte[] byteCmd = strCmd.getBytes();
-        CRCliRoot.getInstance().mNWPClient.sendData( byteCmd, byteCmd.length );
-
+        CRRMsgMaker.CRRMsgReq rmsgReq = prepareRMsg( strUserName, strPassword );
+        byte[] rawBufRMsg = rmsgReq.mRMsg.getBytes();
+        CRCliRoot.getInstance().mNWPClient.sendData( rawBufRMsg, rawBufRMsg.length );
     }
 
     private void fillCRAccountData( JSONObject valParams ) {
@@ -121,6 +122,20 @@ public class CRModuleLogin implements CREventHandler, CRRMsgJsonHandlerBase {
                 + strUserName + "\",\"password\":\""
                 + strPassword + "\"}}";
         return  strCmd;
+    }
+
+
+    private CRRMsgMaker.CRRMsgReq prepareRMsg( String strUserName, String strPassword ) {
+        JSONObject valParams = new JSONObject();
+
+        try {
+            valParams.put( "username", strUserName );
+            valParams.put( "password", strPassword );
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return CRRMsgMaker.createRMsg( valParams, CRCliDef.CRCMDTYPE_REQ_LOGIN );
     }
 
     @Override
